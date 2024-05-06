@@ -1,8 +1,7 @@
-import 'dart:io';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/components/product_card.dart';
 import 'package:suuq_iibiye/models/product.dart';
@@ -35,13 +34,13 @@ class CategoryPage extends ConsumerWidget {
             .initPage(categoryToString(category));
       });
     } else if (state is CategoryStateLoaded) {
-      return _buildCategoryPageBody(context, state.products, ref);
+      return _buildCategoryPageBody(context, state, ref);
     }
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
   Column _buildCategoryPageBody(
-      BuildContext context, List<Product> products, WidgetRef ref) {
+      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
     return Column(
       children: [
         Expanded(
@@ -51,91 +50,141 @@ class CategoryPage extends ConsumerWidget {
               crossAxisSpacing: 8.0,
               mainAxisSpacing: 8.0,
             ),
-            itemCount: products.length,
+            itemCount: state.products.length,
             itemBuilder: (BuildContext context, int index) {
-              final product = products[index];
+              final product = state.products[index];
               return GridTile(
-                child: ProductCard(
-                  product: product
-                 
-                ),
+                child: ProductCard(product: product),
               );
             },
           ),
         ),
-        Padding(
-          padding: AppStyles.edgeInsetsB48,
-          child: AppButton(
-              title: "Add New Product",
-              onTap: () {
-                _showAddProductDialog(context, ref);
-              }),
-        )
+        _builAddNewProductButton(context, state, ref)
       ],
     );
   }
 
-  void _showAddProductDialog(BuildContext context, WidgetRef ref) {
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController priceController = TextEditingController();
+  Padding _builAddNewProductButton(
+      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+    return Padding(
+      padding: AppStyles.edgeInsetsB48,
+      child: AppButton(
+          title: "Add New Product",
+          onTap: () {
+            _showAddProductDialog(context, state, ref);
+          }),
+    );
+  }
 
+  void _showAddProductDialog(
+      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        File? selectedImage; // Store the selected image file
-
-        return AlertDialog(
-          title: const Text('Add New Product'),
-          content: SingleChildScrollView(
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                TextField(
-                  controller: descriptionController,
-                  decoration: const InputDecoration(labelText: 'Description'),
-                ),
-                TextField(
-                  controller: priceController,
-                  decoration: const InputDecoration(labelText: 'Price'),
-                  keyboardType: TextInputType.number,
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    // Implement image upload logic here
-                  },
-                  child: const Text('Upload Image'),
-                ),
-              ],
-            ),
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('Cancel'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Validate input and save the product
-                String description = descriptionController.text.trim();
-                double? price = double.parse(priceController.text.trim());
-                if (description.isNotEmpty) {
-                  ref.read(categoryNotifierProvider.notifier).addNewProduct(
-                      Product(
-                          sellerName: "",
-                          sellerEmail: "",
-                          imageUrl: "",
-                          description: description,
-                          price: price,
-                          category: category));
-                }
-              },
-              child: Text('Add'),
-            ),
-          ],
-        );
+        return Consumer(builder: (context, ref, _) {
+          final categoryState = ref.watch(categoryNotifierProvider);
+          return categoryState is CategoryStateLoaded
+              ? _buildAddNewProductDialog(context, categoryState, ref)
+              : const SizedBox.shrink();
+        });
       },
     );
+  }
+
+  AlertDialog _buildAddNewProductDialog(
+      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+    TextEditingController descriptionController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+    return AlertDialog(
+      title: const Text('Add New Product'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: descriptionController,
+              decoration: const InputDecoration(labelText: 'Description'),
+            ),
+            TextField(
+              controller: priceController,
+              decoration: const InputDecoration(labelText: 'Price'),
+              keyboardType: TextInputType.number,
+            ),
+            _buildUploadImageButton(ref, state),
+          ],
+        ),
+      ),
+      actions: [
+        _buildCancelButton(context),
+        _buildAddButton(
+            descriptionController, priceController, ref, state, context),
+      ],
+    );
+  }
+
+  Column _buildUploadImageButton(WidgetRef ref, CategoryStateLoaded state) {
+    return Column(
+      children: [
+        ElevatedButton(
+          onPressed: () {
+            _editUserImage(ref);
+          },
+          child: const Text('Upload Image'),
+        ),
+        if (state.encodedImage != null)
+          const Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.check),
+              Text('uploaded file'),
+            ],
+          ),
+      ],
+    );
+  }
+
+  TextButton _buildCancelButton(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.of(context).pop();
+      },
+      child: const Text('Cancel'),
+    );
+  }
+
+  ElevatedButton _buildAddButton(
+      TextEditingController descriptionController,
+      TextEditingController priceController,
+      WidgetRef ref,
+      CategoryStateLoaded state,
+      BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // Validate input and save the product
+        String description = descriptionController.text.trim();
+        String price = priceController.text.trim();
+        if (description.isNotEmpty && price.isNotEmpty) {
+          ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
+              sellerName: "",
+              sellerEmail: "",
+              imageUrl: state.encodedImage,
+              description: description,
+              price: double.parse(price),
+              category: category));
+          Navigator.pop(context);
+        }
+      },
+      child: const Text('Add'),
+    );
+  }
+
+  _editUserImage(WidgetRef ref) async {
+    XFile? pickedImage =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedImage == null) return;
+
+    ref
+        .read(categoryNotifierProvider.notifier)
+        .onProfilePhotoChanged(pickedImage);
   }
 }

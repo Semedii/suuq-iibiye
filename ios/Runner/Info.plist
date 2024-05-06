@@ -45,5 +45,9 @@
 	<true/>
 	<key>UIApplicationSupportsIndirectInputEvents</key>
 	<true/>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Photo Library Access Warning</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Allow the app to access your location to provide accurate information based on your current location</string>
 </dict>
 </plist>
