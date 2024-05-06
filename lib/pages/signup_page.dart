@@ -118,7 +118,7 @@ class SignupPage extends ConsumerWidget {
             hintText: localizations.enterYourPhoneNumber,
             prefixIcon: const Icon(Icons.phone),
             onChanged:
-                ref.read(signupNotifierProvider.notifier).onBusinessNameChanged,
+                ref.read(signupNotifierProvider.notifier).onPhoneNumberChanged,
             validator: (value) =>
                 FieldValidators.required(value, localizations),
           ),

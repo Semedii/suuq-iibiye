@@ -19,7 +19,7 @@ class UserModel {
         name: data?['name'],
         email: data?['email'],
         phoneNumber: data?['phone_number'],
-        avatar: data?['phone_number']);
+        avatar: data?['avatar']);
   }
   Map<String, dynamic> toFirestore() {
     return {

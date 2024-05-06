@@ -14,14 +14,18 @@ class SignupNotifier extends _$SignupNotifier {
     return SignupStateInitial();
   }
 
-  void onBusinessNameChanged(String? fullName) {
+  void onBusinessNameChanged(String? businessName) {
     var lastState = state as SignupStateInitial;
-    state = lastState.copyWith(businessName: fullName);
+    state = lastState.copyWith(businessName: businessName);
   }
 
   void onEmailChanged(String? email) {
     var lastState = state as SignupStateInitial;
     state = lastState.copyWith(email: email);
+  }
+    void onPhoneNumberChanged(String? phoneNumber) {
+    var lastState = state as SignupStateInitial;
+    state = lastState.copyWith(phoneNumber: phoneNumber);
   }
 
   void onPasswordChanged(String? password) {

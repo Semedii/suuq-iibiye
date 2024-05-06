@@ -8,7 +8,7 @@ class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final AuthDataService _authDataService = AuthDataService();
 
-  Future<UserModel?> signup(String companyName, String phoneNumber,
+  Future<UserModel?> signup(String businessName, String phoneNumber,
       String email, String password) async {
     try {
       UserCredential credential = await _auth.createUserWithEmailAndPassword(
@@ -19,7 +19,7 @@ class AuthService {
       if (firebaseUser != null) {
         UserModel newUser = UserModel(
           id: firebaseUser.uid,
-          name: companyName,
+          name: businessName,
           email: firebaseUser.email,
           phoneNumber: phoneNumber,
           avatar: firebaseUser.photoURL,

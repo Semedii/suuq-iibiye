@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -19,25 +21,27 @@ class CategoryPage extends ConsumerWidget {
     final categoryState = ref.watch(categoryNotifierProvider);
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryToString(category)), 
+        title: Text(categoryToString(category)),
       ),
-      body: _mapStateToWidget(ref, categoryState),
+      body: _mapStateToWidget(context, ref, categoryState),
     );
   }
 
-  _mapStateToWidget( WidgetRef ref,CategoryState state){
-    if(state is CategoryStateInitial){
-       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(categoryNotifierProvider.notifier).initPage(categoryToString(category));
+  _mapStateToWidget(BuildContext context, WidgetRef ref, CategoryState state) {
+    if (state is CategoryStateInitial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref
+            .read(categoryNotifierProvider.notifier)
+            .initPage(categoryToString(category));
       });
     } else if (state is CategoryStateLoaded) {
-      return _buildCategoryPageBody(state.products, ref);
+      return _buildCategoryPageBody(context, state.products, ref);
     }
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-
-  Column _buildCategoryPageBody(List<Product> products, WidgetRef ref) {
+  Column _buildCategoryPageBody(
+      BuildContext context, List<Product> products, WidgetRef ref) {
     return Column(
       children: [
         Expanded(
@@ -52,28 +56,86 @@ class CategoryPage extends ConsumerWidget {
               final product = products[index];
               return GridTile(
                 child: ProductCard(
-                  product: Product(
-                    sellerName: "sellerName",
-                    sellerEmail: '',
-                    imageUrl: "assets/images/tshirt.jpg",
-                    description: "Garan/Garamad oversize ah oo madaw",
-                    price: 1,
-                    category: product.category,
-                  ),
+                  product: product
+                 
                 ),
               );
             },
           ),
         ),
-      Padding(
-        padding: AppStyles.edgeInsetsB48,
-        child: AppButton(title: "Add New Product", onTap: (){
-          ref.read(categoryNotifierProvider.notifier).addNewProduct(
-            Product(sellerName: "Shaal Online", sellerEmail: "shaalonline2023@gmail.com", imageUrl: "imageUrl", description: "description", price: 2, category: category)
-          );
-        }),
-      )
+        Padding(
+          padding: AppStyles.edgeInsetsB48,
+          child: AppButton(
+              title: "Add New Product",
+              onTap: () {
+                _showAddProductDialog(context, ref);
+              }),
+        )
       ],
+    );
+  }
+
+  void _showAddProductDialog(BuildContext context, WidgetRef ref) {
+    TextEditingController descriptionController = TextEditingController();
+    TextEditingController priceController = TextEditingController();
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        File? selectedImage; // Store the selected image file
+
+        return AlertDialog(
+          title: const Text('Add New Product'),
+          content: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: descriptionController,
+                  decoration: const InputDecoration(labelText: 'Description'),
+                ),
+                TextField(
+                  controller: priceController,
+                  decoration: const InputDecoration(labelText: 'Price'),
+                  keyboardType: TextInputType.number,
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    // Implement image upload logic here
+                  },
+                  child: const Text('Upload Image'),
+                ),
+              ],
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                // Validate input and save the product
+                String description = descriptionController.text.trim();
+                double? price = double.parse(priceController.text.trim());
+                if (description.isNotEmpty) {
+                  ref.read(categoryNotifierProvider.notifier).addNewProduct(
+                      Product(
+                          sellerName: "",
+                          sellerEmail: "",
+                          imageUrl: "",
+                          description: description,
+                          price: price,
+                          category: category));
+                }
+              },
+              child: Text('Add'),
+            ),
+          ],
+        );
+      },
     );
   }
 }
