@@ -20,9 +20,9 @@ class HomePage extends ConsumerWidget {
 
   Widget _mapStateToWidget(WidgetRef ref, HomeState state) {
     if (state is HomeStateInitial) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref.read(homeNotifierProvider.notifier).initPage();
-      });
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      ref.read(homeNotifierProvider.notifier).initPage();
+    });
       
     } else if (state is HomeStateLoaded) {
       return _buildHomepageBody(state.categories);

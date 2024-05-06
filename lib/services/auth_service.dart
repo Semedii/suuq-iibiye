@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/services/auth_data_service.dart';
 import 'package:suuq_iibiye/utils/firebase_exceptions.dart';
@@ -43,6 +44,8 @@ class AuthService {
         final UserModel? userModel =
             await _authDataService.fetchCurrentUser(email);
         if (userModel != null) {
+          Global.storageService.setString("sellerName", userModel.name!);
+          Global.storageService.setString("sellerEmail", email);
           return userModel;
         } else {
           await logout();
@@ -56,5 +59,6 @@ class AuthService {
 
   Future<void> logout() async {
     await _auth.signOut();
+     Global.storageService.clear();
   }
 }
