@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
@@ -19,8 +21,8 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Expanded(
-              child: Image.asset(
-                product.imageUrl??"",
+              child: Image.memory(
+                base64Decode(product.imageUrl??""),
                 height: 200,
                 width: 150,
                 fit: BoxFit.cover,
