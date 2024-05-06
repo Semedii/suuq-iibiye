@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "612442301144",
+    "project_id": "suuq-4b572",
+    "storage_bucket": "suuq-4b572.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612442301144:android:129be11d0b021bc6332dad",
+        "android_client_info": {
+          "package_name": "com.example.suuq"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:612442301144:android:1b25bdad91b62e0d332dad",
+        "android_client_info": {
+          "package_name": "com.example.suuq_iibiye"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
