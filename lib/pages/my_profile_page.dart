@@ -81,10 +81,9 @@ class MyProfilePage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _getMenu(Icons.person, "Personal Information"),
+                _getMenu(Icons.person, "Company Information"),
                 _getMenu(Icons.lock, "Change Password"),
                 _getMenu(Icons.history, "Order History"),
-                _getMenu(Icons.favorite, "Favorites"),
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
                   Icons.logout_outlined,
