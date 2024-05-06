@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/notifiers/home/home_notifiers.dart';
 import 'package:suuq_iibiye/notifiers/home/home_state.dart';
+import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
@@ -46,34 +47,37 @@ class HomePage extends ConsumerWidget {
         ),
         itemCount: categories.length, // Total number of items
         itemBuilder: (BuildContext context, int index) {
-          final category = categories[index];
-          return GridTile(
-            child: Container(
-              decoration: BoxDecoration(
-                image: const DecorationImage(
-                  image: AssetImage(
-                    "assets/images/tshirt.jpg",
-                  ),
-                  fit: BoxFit.cover,
-                ),
-                color: Colors.blue[100 * (index % 9)],
-                borderRadius: BorderRadius.circular(12),
-                boxShadow: const [
-                  BoxShadow(
-                    offset: Offset(0.5, 0.5),
-                  )
-                ],
-              ),
+          final Category category = categories[index]!;
+          return GestureDetector(
+            onTap: ()=>AutoRouter.of(context).push(CategoryRoute(category: category)),
+            child: GridTile(
               child: Container(
-                color: Colors.black.withOpacity(0.5),
-                child:  Center(
-                  child: Text(
-                    categoryToString(category!),
-                    textAlign: TextAlign.center,
-                    style:const TextStyle(
-                        color: AppColors.white,
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold),
+                decoration: BoxDecoration(
+                  image: const DecorationImage(
+                    image: AssetImage(
+                      "assets/images/tshirt.jpg",
+                    ),
+                    fit: BoxFit.cover,
+                  ),
+                  color: Colors.blue[100 * (index % 9)],
+                  borderRadius: BorderRadius.circular(12),
+                  boxShadow: const [
+                    BoxShadow(
+                      offset: Offset(0.5, 0.5),
+                    )
+                  ],
+                ),
+                child: Container(
+                  color: Colors.black.withOpacity(0.5),
+                  child:  Center(
+                    child: Text(
+                      categoryToString(category),
+                      textAlign: TextAlign.center,
+                      style:const TextStyle(
+                          color: AppColors.white,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold),
+                    ),
                   ),
                 ),
               ),
