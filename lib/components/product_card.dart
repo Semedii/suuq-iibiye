@@ -7,9 +7,11 @@ import 'package:suuq_iibiye/utils/app_colors.dart';
 class ProductCard extends StatelessWidget {
   const ProductCard({
     required this.product,
+    this.editPrice,
     super.key,
   });
   final Product product;
+  final void Function()? editPrice;
 
   @override
   Widget build(BuildContext context) {
@@ -49,13 +51,19 @@ class ProductCard extends StatelessWidget {
                 ],
               ),
             ),
-            Text(
-              "${product.price.toStringAsFixed(2)}\$",
-              style: const TextStyle(
-                color: AppColors.green,
-                fontWeight: FontWeight.bold,
-                fontSize: 16,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "${product.price.toStringAsFixed(2)}\$",
+                  style: const TextStyle(
+                    color: AppColors.green,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+                IconButton(onPressed: editPrice, icon: Icon(Icons.edit))
+              ],
             ),
           ],
         ),

@@ -54,7 +54,10 @@ class CategoryPage extends ConsumerWidget {
             itemBuilder: (BuildContext context, int index) {
               final product = state.products[index];
               return GridTile(
-                child: ProductCard(product: product),
+                child: ProductCard(
+                  product: product,
+                  editPrice: () => _showAPriceDialog(context, product),
+                ),
               );
             },
           ),
@@ -71,13 +74,12 @@ class CategoryPage extends ConsumerWidget {
       child: AppButton(
           title: "Add New Product",
           onTap: () {
-            _showAddProductDialog(context, state, ref);
+            _showAddProductDialog(context);
           }),
     );
   }
 
-  void _showAddProductDialog(
-      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+  void _showAddProductDialog(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -186,5 +188,56 @@ class CategoryPage extends ConsumerWidget {
     ref
         .read(categoryNotifierProvider.notifier)
         .onProfilePhotoChanged(pickedImage);
+  }
+
+  void _showAPriceDialog(BuildContext context, Product product) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Consumer(builder: (context, ref, _) {
+          final categoryState = ref.watch(categoryNotifierProvider);
+          return categoryState is CategoryStateLoaded
+              ? _buildPriceDialog(context, categoryState, ref, product)
+              : const SizedBox.shrink();
+        });
+      },
+    );
+  }
+
+  AlertDialog _buildPriceDialog(BuildContext context, CategoryStateLoaded state,
+      WidgetRef ref, Product product) {
+    TextEditingController newPriceController = TextEditingController();
+    return AlertDialog(
+      title: const Text('Edit Price'),
+      content: SingleChildScrollView(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            TextField(
+              controller: newPriceController,
+              decoration: InputDecoration(hintText: product.price.toString()),
+            ),
+          ],
+        ),
+      ),
+      actions: [
+        _buildCancelButton(context),
+        _buildEditButton(newPriceController, ref, state, context),
+      ],
+    );
+  }
+
+  ElevatedButton _buildEditButton(TextEditingController priceController,
+      WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
+    return ElevatedButton(
+      onPressed: () {
+        // Validate input and save the product
+        String price = priceController.text.trim();
+        if (price.isNotEmpty) {
+          Navigator.pop(context);
+        }
+      },
+      child: const Text('Add'),
+    );
   }
 }
