@@ -37,6 +37,11 @@ class LoginNotifier extends StateNotifier<LoginState> {
     }
     
   }
+  void handleLogout() async {
+  state = LoginLoadingState();
+  authService.logout();
+  state = LoginInitialState();
+}
 }
 
 final loginInNotifierProvider =
