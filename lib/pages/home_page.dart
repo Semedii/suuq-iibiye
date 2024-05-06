@@ -1,17 +1,41 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq_iibiye/notifiers/home/home_notifiers.dart';
+import 'package:suuq_iibiye/notifiers/home/home_state.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
-class HomePage extends StatelessWidget {
+@RoutePage()
+class HomePage extends ConsumerWidget {
   const HomePage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final homeState = ref.watch(homeNotifierProvider);
+    return _mapStateToWidget(ref, homeState);
+  }
+
+  Widget _mapStateToWidget(WidgetRef ref, HomeState state) {
+    if (state is HomeStateInitial) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(homeNotifierProvider.notifier).initPage();
+      });
+      
+    } else if (state is HomeStateLoaded) {
+      return _buildHomepageBody(state.categories);
+    }
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
+  }
+
+  Widget _buildHomepageBody(final List<Category?> categories) {
     return Scaffold(
-      appBar: AppBar(title: const Text("My Products"),
-      actions: [
-        IconButton(onPressed: (){}, icon: const Icon(Icons.notifications)),
-      ],
+      appBar: AppBar(
+        title: const Text("My Products"),
+        actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+        ],
       ),
       body: GridView.builder(
         padding: AppStyles.edgeInsetsH16,
@@ -20,8 +44,9 @@ class HomePage extends StatelessWidget {
           crossAxisSpacing: 8.0,
           mainAxisSpacing: 8.0,
         ),
-        itemCount: 20, // Total number of items
+        itemCount: categories.length, // Total number of items
         itemBuilder: (BuildContext context, int index) {
+          final category = categories[index];
           return GridTile(
             child: Container(
               decoration: BoxDecoration(
@@ -41,10 +66,11 @@ class HomePage extends StatelessWidget {
               ),
               child: Container(
                 color: Colors.black.withOpacity(0.5),
-                child: const Center(
+                child:  Center(
                   child: Text(
-                    "Clothes",
-                    style: TextStyle(
+                    categoryToString(category!),
+                    textAlign: TextAlign.center,
+                    style:const TextStyle(
                         color: AppColors.white,
                         fontSize: 24,
                         fontWeight: FontWeight.bold),
