@@ -16,4 +16,5 @@ class AppStyles {
   static EdgeInsets edgeInsetsH32V12 = const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0);
   static EdgeInsets edgeInsetsH4 = const EdgeInsets.symmetric(horizontal: 4);
   static EdgeInsets edgeInsetsH16 = const EdgeInsets.symmetric(horizontal: 16);
+  static EdgeInsets edgeInsetsH16V24 = const EdgeInsets.symmetric(horizontal: 16, vertical: 24);
 }

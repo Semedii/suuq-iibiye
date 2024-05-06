@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/notifiers/bottomNavbar/bottom_nav_bar_notifier.dart';
 import 'package:suuq_iibiye/pages/home_page.dart';
 import 'package:suuq_iibiye/pages/my_profile_page.dart';
+import 'package:suuq_iibiye/pages/orders_page.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
 @RoutePage()
@@ -16,9 +17,9 @@ class MainPage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final indexBottomNavbar = ref.watch(bottomNavBarNotifierProvider);
     final bodies = [
-       HomePage(),
-     Container(color: Colors.green,),
-     const MyProfilePage()
+      const HomePage(),
+      const OrdersPage(),
+      const MyProfilePage()
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
@@ -28,7 +29,7 @@ class MainPage extends ConsumerWidget {
         items: const [
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
-              icon: Icon(Icons.shopping_cart), label: "Cart"),
+              icon: Icon(Icons.money_off_csred_rounded), label: "My Orders"),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Profile")
         ],
       ),
