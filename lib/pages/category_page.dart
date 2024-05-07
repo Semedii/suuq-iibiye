@@ -222,22 +222,23 @@ class CategoryPage extends ConsumerWidget {
       ),
       actions: [
         _buildCancelButton(context),
-        _buildEditButton(newPriceController, ref, state, context),
+        _buildSubmitButton(product,newPriceController, ref, state, context),
       ],
     );
   }
 
-  ElevatedButton _buildEditButton(TextEditingController priceController,
+  ElevatedButton _buildSubmitButton(Product product, TextEditingController priceController,
       WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         // Validate input and save the product
         String price = priceController.text.trim();
         if (price.isNotEmpty) {
+          ref.read(categoryNotifierProvider.notifier).updatePrice(product, double.parse(price));
           Navigator.pop(context);
         }
       },
-      child: const Text('Add'),
+      child: const Text('Submit'),
     );
   }
 }

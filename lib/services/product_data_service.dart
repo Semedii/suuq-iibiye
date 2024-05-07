@@ -74,4 +74,16 @@ class ProductDataService {
         .doc();
     await docRef.set(product);
   }
+
+  Future<void> updatePrice(
+      {required Product product, required double newPrice}) async {
+    final String categoryString = categoryToString(product.category);
+    final priceData = {"price": newPrice};
+    db
+        .collection('products')
+        .doc('categoriesDoc')
+        .collection(categoryString)
+        .doc(product.id)
+        .update(priceData);
+  }
 }

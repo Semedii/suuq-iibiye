@@ -31,7 +31,7 @@ class Product {
       sellerEmail: data?['seller_email'],
       imageUrl: data?['image'],
       description: data?['description'],
-      price: double.parse(data?['price']),
+      price: double.parse(data?['price'].toString()??""),
       category: getCategoryFromString(data?['category']),
     );
   }

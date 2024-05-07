@@ -22,6 +22,14 @@ class CategoryNotifier extends _$CategoryNotifier {
     state = CategoryStateLoaded(products: products, category: category);
   }
 
+  updatePrice(Product product, double newPrice) async {
+    var lastState = state as CategoryStateLoaded;
+    state = CategoryStateLoading();
+    await ProductDataService()
+        .updatePrice(product: product, newPrice: newPrice);
+    await initPage(lastState.category);
+  }
+
   addNewProduct(Product product) async {
     var lastState = state as CategoryStateLoaded;
     state = CategoryStateLoading();
@@ -42,6 +50,5 @@ class CategoryNotifier extends _$CategoryNotifier {
     Uint8List image = await file.readAsBytes();
     String encodedImage = base64Encode(image);
     state = (state as CategoryStateLoaded).copyWith(encodedImage: encodedImage);
-
   }
 }
