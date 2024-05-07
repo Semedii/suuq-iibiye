@@ -5,7 +5,7 @@ class Product {
   final String id;
   final String sellerName;
   final String sellerEmail;
-  final String? imageUrl;
+  final List<String?> imageUrl;
   final String description;
   final double price;
   final Category category;
@@ -29,7 +29,7 @@ class Product {
       id: snapshot.id,
       sellerName: data?['seller_name'],
       sellerEmail: data?['seller_email'],
-      imageUrl: data?['image'],
+      imageUrl: data?['image'].cast<String>(),
       description: data?['description'],
       price: double.parse(data?['price'].toString()??""),
       category: getCategoryFromString(data?['category']),

@@ -132,12 +132,12 @@ class CategoryPage extends ConsumerWidget {
           },
           child: const Text('Upload Image'),
         ),
-        if (state.encodedImage != null)
-          const Row(
+        if (state.encodedImages!=null && state.encodedImages!.isNotEmpty)
+           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Icon(Icons.check),
-              Text('uploaded file'),
+             const Icon(Icons.check),
+              Text('uploaded ${state.encodedImages?.length} file'),
             ],
           ),
       ],
@@ -164,7 +164,7 @@ class CategoryPage extends ConsumerWidget {
           ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
               sellerName: "",
               sellerEmail: "",
-              imageUrl: state.encodedImage,
+              imageUrl: state.encodedImages??[],
               description: description,
               price: double.parse(price),
               category: category));
@@ -176,9 +176,9 @@ class CategoryPage extends ConsumerWidget {
   }
 
   _editUserImage(WidgetRef ref) async {
-    XFile? pickedImage =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (pickedImage == null) return;
+    List<XFile>? pickedImage =
+        await ImagePicker().pickMultiImage();
+    if (pickedImage.isEmpty) return;
 
     ref
         .read(categoryNotifierProvider.notifier)

@@ -35,20 +35,26 @@ class CategoryNotifier extends _$CategoryNotifier {
     state = CategoryStateLoading();
     await ProductDataService().addProduct(
         category: product.category,
-        imageUrl: product.imageUrl ?? "",
+        imageUrl: product.imageUrl,
         description: product.description,
         price: product.price);
     await initPage(lastState.category);
   }
 
-  Future<void> onProfilePhotoChanged(XFile? file) async {
-    if (file == null) {
+  Future<void> onProfilePhotoChanged(List<XFile?> files) async {
+    if (files.isEmpty) {
       print('user has not chosen a picture');
       return;
     }
-
-    Uint8List image = await file.readAsBytes();
-    String encodedImage = base64Encode(image);
-    state = (state as CategoryStateLoaded).copyWith(encodedImage: encodedImage);
+    List<String> encodedImages = [];
+    for (XFile? file in files) {
+      if (file != null) {
+        Uint8List image = await file.readAsBytes();
+        String encodedImage = base64Encode(image);
+        encodedImages.add(encodedImage);
+      }
+    }
+    state =
+        (state as CategoryStateLoaded).copyWith(encodedImages: encodedImages);
   }
 }

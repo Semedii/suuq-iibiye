@@ -24,7 +24,7 @@ class ProductCard extends StatelessWidget {
           children: [
             Expanded(
               child: Image.memory(
-                base64Decode(product.imageUrl??""),
+                base64Decode(product.imageUrl.first??""),
                 height: 200,
                 width: 150,
                 fit: BoxFit.cover,

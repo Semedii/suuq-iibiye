@@ -46,7 +46,7 @@ class ProductDataService {
 
   Future<void> addProduct({
     required Category category,
-    required String imageUrl,
+  required List<String?> imageUrl,
     required String description,
     required double price,
   }) async {
