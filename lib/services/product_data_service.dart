@@ -27,9 +27,8 @@ class ProductDataService {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     try {
       final collectionRef = db
-          .collection("products")
+          .collectionGroup(category.toLowerCase())
           .where('seller_email', isEqualTo: sellerEmail)
-          .where('category', isEqualTo: category.toLowerCase())
           .withConverter(
             fromFirestore: Product.fromFirestore,
             toFirestore: (product, _) => product.toFirestore(),
@@ -51,6 +50,7 @@ class ProductDataService {
     required String description,
     required double price,
   }) async {
+    final String categoryString = categoryToString(category);
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     final sellerName = await Global.storageService.getString("sellerName");
 
@@ -65,6 +65,8 @@ class ProductDataService {
 
     final docRef = db
         .collection("products")
+        .doc("categoriesDoc")
+        .collection(categoryString)
         .withConverter(
           fromFirestore: Product.fromFirestore,
           toFirestore: (Product product, options) => product.toFirestore(),
