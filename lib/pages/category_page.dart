@@ -13,8 +13,10 @@ import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
   final Category category;
-  const CategoryPage({required this.category, super.key});
+  CategoryPage({required this.category, super.key});
 
+  final TextEditingController descriptionController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryState = ref.watch(categoryNotifierProvider);
@@ -95,8 +97,6 @@ class CategoryPage extends ConsumerWidget {
 
   AlertDialog _buildAddNewProductDialog(
       BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
-    TextEditingController descriptionController = TextEditingController();
-    TextEditingController priceController = TextEditingController();
     return AlertDialog(
       title: const Text('Add New Product'),
       content: SingleChildScrollView(
@@ -118,8 +118,7 @@ class CategoryPage extends ConsumerWidget {
       ),
       actions: [
         _buildCancelButton(context),
-        _buildAddButton(
-            descriptionController, priceController, ref, state, context),
+        _buildAddButton(ref, state, context),
       ],
     );
   }
@@ -155,11 +154,7 @@ class CategoryPage extends ConsumerWidget {
   }
 
   ElevatedButton _buildAddButton(
-      TextEditingController descriptionController,
-      TextEditingController priceController,
-      WidgetRef ref,
-      CategoryStateLoaded state,
-      BuildContext context) {
+      WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         // Validate input and save the product
@@ -222,19 +217,25 @@ class CategoryPage extends ConsumerWidget {
       ),
       actions: [
         _buildCancelButton(context),
-        _buildSubmitButton(product,newPriceController, ref, state, context),
+        _buildSubmitButton(product, newPriceController, ref, state, context),
       ],
     );
   }
 
-  ElevatedButton _buildSubmitButton(Product product, TextEditingController priceController,
-      WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
+  ElevatedButton _buildSubmitButton(
+      Product product,
+      TextEditingController priceController,
+      WidgetRef ref,
+      CategoryStateLoaded state,
+      BuildContext context) {
     return ElevatedButton(
       onPressed: () {
         // Validate input and save the product
         String price = priceController.text.trim();
         if (price.isNotEmpty) {
-          ref.read(categoryNotifierProvider.notifier).updatePrice(product, double.parse(price));
+          ref
+              .read(categoryNotifierProvider.notifier)
+              .updatePrice(product, double.parse(price));
           Navigator.pop(context);
         }
       },
