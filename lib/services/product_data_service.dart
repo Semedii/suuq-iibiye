@@ -46,7 +46,7 @@ class ProductDataService {
 
   Future<void> addProduct({
     required Category category,
-  required List<String?> imageUrl,
+    required List<String?> imageUrl,
     required String description,
     required double price,
   }) async {
@@ -85,5 +85,17 @@ class ProductDataService {
         .collection(categoryString)
         .doc(product.id)
         .update(priceData);
+  }
+
+  Future<void> deleteProduct({
+    required String productId,
+    required String category,
+  }) async {
+    db
+        .collection('products')
+        .doc('categoriesDoc')
+        .collection(category)
+        .doc(productId)
+        .delete();
   }
 }

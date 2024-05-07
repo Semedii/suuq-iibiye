@@ -57,4 +57,11 @@ class CategoryNotifier extends _$CategoryNotifier {
     state =
         (state as CategoryStateLoaded).copyWith(encodedImages: encodedImages);
   }
+
+  Future<void> removeProduct(String productId)async{
+     var lastState = state as CategoryStateLoaded;
+    state = CategoryStateLoading();
+    await ProductDataService().deleteProduct(productId: productId, category: lastState.category);
+    await initPage(lastState.category);
+  }
 }

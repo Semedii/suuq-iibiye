@@ -58,6 +58,7 @@ class CategoryPage extends ConsumerWidget {
               return GridTile(
                 child: ProductCard(
                   product: product,
+                  onRemoveProduct: ()=>ref.read(categoryNotifierProvider.notifier).removeProduct(product.id),
                   editPrice: () => _showAPriceDialog(context, product),
                 ),
               );
