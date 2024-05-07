@@ -23,6 +23,7 @@ class AuthService {
           email: firebaseUser.email,
           phoneNumber: phoneNumber,
           avatar: firebaseUser.photoURL,
+          joinedDate: DateTime.now(),
         );
         await _authDataService.addNewUser(newUser);
       }

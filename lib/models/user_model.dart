@@ -5,16 +5,26 @@ class UserModel {
   String? name;
   String? email;
   String? phoneNumber;
+  DateTime? joinedDate;
   String? avatar;
 
-  UserModel({this.id, this.name, this.email, this.phoneNumber, this.avatar});
+  UserModel({
+    this.joinedDate,
+    this.id,
+    this.name,
+    this.email,
+    this.phoneNumber,
+    this.avatar,
+  });
 
   factory UserModel.fromFirestore(
     DocumentSnapshot<Map<String, dynamic>> snapshot,
     SnapshotOptions? options,
   ) {
     final data = snapshot.data();
+    Timestamp createdDate = data?['joined_date'];
     return UserModel(
+        joinedDate: createdDate.toDate(),
         id: data?['uid'],
         name: data?['name'],
         email: data?['email'],
@@ -23,6 +33,7 @@ class UserModel {
   }
   Map<String, dynamic> toFirestore() {
     return {
+      'joined_date': joinedDate,
       "uid": id,
       "name": name,
       "email": email,

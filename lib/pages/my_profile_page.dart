@@ -8,8 +8,6 @@ class MyProfilePage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // var loginSuccessSate =
-    //     ref.read(loginInNotifierProvider) as LoginSuccessState;
     return Scaffold(
       body: Container(
         color: AppColors.lightestGrey,
