@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
 class Product {
+  final String id;
   final String sellerName;
   final String sellerEmail;
   final String? imageUrl;
@@ -10,6 +11,7 @@ class Product {
   final Category category;
 
   Product({
+    this.id="",
     required this.sellerName,
     required this.sellerEmail,
     required this.imageUrl,
@@ -24,6 +26,7 @@ class Product {
   ) {
     final data = snapshot.data();
     return Product(
+      id: snapshot.id,
       sellerName: data?['seller_name'],
       sellerEmail: data?['seller_email'],
       imageUrl: data?['image'],
@@ -45,6 +48,7 @@ class Product {
   //for sharedpref
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
+      id: json['id'],
       sellerName: json['seller_name'],
       sellerEmail: json['seller_email'],
       description: json['description'],
