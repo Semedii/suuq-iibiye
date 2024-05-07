@@ -1,30 +1,47 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/notifiers/login/login_notifier.dart';
+import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
+import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
-class MyProfilePage extends ConsumerWidget {
-  const MyProfilePage({super.key});
+class MyAccountPage extends ConsumerWidget {
+  const MyAccountPage({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final accountState = ref.watch(accountNotifierProvider);
+    return _mapStateToWidget(context, ref, accountState);
+  }
+
+  Widget _mapStateToWidget(BuildContext context, WidgetRef ref, AccountState state){
+    if(state is AccountInitialState){
+      ref.read(accountNotifierProvider.notifier).initPage();
+    }else if (state is AccountLoadedState){
+      return _buildAccountPage(context, state,ref);
+    }
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+
+  }
+
+  Scaffold _buildAccountPage(BuildContext context, AccountLoadedState state,WidgetRef ref) {
     return Scaffold(
-      body: Container(
-        color: AppColors.lightestGrey,
-        child: Column(
-          children: [
-            Expanded(
-              child: Stack(
-                children: [
-                  _buildHeader(context, "s"),
-                  _buildMenuList(context, ref),
-                ],
-              ),
+    body: Container(
+      color: AppColors.lightestGrey,
+      child: Column(
+        children: [
+          Expanded(
+            child: Stack(
+              children: [
+                _buildHeader(context, state.sellerName),
+                _buildMenuList(context, ref),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
-    );
+    ),
+  );
   }
 
   Container _buildHeader(BuildContext context, String? name) {

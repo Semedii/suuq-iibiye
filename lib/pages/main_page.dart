@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/notifiers/bottomNavbar/bottom_nav_bar_notifier.dart';
 import 'package:suuq_iibiye/pages/home_page.dart';
-import 'package:suuq_iibiye/pages/my_profile_page.dart';
+import 'package:suuq_iibiye/pages/my_account_page.dart';
 import 'package:suuq_iibiye/pages/orders_page.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
@@ -19,7 +19,7 @@ class MainPage extends ConsumerWidget {
     final bodies = [
       const HomePage(),
       const OrdersPage(),
-      const MyProfilePage()
+      const MyAccountPage()
     ];
     return Scaffold(
       bottomNavigationBar: BottomNavigationBar(
