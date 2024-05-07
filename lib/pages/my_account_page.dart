@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:intl/intl.dart';
+import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/login/login_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
@@ -14,44 +16,48 @@ class MyAccountPage extends ConsumerWidget {
     return _mapStateToWidget(context, ref, accountState);
   }
 
-  Widget _mapStateToWidget(BuildContext context, WidgetRef ref, AccountState state){
-    if(state is AccountInitialState){
+  Widget _mapStateToWidget(
+    BuildContext context,
+    WidgetRef ref,
+    AccountState state,
+  ) {
+    if (state is AccountInitialState) {
       ref.read(accountNotifierProvider.notifier).initPage();
-    }else if (state is AccountLoadedState){
-      return _buildAccountPage(context, state,ref);
+    } else if (state is AccountLoadedState) {
+      return _buildAccountPage(context, state, ref);
     }
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-
+    return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Scaffold _buildAccountPage(BuildContext context, AccountLoadedState state,WidgetRef ref) {
+  Scaffold _buildAccountPage(
+      BuildContext context, AccountLoadedState state, WidgetRef ref) {
     return Scaffold(
-    body: Container(
-      color: AppColors.lightestGrey,
-      child: Column(
-        children: [
-          Expanded(
-            child: Stack(
-              children: [
-                _buildHeader(context, state.sellerName),
-                _buildMenuList(context, ref),
-              ],
+      body: Container(
+        color: AppColors.lightestGrey,
+        child: Column(
+          children: [
+            Expanded(
+              child: Stack(
+                children: [
+                  _buildHeader(context, state.seller),
+                  _buildMenuList(context, ref),
+                ],
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
-    ),
-  );
+    );
   }
 
-  Container _buildHeader(BuildContext context, String? name) {
+  Container _buildHeader(BuildContext context, UserModel seller) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .4,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [_buildAvatar(), _buildusername(name)],
+        children: [_buildAvatar(), _buildSellerNameAndJoinedDate(seller)],
       ),
     );
   }
@@ -73,14 +79,24 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Text _buildusername(String? name) {
-    return Text(
-      name ?? "",
-      style: const TextStyle(
-        fontSize: 24,
-        fontWeight: FontWeight.bold,
-        color: AppColors.white,
-      ),
+  Widget _buildSellerNameAndJoinedDate(UserModel seller) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          seller.name ?? "",
+          style: const TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            color: AppColors.white,
+          ),
+        ),
+        const SizedBox(height: 4),
+        Text(
+          "Joined on: ${DateFormat('dd/mm/yyyy').format(seller.joinedDate!)}",
+          style: const TextStyle(fontSize: 12, color: Colors.black87),
+        ),
+      ],
     );
   }
 

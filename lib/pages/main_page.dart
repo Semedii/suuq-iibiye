@@ -30,7 +30,7 @@ class MainPage extends ConsumerWidget {
           BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
           BottomNavigationBarItem(
               icon: Icon(Icons.money_off_csred_rounded), label: "My Orders"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Profile")
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Account")
         ],
       ),
       body: bodies[indexBottomNavbar],
