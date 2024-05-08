@@ -62,6 +62,19 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+    flavorDimensions "default"
+
+    productFlavors{
+        prod{
+            resValue "string", "app_name", "Suuq Iibiye"
+            dimension "default"
+        }
+        staging{
+            resValue "string", "app_name", "Suuq Iibiye Staging"
+            dimension "default"
+            applicationIdSuffix ".staging"
+        }
+    }
 }
 
 flutter {

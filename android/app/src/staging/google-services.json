@@ -7,25 +7,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:306904529292:android:e268270bba0b3063ff7ea9",
-        "android_client_info": {
-          "package_name": "com.example.suuq_iibiye"
-        }
-      },
-      "oauth_client": [],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA4fH2zua6DB__rHsdHu-h1vqLjzUiWu3s"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": []
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:306904529292:android:b27f11dc2f65ff79ff7ea9",
         "android_client_info": {
           "package_name": "com.example.suuq_iibiye.staging"

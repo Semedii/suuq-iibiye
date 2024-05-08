@@ -1,21 +1,21 @@
 {
   "project_info": {
-    "project_number": "306904529292",
-    "project_id": "suuq-staging-770c6",
-    "storage_bucket": "suuq-staging-770c6.appspot.com"
+    "project_number": "612442301144",
+    "project_id": "suuq-4b572",
+    "storage_bucket": "suuq-4b572.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:306904529292:android:e268270bba0b3063ff7ea9",
+        "mobilesdk_app_id": "1:612442301144:android:129be11d0b021bc6332dad",
         "android_client_info": {
-          "package_name": "com.example.suuq_iibiye"
+          "package_name": "com.example.suuq"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA4fH2zua6DB__rHsdHu-h1vqLjzUiWu3s"
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
         }
       ],
       "services": {
@@ -26,15 +26,15 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:306904529292:android:b27f11dc2f65ff79ff7ea9",
+        "mobilesdk_app_id": "1:612442301144:android:1b25bdad91b62e0d332dad",
         "android_client_info": {
-          "package_name": "com.example.suuq_iibiye.staging"
+          "package_name": "com.example.suuq_iibiye"
         }
       },
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyA4fH2zua6DB__rHsdHu-h1vqLjzUiWu3s"
+          "current_key": "AIzaSyALwn6CdBMVummiSu64rstx1iNWi0kEQ-Y"
         }
       ],
       "services": {
