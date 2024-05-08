@@ -40,7 +40,8 @@ class MyAccountPage extends ConsumerWidget {
             Expanded(
               child: Stack(
                 children: [
-                  _buildHeader(context, state.sellerName, state.sellerJoinedDate),
+                  _buildHeader(
+                      context, state.sellerName, state.sellerJoinedDate),
                   _buildMenuList(context, ref),
                 ],
               ),
@@ -51,14 +52,18 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Container _buildHeader(BuildContext context, String name, DateTime joinedDate) {
+  Container _buildHeader(
+      BuildContext context, String name, DateTime joinedDate) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .4,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [_buildAvatar(), _buildSellerNameAndJoinedDate(name, joinedDate)],
+        children: [
+          _buildAvatar(),
+          _buildSellerNameAndJoinedDate(name, joinedDate)
+        ],
       ),
     );
   }
@@ -121,11 +126,17 @@ class MyAccountPage extends ConsumerWidget {
                   Icons.person,
                   "Business Information",
                   onTap: () => AutoRouter.of(context).push(
-                     BusinessInformationRoute(),
+                    BusinessInformationRoute(),
                   ),
                 ),
                 _getMenu(Icons.lock, "Change Password"),
-                _getMenu(Icons.history, "Order History"),
+                _getMenu(
+                  Icons.history,
+                  "Order History",
+                  onTap: () => AutoRouter.of(context).push(
+                    const OrderHistoryRoute(),
+                  ),
+                ),
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
                   Icons.logout_outlined,
