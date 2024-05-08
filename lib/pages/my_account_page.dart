@@ -129,7 +129,12 @@ class MyAccountPage extends ConsumerWidget {
                     BusinessInformationRoute(),
                   ),
                 ),
-                _getMenu(Icons.lock, "Change Password"),
+                _getMenu(
+                  Icons.lock,
+                  "Change Password",
+                  onTap: () =>
+                      AutoRouter.of(context).push(ChangePasswordRoute()),
+                ),
                 _getMenu(
                   Icons.history,
                   "Order History",

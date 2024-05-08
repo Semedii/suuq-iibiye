@@ -13,6 +13,8 @@ class FirebaseExceptionHandler {
       case 'email-already-in-use':
         toastInfo("This email is already in use");
         break;
+        case 'requires-recent-login':
+        toastInfo("This is sensitive information and requires recent login, please logout and login again");
       default:
         toastInfo("An error occurred: ${error.message}");
     }

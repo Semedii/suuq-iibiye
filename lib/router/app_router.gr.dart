@@ -8,25 +8,26 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i9;
-import 'package:flutter/material.dart' as _i10;
+import 'package:auto_route/auto_route.dart' as _i10;
+import 'package:flutter/material.dart' as _i11;
 import 'package:suuq_iibiye/pages/business_information_page.dart' as _i2;
 import 'package:suuq_iibiye/pages/category_page.dart' as _i3;
-import 'package:suuq_iibiye/pages/home_page.dart' as _i4;
-import 'package:suuq_iibiye/pages/login_page.dart' as _i5;
-import 'package:suuq_iibiye/pages/main_page.dart' as _i6;
-import 'package:suuq_iibiye/pages/order_history_page.dart' as _i7;
-import 'package:suuq_iibiye/pages/signup_page.dart' as _i8;
+import 'package:suuq_iibiye/pages/change_password_page.dart' as _i4;
+import 'package:suuq_iibiye/pages/home_page.dart' as _i5;
+import 'package:suuq_iibiye/pages/login_page.dart' as _i6;
+import 'package:suuq_iibiye/pages/main_page.dart' as _i7;
+import 'package:suuq_iibiye/pages/order_history_page.dart' as _i8;
+import 'package:suuq_iibiye/pages/signup_page.dart' as _i9;
 import 'package:suuq_iibiye/router/authentication_wrapper.dart' as _i1;
-import 'package:suuq_iibiye/utils/enums/category_enum.dart' as _i11;
+import 'package:suuq_iibiye/utils/enums/category_enum.dart' as _i12;
 
-abstract class $AppRouter extends _i9.RootStackRouter {
+abstract class $AppRouter extends _i10.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i9.PageFactory> pagesMap = {
+  final Map<String, _i10.PageFactory> pagesMap = {
     AuthenticationWrapper.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: const _i1.AuthenticationWrapper(),
       );
@@ -34,14 +35,14 @@ abstract class $AppRouter extends _i9.RootStackRouter {
     BusinessInformationRoute.name: (routeData) {
       final args = routeData.argsAs<BusinessInformationRouteArgs>(
           orElse: () => const BusinessInformationRouteArgs());
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i2.BusinessInformationPage(key: args.key),
       );
     },
     CategoryRoute.name: (routeData) {
       final args = routeData.argsAs<CategoryRouteArgs>();
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i3.CategoryPage(
           category: args.category,
@@ -49,36 +50,44 @@ abstract class $AppRouter extends _i9.RootStackRouter {
         ),
       );
     },
-    HomeRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+    ChangePasswordRoute.name: (routeData) {
+      final args = routeData.argsAs<ChangePasswordRouteArgs>(
+          orElse: () => const ChangePasswordRouteArgs());
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i4.HomePage(),
+        child: _i4.ChangePasswordPage(key: args.key),
+      );
+    },
+    HomeRoute.name: (routeData) {
+      return _i10.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i5.HomePage(),
       );
     },
     LoginRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i5.LoginPage(),
+        child: const _i6.LoginPage(),
       );
     },
     MainRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i6.MainPage(),
+        child: const _i7.MainPage(),
       );
     },
     OrderHistoryRoute.name: (routeData) {
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i7.OrderHistoryPage(),
+        child: const _i8.OrderHistoryPage(),
       );
     },
     SignupRoute.name: (routeData) {
       final args = routeData.argsAs<SignupRouteArgs>(
           orElse: () => const SignupRouteArgs());
-      return _i9.AutoRoutePage<dynamic>(
+      return _i10.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i8.SignupPage(key: args.key),
+        child: _i9.SignupPage(key: args.key),
       );
     },
   };
@@ -86,8 +95,8 @@ abstract class $AppRouter extends _i9.RootStackRouter {
 
 /// generated route for
 /// [_i1.AuthenticationWrapper]
-class AuthenticationWrapper extends _i9.PageRouteInfo<void> {
-  const AuthenticationWrapper({List<_i9.PageRouteInfo>? children})
+class AuthenticationWrapper extends _i10.PageRouteInfo<void> {
+  const AuthenticationWrapper({List<_i10.PageRouteInfo>? children})
       : super(
           AuthenticationWrapper.name,
           initialChildren: children,
@@ -95,16 +104,16 @@ class AuthenticationWrapper extends _i9.PageRouteInfo<void> {
 
   static const String name = 'AuthenticationWrapper';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
 }
 
 /// generated route for
 /// [_i2.BusinessInformationPage]
 class BusinessInformationRoute
-    extends _i9.PageRouteInfo<BusinessInformationRouteArgs> {
+    extends _i10.PageRouteInfo<BusinessInformationRouteArgs> {
   BusinessInformationRoute({
-    _i10.Key? key,
-    List<_i9.PageRouteInfo>? children,
+    _i11.Key? key,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           BusinessInformationRoute.name,
           args: BusinessInformationRouteArgs(key: key),
@@ -113,14 +122,14 @@ class BusinessInformationRoute
 
   static const String name = 'BusinessInformationRoute';
 
-  static const _i9.PageInfo<BusinessInformationRouteArgs> page =
-      _i9.PageInfo<BusinessInformationRouteArgs>(name);
+  static const _i10.PageInfo<BusinessInformationRouteArgs> page =
+      _i10.PageInfo<BusinessInformationRouteArgs>(name);
 }
 
 class BusinessInformationRouteArgs {
   const BusinessInformationRouteArgs({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -130,11 +139,11 @@ class BusinessInformationRouteArgs {
 
 /// generated route for
 /// [_i3.CategoryPage]
-class CategoryRoute extends _i9.PageRouteInfo<CategoryRouteArgs> {
+class CategoryRoute extends _i10.PageRouteInfo<CategoryRouteArgs> {
   CategoryRoute({
-    required _i11.Category category,
-    _i10.Key? key,
-    List<_i9.PageRouteInfo>? children,
+    required _i12.Category category,
+    _i11.Key? key,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           CategoryRoute.name,
           args: CategoryRouteArgs(
@@ -146,8 +155,8 @@ class CategoryRoute extends _i9.PageRouteInfo<CategoryRouteArgs> {
 
   static const String name = 'CategoryRoute';
 
-  static const _i9.PageInfo<CategoryRouteArgs> page =
-      _i9.PageInfo<CategoryRouteArgs>(name);
+  static const _i10.PageInfo<CategoryRouteArgs> page =
+      _i10.PageInfo<CategoryRouteArgs>(name);
 }
 
 class CategoryRouteArgs {
@@ -156,9 +165,9 @@ class CategoryRouteArgs {
     this.key,
   });
 
-  final _i11.Category category;
+  final _i12.Category category;
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {
@@ -167,9 +176,38 @@ class CategoryRouteArgs {
 }
 
 /// generated route for
-/// [_i4.HomePage]
-class HomeRoute extends _i9.PageRouteInfo<void> {
-  const HomeRoute({List<_i9.PageRouteInfo>? children})
+/// [_i4.ChangePasswordPage]
+class ChangePasswordRoute extends _i10.PageRouteInfo<ChangePasswordRouteArgs> {
+  ChangePasswordRoute({
+    _i11.Key? key,
+    List<_i10.PageRouteInfo>? children,
+  }) : super(
+          ChangePasswordRoute.name,
+          args: ChangePasswordRouteArgs(key: key),
+          initialChildren: children,
+        );
+
+  static const String name = 'ChangePasswordRoute';
+
+  static const _i10.PageInfo<ChangePasswordRouteArgs> page =
+      _i10.PageInfo<ChangePasswordRouteArgs>(name);
+}
+
+class ChangePasswordRouteArgs {
+  const ChangePasswordRouteArgs({this.key});
+
+  final _i11.Key? key;
+
+  @override
+  String toString() {
+    return 'ChangePasswordRouteArgs{key: $key}';
+  }
+}
+
+/// generated route for
+/// [_i5.HomePage]
+class HomeRoute extends _i10.PageRouteInfo<void> {
+  const HomeRoute({List<_i10.PageRouteInfo>? children})
       : super(
           HomeRoute.name,
           initialChildren: children,
@@ -177,13 +215,13 @@ class HomeRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'HomeRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i5.LoginPage]
-class LoginRoute extends _i9.PageRouteInfo<void> {
-  const LoginRoute({List<_i9.PageRouteInfo>? children})
+/// [_i6.LoginPage]
+class LoginRoute extends _i10.PageRouteInfo<void> {
+  const LoginRoute({List<_i10.PageRouteInfo>? children})
       : super(
           LoginRoute.name,
           initialChildren: children,
@@ -191,13 +229,13 @@ class LoginRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'LoginRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i6.MainPage]
-class MainRoute extends _i9.PageRouteInfo<void> {
-  const MainRoute({List<_i9.PageRouteInfo>? children})
+/// [_i7.MainPage]
+class MainRoute extends _i10.PageRouteInfo<void> {
+  const MainRoute({List<_i10.PageRouteInfo>? children})
       : super(
           MainRoute.name,
           initialChildren: children,
@@ -205,13 +243,13 @@ class MainRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'MainRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i7.OrderHistoryPage]
-class OrderHistoryRoute extends _i9.PageRouteInfo<void> {
-  const OrderHistoryRoute({List<_i9.PageRouteInfo>? children})
+/// [_i8.OrderHistoryPage]
+class OrderHistoryRoute extends _i10.PageRouteInfo<void> {
+  const OrderHistoryRoute({List<_i10.PageRouteInfo>? children})
       : super(
           OrderHistoryRoute.name,
           initialChildren: children,
@@ -219,15 +257,15 @@ class OrderHistoryRoute extends _i9.PageRouteInfo<void> {
 
   static const String name = 'OrderHistoryRoute';
 
-  static const _i9.PageInfo<void> page = _i9.PageInfo<void>(name);
+  static const _i10.PageInfo<void> page = _i10.PageInfo<void>(name);
 }
 
 /// generated route for
-/// [_i8.SignupPage]
-class SignupRoute extends _i9.PageRouteInfo<SignupRouteArgs> {
+/// [_i9.SignupPage]
+class SignupRoute extends _i10.PageRouteInfo<SignupRouteArgs> {
   SignupRoute({
-    _i10.Key? key,
-    List<_i9.PageRouteInfo>? children,
+    _i11.Key? key,
+    List<_i10.PageRouteInfo>? children,
   }) : super(
           SignupRoute.name,
           args: SignupRouteArgs(key: key),
@@ -236,14 +274,14 @@ class SignupRoute extends _i9.PageRouteInfo<SignupRouteArgs> {
 
   static const String name = 'SignupRoute';
 
-  static const _i9.PageInfo<SignupRouteArgs> page =
-      _i9.PageInfo<SignupRouteArgs>(name);
+  static const _i10.PageInfo<SignupRouteArgs> page =
+      _i10.PageInfo<SignupRouteArgs>(name);
 }
 
 class SignupRouteArgs {
   const SignupRouteArgs({this.key});
 
-  final _i10.Key? key;
+  final _i11.Key? key;
 
   @override
   String toString() {

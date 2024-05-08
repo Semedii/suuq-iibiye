@@ -58,8 +58,17 @@ class AuthService {
     return null;
   }
 
+  Future<void> changePassword(String newPassword) async {
+    final userCredential = FirebaseAuth.instance.currentUser;
+    try {
+      await userCredential?.updatePassword(newPassword);
+    } on FirebaseException catch (e) {
+      FirebaseExceptionHandler.handleFirebaseError(e);
+    }
+  }
+
   Future<void> logout() async {
     await _auth.signOut();
-     Global.storageService.clear();
+    Global.storageService.clear();
   }
 }

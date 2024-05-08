@@ -3,6 +3,7 @@ import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/services/auth_data_service.dart';
+import 'package:suuq_iibiye/services/auth_service.dart';
 import 'package:suuq_iibiye/utils/pop_up_message.dart';
 
 part 'account_notifier.g.dart';
@@ -10,6 +11,7 @@ part 'account_notifier.g.dart';
 @Riverpod()
 class AccountNotifier extends _$AccountNotifier {
   final AuthDataService _authDataService = AuthDataService();
+  final AuthService _authService = AuthService();
   @override
   AccountState build() {
     return AccountInitialState();
@@ -38,10 +40,26 @@ class AccountNotifier extends _$AccountNotifier {
         (state as AccountLoadedState).copyWith(sellerPhoneNumber: phoneMumber);
   }
 
+  onNewPasswordChanged(String newPassword) {
+    state = (state as AccountLoadedState).copyWith(newPassword: newPassword);
+  }
+
+  onRePasswordChanged(String rePassword) {
+    state = (state as AccountLoadedState).copyWith(rePassword: rePassword);
+  }
+
+  onSavePassword()async{
+    var currentState = state as AccountLoadedState;
+    state = currentState.copyWith(issaveButtonLoading: true);
+    await _authService.changePassword(currentState.newPassword!);
+    state = currentState.copyWith(issaveButtonLoading: false);
+    toastInfo("Successfully updated");
+  }
+
   onSaveButtonPressed() async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
-   await _authDataService.updateBusinessInfo(
+    await _authDataService.updateBusinessInfo(
         email: currentState.sellerEmail,
         phoneNumber: currentState.sellerPhoneNumber,
         address: currentState.sellerAddress!);

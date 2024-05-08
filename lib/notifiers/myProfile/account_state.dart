@@ -12,6 +12,8 @@ class AccountLoadedState extends AccountState {
   final String? sellerAvatar;
   final DateTime sellerJoinedDate;
   final bool issaveButtonLoading;
+  final String? newPassword;
+  final String? rePassword;
 
   
 
@@ -20,6 +22,8 @@ class AccountLoadedState extends AccountState {
     required this.sellerEmail,
     required this.sellerPhoneNumber,
     required this.sellerJoinedDate,
+    this.newPassword,
+    this.rePassword,
     this.sellerAddress,
     this.sellerAvatar,
     this.issaveButtonLoading=false,
@@ -33,6 +37,8 @@ class AccountLoadedState extends AccountState {
     String? sellerAvatar,
     DateTime? sellerJoinedDate,
     bool? issaveButtonLoading,
+    String? newPassword,
+    String? rePassword,
   }) {
     return AccountLoadedState(
       sellerName: sellerName ?? this.sellerName,
@@ -42,6 +48,8 @@ class AccountLoadedState extends AccountState {
       sellerAddress: sellerAddress ?? this.sellerAddress,
       sellerAvatar: sellerAvatar ?? this.sellerAvatar,
       issaveButtonLoading: issaveButtonLoading??this.issaveButtonLoading,
+      newPassword: newPassword ?? this.newPassword,
+      rePassword: rePassword ?? this.rePassword,
     );
   }
 }
