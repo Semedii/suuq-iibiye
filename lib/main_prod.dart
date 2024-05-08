@@ -6,5 +6,5 @@ import 'package:suuq_iibiye/my_app.dart';
 
 void main() async {
   await Global.init();
-  runApp(ProviderScope(child: MyApp()));
+  runApp(ProviderScope(child: MyApp(env:  "prod")));
 }
