@@ -16,7 +16,7 @@ class AuthDataService {
         );
 
     final querySnapshot = await collectionRef.get();
-    
+
     if (querySnapshot.docs.isEmpty) {
       return null; // No user found with the provided email
     } else {
@@ -41,5 +41,18 @@ class AuthDataService {
     } catch (e) {
       print("Error fetching products: $e");
     }
+  }
+
+  Future<void> updateBusinessInfo(
+      {required String email,
+      required String phoneNumber,
+      required String address}) async {
+    final updatedData = {"phone_number": phoneNumber, "address": address};
+   await db
+        .collection('users')
+        .doc('sellersDoc')
+        .collection("sellers")
+        .doc(email)
+        .update(updatedData);
   }
 }

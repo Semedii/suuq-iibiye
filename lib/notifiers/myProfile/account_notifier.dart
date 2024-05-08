@@ -1,22 +1,51 @@
-
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/services/auth_data_service.dart';
+import 'package:suuq_iibiye/utils/pop_up_message.dart';
 
 part 'account_notifier.g.dart';
-@Riverpod()
-class AccountNotifier extends _$AccountNotifier{
 
+@Riverpod()
+class AccountNotifier extends _$AccountNotifier {
+  final AuthDataService _authDataService = AuthDataService();
   @override
-  AccountState build(){
+  AccountState build() {
     return AccountInitialState();
   }
 
-  initPage()async{
-   final String? sellerEmail = await Global.storageService.getString('sellerEmail');
-   final UserModel? seller = await AuthDataService().fetchCurrentUser(sellerEmail);
-   state = AccountLoadedState(seller: seller!);
+  initPage() async {
+    final String? sellerEmail =
+        await Global.storageService.getString('sellerEmail');
+    final UserModel? seller =
+        await _authDataService.fetchCurrentUser(sellerEmail);
+    state = AccountLoadedState(
+        sellerName: seller!.name!,
+        sellerEmail: seller.email!,
+        sellerPhoneNumber: seller.phoneNumber!,
+        sellerJoinedDate: seller.joinedDate!,
+        sellerAddress: seller.address,
+        sellerAvatar: seller.avatar);
+  }
+
+  onBusinessAddressChanged(String address) {
+    state = (state as AccountLoadedState).copyWith(sellerAddress: address);
+  }
+
+  onPhoneNumberChanged(String phoneMumber) {
+    state =
+        (state as AccountLoadedState).copyWith(sellerPhoneNumber: phoneMumber);
+  }
+
+  onSaveButtonPressed() async {
+    var currentState = state as AccountLoadedState;
+    state = currentState.copyWith(issaveButtonLoading: true);
+   await _authDataService.updateBusinessInfo(
+        email: currentState.sellerEmail,
+        phoneNumber: currentState.sellerPhoneNumber,
+        address: currentState.sellerAddress!);
+    state = currentState.copyWith(issaveButtonLoading: false);
+    toastInfo("Successfully updated");
   }
 }

@@ -6,7 +6,7 @@ class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
     this.initialValue,
-    required this.hintText,
+    this.hintText,
     required this.label,
     this.prefixIcon,
     this.suffix,
@@ -16,7 +16,7 @@ class AppTextField extends StatelessWidget {
     this.validator,
   });
   final String? initialValue;
-  final String hintText;
+  final String? hintText;
   final String label;
   final Icon? prefixIcon;
   final Widget? suffix;

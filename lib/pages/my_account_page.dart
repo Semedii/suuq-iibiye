@@ -2,7 +2,6 @@ import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
-import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/login/login_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
@@ -41,7 +40,7 @@ class MyAccountPage extends ConsumerWidget {
             Expanded(
               child: Stack(
                 children: [
-                  _buildHeader(context, state.seller),
+                  _buildHeader(context, state.sellerName, state.sellerJoinedDate),
                   _buildMenuList(context, ref),
                 ],
               ),
@@ -52,14 +51,14 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Container _buildHeader(BuildContext context, UserModel seller) {
+  Container _buildHeader(BuildContext context, String name, DateTime joinedDate) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .4,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: [_buildAvatar(), _buildSellerNameAndJoinedDate(seller)],
+        children: [_buildAvatar(), _buildSellerNameAndJoinedDate(name, joinedDate)],
       ),
     );
   }
@@ -81,13 +80,13 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSellerNameAndJoinedDate(UserModel seller) {
+  Widget _buildSellerNameAndJoinedDate(String name, DateTime joinedDate) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Center(
           child: Text(
-            seller.name ?? "",
+            name,
             style: const TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -98,7 +97,7 @@ class MyAccountPage extends ConsumerWidget {
         const SizedBox(height: 4),
         Center(
           child: Text(
-            "Joined on: ${DateFormat('dd/mm/yyyy').format(seller.joinedDate!)}",
+            "Joined on: ${DateFormat('dd/mm/yyyy').format(joinedDate)}",
             style: const TextStyle(fontSize: 12, color: Colors.black87),
           ),
         ),
@@ -122,7 +121,7 @@ class MyAccountPage extends ConsumerWidget {
                   Icons.person,
                   "Business Information",
                   onTap: () => AutoRouter.of(context).push(
-                    const BusinessInformationRoute(),
+                     BusinessInformationRoute(),
                   ),
                 ),
                 _getMenu(Icons.lock, "Change Password"),
