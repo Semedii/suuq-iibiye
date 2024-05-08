@@ -7,6 +7,7 @@ class UserModel {
   String? phoneNumber;
   DateTime? joinedDate;
   String? avatar;
+  String? address;
 
   UserModel({
     this.joinedDate,
@@ -15,6 +16,7 @@ class UserModel {
     this.email,
     this.phoneNumber,
     this.avatar,
+    this.address,
   });
 
   factory UserModel.fromFirestore(
@@ -29,7 +31,8 @@ class UserModel {
         name: data?['name'],
         email: data?['email'],
         phoneNumber: data?['phone_number'],
-        avatar: data?['avatar']);
+        avatar: data?['avatar'],
+        address: data?['address']);
   }
   Map<String, dynamic> toFirestore() {
     return {
@@ -39,6 +42,7 @@ class UserModel {
       "email": email,
       "phone_number": phoneNumber,
       "avatar": avatar,
+      "address": address,
     };
   }
 }
