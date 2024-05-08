@@ -18,6 +18,7 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bool isImageAvailable = product.imageUrl.isNotEmpty;
     return Card(
       child: SizedBox(
         child: Column(
@@ -26,12 +27,17 @@ class ProductCard extends StatelessWidget {
             Expanded(
               child: Stack(
                 children: [
-                  Image.memory(
-                    base64Decode(product.imageUrl.first ?? ""),
-                    height: 200,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
+                  isImageAvailable
+                      ? Image.memory(
+                          base64Decode(product.imageUrl.first ?? ""),
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover,
+                        )
+                      : Image.asset("assets/images/noImageAvailable.jpeg",
+                          height: 200,
+                          width: double.infinity,
+                          fit: BoxFit.cover),
                   Positioned(right: 0, child: _buildRemoveButton(context)),
                 ],
               ),
@@ -79,7 +85,7 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildRemoveButton(BuildContext context) {
     return GestureDetector(
-      onTap:()=> _showAddProductDialog(context),
+      onTap: () => _showAddProductDialog(context),
       child: Container(
           padding: AppStyles.edgeInsets4,
           decoration: BoxDecoration(
@@ -92,31 +98,38 @@ class ProductCard extends StatelessWidget {
           )),
     );
   }
-    void _showAddProductDialog(BuildContext context) {
+
+  void _showAddProductDialog(BuildContext context) {
     showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return 
-              AlertDialog(
-                content: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [const Text("Are you sure you wanna remove this?", style: TextStyle(fontWeight:FontWeight.bold ),),
-                 _buildYesButton(context),
-                  _buildCancelButton(context)],),
-              );
-      }
-    );
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  "Are you sure you wanna remove this?",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                _buildYesButton(context),
+                _buildCancelButton(context)
+              ],
+            ),
+          );
+        });
   }
-    TextButton _buildYesButton(BuildContext context) {
+
+  TextButton _buildYesButton(BuildContext context) {
     return TextButton(
-      onPressed:(){
+      onPressed: () {
         onRemoveProduct();
         Navigator.of(context).pop();
       },
       child: const Text('Remove'),
     );
   }
-    TextButton _buildCancelButton(BuildContext context) {
+
+  TextButton _buildCancelButton(BuildContext context) {
     return TextButton(
       onPressed: () {
         Navigator.of(context).pop();
