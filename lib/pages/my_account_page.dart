@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
@@ -5,6 +6,7 @@ import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/login/login_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
+import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
 class MyAccountPage extends ConsumerWidget {
@@ -116,7 +118,13 @@ class MyAccountPage extends ConsumerWidget {
           child: SingleChildScrollView(
             child: Column(
               children: [
-                _getMenu(Icons.person, "Company Information"),
+                _getMenu(
+                  Icons.person,
+                  "Business Information",
+                  onTap: () => AutoRouter.of(context).push(
+                    const BusinessInformationRoute(),
+                  ),
+                ),
                 _getMenu(Icons.lock, "Change Password"),
                 _getMenu(Icons.history, "Order History"),
                 _getMenu(Icons.person, "About Suuq"),

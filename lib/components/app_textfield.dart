@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 
-
 class AppTextField extends StatelessWidget {
   const AppTextField({
     super.key,
@@ -12,6 +11,7 @@ class AppTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffix,
     this.isObscureText = false,
+    this.isDisabled = false,
     this.onChanged,
     this.validator,
   });
@@ -21,6 +21,7 @@ class AppTextField extends StatelessWidget {
   final Icon? prefixIcon;
   final Widget? suffix;
   final bool isObscureText;
+  final bool isDisabled;
   final Function(String)? onChanged;
   final String? Function(String?)? validator;
 
@@ -38,6 +39,8 @@ class AppTextField extends StatelessWidget {
           TextFormField(
             initialValue: initialValue,
             decoration: InputDecoration(
+              filled: isDisabled,
+              fillColor: AppColors.lighterGrey,
               hintText: hintText,
               prefixIcon: prefixIcon,
               suffixIcon: suffix,
@@ -45,6 +48,7 @@ class AppTextField extends StatelessWidget {
               focusedBorder: _getBorder(),
             ),
             obscureText: isObscureText,
+            readOnly: isDisabled,
             onChanged: onChanged,
             validator: validator,
           ),
