@@ -33,6 +33,7 @@ class HomePage extends ConsumerWidget {
   Widget _buildHomepageBody(final List<Category?> categories) {
     return Scaffold(
       appBar: AppBar(
+        centerTitle: true,
         title: const Text("My Products"),
         actions: [
           IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
