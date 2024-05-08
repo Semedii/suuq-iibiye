@@ -83,18 +83,22 @@ class MyAccountPage extends ConsumerWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          seller.name ?? "",
-          style: const TextStyle(
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-            color: AppColors.white,
+        Center(
+          child: Text(
+            seller.name ?? "",
+            style: const TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+              color: AppColors.white,
+            ),
           ),
         ),
         const SizedBox(height: 4),
-        Text(
-          "Joined on: ${DateFormat('dd/mm/yyyy').format(seller.joinedDate!)}",
-          style: const TextStyle(fontSize: 12, color: Colors.black87),
+        Center(
+          child: Text(
+            "Joined on: ${DateFormat('dd/mm/yyyy').format(seller.joinedDate!)}",
+            style: const TextStyle(fontSize: 12, color: Colors.black87),
+          ),
         ),
       ],
     );
