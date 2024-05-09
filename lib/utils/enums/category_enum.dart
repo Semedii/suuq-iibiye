@@ -5,6 +5,8 @@ enum Category {
   electronics,
   gymAccessories,
   kitchenAccessories,
+  cosmetics,
+  others,
 }
 
 Category getCategoryFromString(String categoryString) {
@@ -21,8 +23,10 @@ Category getCategoryFromString(String categoryString) {
       return Category.gymAccessories;
     case 'kitchen accessories':
       return Category.kitchenAccessories;
+    case 'cosmetics':
+      return Category.cosmetics;
     default:
-      throw Exception('Unknown category: $categoryString');
+      return Category.others;
   }
 }
 
@@ -36,9 +40,13 @@ String categoryToString(Category category) {
       return 'home accessories';
     case Category.electronics:
       return 'electronics';
-      case Category.gymAccessories:
+    case Category.gymAccessories:
       return 'gym accessories';
-      case Category.kitchenAccessories:
+    case Category.kitchenAccessories:
       return 'kitchen accessories';
+    case Category.cosmetics:
+      return 'cosmetics';
+    case Category.others:
+      return 'others';
   }
 }
