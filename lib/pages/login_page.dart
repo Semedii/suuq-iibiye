@@ -139,7 +139,7 @@ class LoginPage extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
     if (loginState is LoginSuccessState) {
-      AutoRouter.of(context).replace(const HomeRoute());
+      AutoRouter.of(context).replace(const MainRoute());
     }
     if (loginState is LoginFailureState) {
       toastInfo(loginState.errorMessage);
