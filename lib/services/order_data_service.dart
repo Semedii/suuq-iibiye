@@ -21,6 +21,23 @@ class OrderDataService {
     }
   }
 
+    Future<List<OrderModel?>> fetchPastOrders(String sellerName) async {
+    try {
+      final collectionRef = db.collection("orders").withConverter(
+            fromFirestore: OrderModel.fromFirestore,
+            toFirestore: (order, _) => order.toFirestore(),
+          );
+      final querySnapshot =
+          await collectionRef.where("sellerName", isEqualTo: sellerName).where("status", isEqualTo: "delivered").get();
+      List<OrderModel> orders =
+          querySnapshot.docs.map((doc) => doc.data()).toList();
+      return orders;
+    } catch (e) {
+      print("Error fetching orders: $e");
+      return [];
+    }
+  }
+
   Future<void> updateOrderStatus(
       {required String orderId, required String status}) async {
     final statusData = {"status": status.toLowerCase()};
