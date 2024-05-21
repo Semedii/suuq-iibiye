@@ -114,17 +114,25 @@ class OrderDetailsPage extends StatelessWidget {
             title: "Send",
             onTap: () => orderNotifier.sendOrder(order.id));
       } else if (order.status == OrderStatus.onTheWay) {
-        return Center(
-            child: Padding(
-          padding: AppStyles.edgeInsetsT40,
-          child: Text(
-            order.status.name.toUpperCase(),
-            style: const TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 24,
-                color: AppColors.green),
-          ),
-        ));
+        return Column(
+          children: [
+            Center(
+                child: Padding(
+              padding: AppStyles.edgeInsetsT40,
+              child: Text(
+                order.status.name.toUpperCase(),
+                style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    color: AppColors.green),
+              ),
+            )),
+            AppButton(
+                color: AppColors.green,
+                title: "Deliver",
+                onTap: orderNotifier.deliverOrder(order.id)),
+          ],
+        );
       }
       return const SizedBox.shrink();
     });

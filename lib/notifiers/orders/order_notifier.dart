@@ -33,6 +33,13 @@ class OrderNotifier extends StateNotifier<OrderState> {
       initPage();
     }
   }
+    deliverOrder(String? orderId) async {
+    if (orderId != null) {
+      await _orderDataService.updateOrderStatus(
+          orderId: orderId, status: 'delivered');
+      initPage();
+    }
+  }
 }
 
 final orderNotifierProvider = StateNotifierProvider<OrderNotifier, OrderState>(
