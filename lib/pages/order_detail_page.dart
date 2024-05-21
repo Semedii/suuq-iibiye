@@ -2,10 +2,14 @@ import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/order.dart';
+import 'package:suuq_iibiye/notifiers/orders/order_notifier.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
+import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:suuq_iibiye/utils/enums/order_status.dart';
 
 @RoutePage()
 class OrderDetailsPage extends StatelessWidget {
@@ -30,8 +34,8 @@ class OrderDetailsPage extends StatelessWidget {
             _buildDetailRow("Customer name:", order.customer.name ?? "N/A"),
             _buildDetailRow("Phone number:", order.sendersPhone),
             _buildDetailRow("Address:", order.address),
-            _buildDetailRow("Order Status", order.status),
-            AppButton(color: AppColors.green, title: "Accept", onTap: () {}),
+            _buildStatus(order.status),
+            _buildButton(order),
           ],
         ),
       ),
@@ -52,7 +56,7 @@ class OrderDetailsPage extends StatelessWidget {
       int index = entry.key;
       var product = entry.value;
       return _buildDetailRow(
-        "Product ${index + 1} Description:",
+        "Product ${index + 1}:",
         product?.description ?? "No description",
       );
     }).toList();
@@ -72,5 +76,57 @@ class OrderDetailsPage extends StatelessWidget {
         ],
       ),
     );
+  }
+
+  _buildStatus(OrderStatus status) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          const Text(
+            "Status",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          Row(
+            children: [
+              status.icon,
+              const SizedBox(width: 4),
+              Text(status.name),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildButton(OrderModel order) {
+    return Consumer(builder: (context, ref, _) {
+      var orderNotifier = ref.read(orderNotifierProvider.notifier);
+      if (order.status == OrderStatus.pending) {
+        return AppButton(
+            color: AppColors.green,
+            title: "Accept",
+            onTap: () => orderNotifier.acceptOrder(order.id));
+      } else if (order.status == OrderStatus.preparing) {
+        return AppButton(
+            color: AppColors.green,
+            title: "Send",
+            onTap: () => orderNotifier.sendOrder(order.id));
+      } else if (order.status == OrderStatus.onTheWay) {
+        return Center(
+            child: Padding(
+          padding: AppStyles.edgeInsetsT40,
+          child: Text(
+            order.status.name.toUpperCase(),
+            style: const TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                color: AppColors.green),
+          ),
+        ));
+      }
+      return const SizedBox.shrink();
+    });
   }
 }

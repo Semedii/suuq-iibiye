@@ -20,4 +20,10 @@ class OrderDataService {
       return [];
     }
   }
+
+  Future<void> updateOrderStatus(
+      {required String orderId, required String status}) async {
+    final statusData = {"status": status.toLowerCase()};
+    db.collection('orders').doc(orderId).update(statusData);
+  }
 }

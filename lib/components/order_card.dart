@@ -17,7 +17,8 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final List<CartProduct?> cartProducts = orderModel.cartProducts;
     return GestureDetector(
-      onTap:()=> AutoRouter.of(context).push(OrderDetailsRoute(order: orderModel)),
+      onTap: () =>
+          AutoRouter.of(context).push(OrderDetailsRoute(order: orderModel)),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
@@ -75,7 +76,6 @@ class OrderCard extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               _buildDateAndPrice(orderModel.totalPrice, orderModel.orderedDate),
-             
             ],
           ),
         ),
@@ -100,7 +100,13 @@ class OrderCard extends StatelessWidget {
       children: [
         _buildPrice(price),
         Text(DateFormat('dd/MM/yyyy hh:mm a').format(date)),
-         Text(orderModel.status)
+        Row(
+          children: [
+            orderModel.status.icon,
+            const SizedBox(width: 4),
+            Text(orderModel.status.name),
+          ],
+        )
       ],
     );
   }

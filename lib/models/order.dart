@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
+import 'package:suuq_iibiye/utils/enums/order_status.dart';
 
 class OrderModel {
   String? id;
@@ -10,7 +11,7 @@ class OrderModel {
   double totalPrice;
   String address;
   DateTime orderedDate;
-  String status;
+  OrderStatus status;
   String paymentOption;
   String currency;
 
@@ -22,7 +23,7 @@ class OrderModel {
     required this.totalPrice,
     required this.address,
     required this.orderedDate,
-    this.status = "pending",
+    this.status = OrderStatus.pending,
     required this.paymentOption,
     required this.currency,
   });
@@ -44,7 +45,7 @@ class OrderModel {
         totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
         address: data?['address'],
         orderedDate: orderedDate.toDate(),
-        status: data?['status'],
+        status: OrderStatus.fromString(data?['status']),
         currency: data?['currency'],
         paymentOption: data?['paymentOption']);
   }
@@ -58,7 +59,7 @@ class OrderModel {
       "address": address,
       "orderedDate": orderedDate,
       'sendersPhone': sendersPhone,
-      'status': status,
+      'status': status.name,
       'paymentOption': paymentOption,
       'currency': currency,
     };
