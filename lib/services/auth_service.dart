@@ -3,6 +3,7 @@ import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/services/auth_data_service.dart';
 import 'package:suuq_iibiye/utils/firebase_exceptions.dart';
+import 'package:suuq_iibiye/utils/pop_up_message.dart';
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -49,6 +50,7 @@ class AuthService {
           Global.storageService.setString("sellerEmail", email);
           return userModel;
         } else {
+          toastInfo("This user is not a seller");
           await logout();
         }
       }
