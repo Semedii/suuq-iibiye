@@ -8,10 +8,12 @@ class AppButton extends StatelessWidget {
     required this.title,
     required this.onTap,
     this.isLoading = false,
+    this.color = AppColors.darkGrey,
   });
   final String title;
   final bool isLoading;
   final void Function() onTap;
+  final Color color;
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -34,7 +36,7 @@ class AppButton extends StatelessWidget {
   BoxDecoration _getDecoration() {
     return BoxDecoration(
       borderRadius: BorderRadius.circular(20.0),
-      color: AppColors.darkGrey,
+      color: color,
     );
   }
 

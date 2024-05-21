@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/order.dart';
+import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
 class OrderCard extends StatelessWidget {
@@ -14,65 +16,68 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CartProduct?> cartProducts = orderModel.cartProducts;
-    return Card(
-      child: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                _buildImage(cartProducts.first!.imageUrl!),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      ...cartProducts.map((cartProduct) =>
-                          _buildProductDescription(cartProduct!)),
-                      const SizedBox(height: 8),
-                      RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                          text: "Customer: ",
-                          style: TextStyle(
-                            color: Colors.grey[600],
+    return GestureDetector(
+      onTap:()=> AutoRouter.of(context).push(OrderDetailsRoute(order: orderModel)),
+      child: Card(
+        child: Padding(
+          padding: const EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _buildImage(cartProducts.first!.imageUrl!),
+                  const SizedBox(width: 16),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        ...cartProducts.map((cartProduct) =>
+                            _buildProductDescription(cartProduct!)),
+                        const SizedBox(height: 8),
+                        RichText(
+                            text: TextSpan(children: [
+                          TextSpan(
+                            text: "Customer: ",
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: orderModel.customer.name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[600],
+                          TextSpan(
+                            text: orderModel.customer.name,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                      ])),
-                      const SizedBox(height: 8),
-                      RichText(
-                          text: TextSpan(children: [
-                        TextSpan(
-                          text: "Address: ",
-                          style: TextStyle(
-                            color: Colors.grey[600],
+                        ])),
+                        const SizedBox(height: 8),
+                        RichText(
+                            text: TextSpan(children: [
+                          TextSpan(
+                            text: "Address: ",
+                            style: TextStyle(
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                        TextSpan(
-                          text: orderModel.address,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            color: Colors.grey[600],
+                          TextSpan(
+                            text: orderModel.address,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.grey[600],
+                            ),
                           ),
-                        ),
-                      ])),
-                    ],
+                        ])),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 16),
-            _buildDateAndPrice(orderModel.totalPrice, orderModel.orderedDate),
-           
-          ],
+                ],
+              ),
+              const SizedBox(height: 16),
+              _buildDateAndPrice(orderModel.totalPrice, orderModel.orderedDate),
+             
+            ],
+          ),
         ),
       ),
     );
