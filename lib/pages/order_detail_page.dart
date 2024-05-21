@@ -72,7 +72,8 @@ class OrderDetailsPage extends StatelessWidget {
             label,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-          Text(value),
+         const SizedBox(width: 50,),
+          Flexible(child: Text(value)),
         ],
       ),
     );
