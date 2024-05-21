@@ -19,14 +19,14 @@ class OrderHistoryPage extends StatelessWidget {
         child: ListView.builder(
           itemCount: 5, 
           itemBuilder: (context, index) {
-            return OrderCard(
-              imageUrl: "assets/images/tshirt.jpg", 
-              customerName: "Cabdisamed Ibraahim Xaaji Yuusuf",
-              description: "Garamad oversize ah oo madaw",
-              address: "123 Main Street, City, Country", 
-              price: 23, 
-              date: DateTime.now().subtract(const Duration(days: 39)),
-            );
+            // return OrderCard(
+            //   imageUrl: "assets/images/tshirt.jpg", 
+            //   customerName: "Cabdisamed Ibraahim Xaaji Yuusuf",
+            //   description: "Garamad oversize ah oo madaw",
+            //   address: "123 Main Street, City, Country", 
+            //   price: 23, 
+            //   date: DateTime.now().subtract(const Duration(days: 39)),
+            // );
           },
         ),
       ),

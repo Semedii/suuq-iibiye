@@ -1,31 +1,46 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/components/order_card.dart';
+import 'package:suuq_iibiye/models/order.dart';
+import 'package:suuq_iibiye/notifiers/orders/order_notifier.dart';
+import 'package:suuq_iibiye/notifiers/orders/order_state.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 
-class OrdersPage extends StatelessWidget {
+class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    OrderState orderState = ref.watch(orderNotifierProvider);
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("My Orders"),
-      ),
-      body: Padding(
-        padding: AppStyles.edgeInsetsH16V24,
-        child: ListView.builder(
-          itemCount: 5,
-          itemBuilder: (context, index) {
-            return OrderCard(
-                imageUrl: "assets/images/tshirt.jpg",
-                customerName: "Cabdisamed Ibraahim Xaaji Yuusuf",
-                description: "Garamad oversize ah oo madaw",
-                address: "123 Main Street, City, Country",
-                price: 23,
-                date: DateTime.now());
-          },
+        appBar: AppBar(
+          centerTitle: true,
+          title: const Text("My Orders"),
         ),
+        body: _mapStateToWidget(orderState, ref));
+  }
+
+  Widget _mapStateToWidget(OrderState state, WidgetRef ref) {
+    if (state is OrderInitialState) {
+      ref.read(orderNotifierProvider.notifier).initPage();
+    } else if (state is OrderLoadedState) {
+      return _buildOrderPageBody(state.orderModelList);
+    }
+    return const Center(child: CircularProgressIndicator());
+  }
+
+  Padding _buildOrderPageBody(List<OrderModel?> orderList) {
+    return Padding(
+      padding: AppStyles.edgeInsetsH16,
+      child: ListView.builder(
+        itemCount: orderList.length,
+        itemBuilder: (context, index) {
+          final order = orderList[index];
+          if (order != null) {
+            return OrderCard(orderModel: order);
+          }
+          return const SizedBox.shrink();
+        },
       ),
     );
   }

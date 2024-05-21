@@ -1,76 +1,101 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:suuq_iibiye/models/cart_product.dart';
+import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 
 class OrderCard extends StatelessWidget {
-  const OrderCard(
-      {required this.imageUrl,
-      required this.customerName,
-      required this.description,
-      required this.address,
-      required this.price,
-      required this.date,
-      super.key});
+  const OrderCard({required this.orderModel, super.key});
 
-  final String imageUrl;
-  final String customerName;
-  final String description;
-  final String address;
-  final double price;
-  final DateTime date;
+  final OrderModel orderModel;
 
   @override
   Widget build(BuildContext context) {
+    final List<CartProduct?> cartProducts = orderModel.cartProducts;
     return Card(
       child: Padding(
         padding: const EdgeInsets.all(16),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: Column(
           children: [
-            _buildImage(imageUrl),
-            const SizedBox(width: 16),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    description,
-                    style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                    ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                _buildImage(cartProducts.first!.imageUrl!),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      ...cartProducts.map((cartProduct) =>
+                          _buildProductDescription(cartProduct!)),
+                      const SizedBox(height: 8),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                          text: "Customer: ",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        TextSpan(
+                          text: orderModel.customer.name,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ])),
+                      const SizedBox(height: 8),
+                      RichText(
+                          text: TextSpan(children: [
+                        TextSpan(
+                          text: "Address: ",
+                          style: TextStyle(
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                        TextSpan(
+                          text: orderModel.address,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.grey[600],
+                          ),
+                        ),
+                      ])),
+                    ],
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Customer: $customerName",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Address: $address",
-                    style: TextStyle(
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildDateAndPrice(price, date),
-                ],
-              ),
+                ),
+              ],
             ),
+            const SizedBox(height: 16),
+            _buildDateAndPrice(orderModel.totalPrice, orderModel.orderedDate),
+           
           ],
         ),
       ),
     );
   }
 
+  Text _buildProductDescription(CartProduct cartProduct) {
+    return Text(
+      cartProduct.description,
+      style: const TextStyle(
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+        fontSize: 16,
+      ),
+    );
+  }
+
   Row _buildDateAndPrice(double price, DateTime date) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         _buildPrice(price),
-        const SizedBox(width: 8),
-        Expanded(child: Text(DateFormat('dd/MM/yyyy hh:mm a').format(date))),
+        Text(DateFormat('dd/MM/yyyy hh:mm a').format(date)),
+         Text(orderModel.status)
       ],
     );
   }
@@ -79,8 +104,8 @@ class OrderCard extends StatelessWidget {
     return SizedBox(
       width: 100,
       height: 130,
-      child: Image.asset(
-        imageUrl,
+      child: Image.memory(
+        base64Decode(imageUrl),
         fit: BoxFit.cover,
       ),
     );

@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:suuq_iibiye/models/product.dart';
+import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 
 class OrderModel {
   String? id;
   UserModel customer;
   String sendersPhone;
-  List<Product?> products;
+  List<CartProduct?> cartProducts;
   double totalPrice;
   String address;
   DateTime orderedDate;
@@ -18,7 +18,7 @@ class OrderModel {
     this.id,
     required this.sendersPhone,
     required this.customer,
-    required this.products,
+    required this.cartProducts,
     required this.totalPrice,
     required this.address,
     required this.orderedDate,
@@ -37,8 +37,8 @@ class OrderModel {
         id: snapshot.id,
         sendersPhone: data?['sendersPhone'],
         customer: UserModel.fromJson(data?['customer']),
-        products: (data?['cartProducts'] as List<dynamic>?)
-                ?.map((product) => Product.fromJson(product))
+        cartProducts: (data?['cartProducts'] as List<dynamic>?)
+                ?.map((product) => CartProduct.fromJson(product))
                 .toList() ??
             [],
         totalPrice: double.parse(data?['totalPrice'].toString() ?? "0"),
@@ -53,7 +53,7 @@ class OrderModel {
     return {
       "customer": customer.toFirestore(),
       "cartProducts":
-          products.map((product) => product?.toFirestore()).toList(),
+          cartProducts.map((product) => product?.toFirestore()).toList(),
       "totalPrice": totalPrice.toStringAsFixed(2),
       "address": address,
       "orderedDate": orderedDate,

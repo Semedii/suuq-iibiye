@@ -50,7 +50,7 @@ class Product {
     return Product(
       id: json['id'],
       sellerName: json['seller_name'],
-      sellerEmail: json['seller_email'],
+      sellerEmail: json['seller_email']??"",
       description: json['description'],
       imageUrl: json['image'],
       price: double.parse(json['price']),
