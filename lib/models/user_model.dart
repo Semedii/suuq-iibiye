@@ -45,4 +45,16 @@ class UserModel {
       "address": address,
     };
   }
+  //for user object in ordermodel
+factory UserModel.fromJson(Map<String, dynamic> map) {
+     Timestamp createdDate = map['joined_date'];
+    return UserModel(
+        id: map['uid'],
+        name: map['name'],
+        email: map['email'],
+        address: map['address'],
+        joinedDate: createdDate.toDate(),
+        phoneNumber: map['phone_number'],
+        avatar: map['phone_number']);
+  }
 }
