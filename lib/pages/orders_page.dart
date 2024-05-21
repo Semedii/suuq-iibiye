@@ -30,18 +30,26 @@ class OrdersPage extends ConsumerWidget {
   }
 
   Padding _buildOrderPageBody(List<OrderModel?> orderList) {
+    bool isOrderListAvailable = orderList.isNotEmpty;
     return Padding(
       padding: AppStyles.edgeInsetsH16,
-      child: ListView.builder(
-        itemCount: orderList.length,
-        itemBuilder: (context, index) {
-          final order = orderList[index];
-          if (order != null) {
-            return OrderCard(orderModel: order);
-          }
-          return const SizedBox.shrink();
-        },
-      ),
+      child: isOrderListAvailable
+          ? ListView.builder(
+              itemCount: orderList.length,
+              itemBuilder: (context, index) {
+                final order = orderList[index];
+                if (order != null) {
+                  return OrderCard(orderModel: order);
+                }
+                return const SizedBox.shrink();
+              },
+            )
+          : const Center(
+              child: Text(
+                "No Active Order Available. You can check past orders in the Order History Page",
+                textAlign: TextAlign.center,
+              ),
+            ),
     );
   }
 }

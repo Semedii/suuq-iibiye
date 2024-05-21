@@ -4,14 +4,14 @@ import 'package:suuq_iibiye/models/order.dart';
 class OrderDataService {
   final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  Future<List<OrderModel?>> fetchOrders(String sellerName) async {
+  Future<List<OrderModel?>> fetchCurrentOrders(String sellerName) async {
     try {
       final collectionRef = db.collection("orders").withConverter(
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),
           );
       final querySnapshot =
-          await collectionRef.where("sellerName", isEqualTo: sellerName).get();
+          await collectionRef.where("sellerName", isEqualTo: sellerName).where("status", isNotEqualTo: "delivered").get();
       List<OrderModel> orders =
           querySnapshot.docs.map((doc) => doc.data()).toList();
       return orders;

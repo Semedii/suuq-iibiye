@@ -14,7 +14,7 @@ class OrderNotifier extends StateNotifier<OrderState> {
     final userEmail = FirebaseAuth.instance.currentUser?.email;
     final currentUser = await _authDataService.fetchCurrentUser(userEmail);
     List<OrderModel?> orders =
-        await _orderDataService.fetchOrders(currentUser!.name!);
+        await _orderDataService.fetchCurrentOrders(currentUser!.name!);
     state = OrderLoadedState(orderModelList: orders);
   }
 
