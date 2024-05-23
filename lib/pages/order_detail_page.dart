@@ -131,11 +131,11 @@ class OrderDetailsPage extends StatelessWidget {
             AppButton(
                 color: AppColors.green,
                 title: "Deliver",
-                onTap: orderNotifier.deliverOrder(order.id)),
+                onTap: () => orderNotifier.deliverOrder(order.id)),
           ],
         );
       }
-      return const SizedBox.shrink();
+      return Container();
     });
   }
 }
