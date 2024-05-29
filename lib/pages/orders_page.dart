@@ -24,32 +24,37 @@ class OrdersPage extends ConsumerWidget {
     if (state is OrderInitialState) {
       ref.read(orderNotifierProvider.notifier).initPage();
     } else if (state is OrderLoadedState) {
-      return _buildOrderPageBody(state.orderModelList);
+      return _buildOrderPageBody(state.orderModelList, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Padding _buildOrderPageBody(List<OrderModel?> orderList) {
+  Widget _buildOrderPageBody(List<OrderModel?> orderList, WidgetRef ref) {
     bool isOrderListAvailable = orderList.isNotEmpty;
-    return Padding(
-      padding: AppStyles.edgeInsetsH16,
-      child: isOrderListAvailable
-          ? ListView.builder(
-              itemCount: orderList.length,
-              itemBuilder: (context, index) {
-                final order = orderList[index];
-                if (order != null) {
-                  return OrderCard(orderModel: order);
-                }
-                return const SizedBox.shrink();
-              },
-            )
-          : const Center(
-              child: Text(
-                "No Active Order Available. You can check past orders in the Order History Page",
-                textAlign: TextAlign.center,
+    return RefreshIndicator(
+      onRefresh: () async{
+       ref.read(orderNotifierProvider.notifier).initPage();
+      },
+      child: Padding(
+        padding: AppStyles.edgeInsetsH16,
+        child: isOrderListAvailable
+            ? ListView.builder(
+                itemCount: orderList.length,
+                itemBuilder: (context, index) {
+                  final order = orderList[index];
+                  if (order != null) {
+                    return OrderCard(orderModel: order);
+                  }
+                  return const SizedBox.shrink();
+                },
+              )
+            : const Center(
+                child: Text(
+                  "No Active Order Available. You can check past orders in the Order History Page",
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
+      ),
     );
   }
 }

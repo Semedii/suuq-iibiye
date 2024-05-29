@@ -26,32 +26,37 @@ class OrderHistoryPage extends ConsumerWidget {
     if (state is OrderHistoryInitialState) {
       ref.read(orderHistoryNotifierProvider.notifier).initPage();
     } else if (state is OrderHistoryLoadedState) {
-      return _buildOrderHistoryPage(state.orderModelList);
+      return _buildOrderHistoryPage(state.orderModelList, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Padding _buildOrderHistoryPage(List<OrderModel?> orderList) {
+  Widget _buildOrderHistoryPage(List<OrderModel?> orderList, WidgetRef ref) {
     bool isOrderListAvailable = orderList.isNotEmpty;
-    return Padding(
-      padding: AppStyles.edgeInsetsH16,
-      child: isOrderListAvailable
-          ? ListView.builder(
-              itemCount: orderList.length,
-              itemBuilder: (context, index) {
-                final order = orderList[index];
-                if (order != null) {
-                  return OrderCard(orderModel: order);
-                }
-                return const SizedBox.shrink();
-              },
-            )
-          : const Center(
-              child: Text(
-                "No Past Order Available.",
-                textAlign: TextAlign.center,
+    return RefreshIndicator(
+      onRefresh: () async{
+       ref.read(orderHistoryNotifierProvider.notifier).initPage();
+      },
+      child: Padding(
+        padding: AppStyles.edgeInsetsH16,
+        child: isOrderListAvailable
+            ? ListView.builder(
+                itemCount: orderList.length,
+                itemBuilder: (context, index) {
+                  final order = orderList[index];
+                  if (order != null) {
+                    return OrderCard(orderModel: order);
+                  }
+                  return const SizedBox.shrink();
+                },
+              )
+            : const Center(
+                child: Text(
+                  "No Past Order Available.",
+                  textAlign: TextAlign.center,
+                ),
               ),
-            ),
+      ),
     );
   }
 }
