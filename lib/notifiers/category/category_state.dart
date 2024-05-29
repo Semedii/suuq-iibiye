@@ -1,3 +1,4 @@
+import 'package:image_picker/image_picker.dart';
 import 'package:suuq_iibiye/models/product.dart';
 
 abstract class CategoryState {}
@@ -9,22 +10,22 @@ class CategoryStateLoading extends CategoryState {}
 class CategoryStateLoaded extends CategoryState {
   final List<Product> products;
   final String category;
-  final List<String?>? encodedImages;
+  final List<XFile?>? images;
 
   CategoryStateLoaded({
     required this.products,
     required this.category,
-    this.encodedImages,
+    this.images,
   });
 
   CategoryStateLoaded copyWith({
     List<Product>? products,
     String? category,
-    List<String>? encodedImages,
+    List<XFile?>? images,
   }) {
     return CategoryStateLoaded(
         products: products ?? this.products,
         category: category ?? this.category,
-        encodedImages: encodedImages ?? this.encodedImages);
+        images: images ?? this.images);
   }
 }

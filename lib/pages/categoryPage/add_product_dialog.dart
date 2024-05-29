@@ -76,12 +76,12 @@ class AddProductDialog extends ConsumerWidget {
           onPressed: ref.read(categoryNotifierProvider.notifier).onUploadImage,
           child: const Text('Upload Image'),
         ),
-        if (state.encodedImages != null && state.encodedImages!.isNotEmpty)
+        if (state.images != null && state.images!.isNotEmpty)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.check),
-              Text('uploaded ${state.encodedImages?.length} file'),
+              Text('uploaded ${state.images?.length} file'),
             ],
           ),
       ],
@@ -107,7 +107,7 @@ class AddProductDialog extends ConsumerWidget {
           ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
               sellerName: "",
               sellerEmail: "",
-              imageUrl: state.encodedImages ?? [],
+              imageUrl:  [],
               description: description,
               price: double.parse(price),
               category: category));

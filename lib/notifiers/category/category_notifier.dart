@@ -1,13 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-import 'dart:typed_data';
-import 'package:image/image.dart' as img;
-
 import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
+import 'package:suuq_iibiye/services/image_data_service.dart';
 import 'package:suuq_iibiye/services/product_data_service.dart';
+import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 part 'category_notifier.g.dart';
 
 @Riverpod()
@@ -21,7 +18,21 @@ class CategoryNotifier extends _$CategoryNotifier {
     state = CategoryStateLoading();
     final List<Product> products =
         await ProductDataService().fetchProductsByCategory(category);
-    state = CategoryStateLoaded(products: products, category: category);
+    final List<Product> productsWithImages = [];
+    for (Product product in products) {
+      List<String> newImageUrls = [];
+      for (String? imageUrl in product.imageUrl) {
+        var newImageUrl =
+            await ImageDataService().retrieveImageUrl(category, imageUrl);
+        newImageUrls.add(newImageUrl);
+      }
+      product = product.copyWith(imageUrl: newImageUrls);
+      productsWithImages.add(product);
+    }
+    state = CategoryStateLoaded(
+      products: productsWithImages,
+      category: category,
+    );
   }
 
   updatePrice(Product product, double newPrice) async {
@@ -29,17 +40,6 @@ class CategoryNotifier extends _$CategoryNotifier {
     state = CategoryStateLoading();
     await ProductDataService()
         .updatePrice(product: product, newPrice: newPrice);
-    await initPage(lastState.category);
-  }
-
-  addNewProduct(Product product) async {
-    var lastState = state as CategoryStateLoaded;
-    state = CategoryStateLoading();
-    await ProductDataService().addProduct(
-        category: product.category,
-        imageUrl: product.imageUrl,
-        description: product.description,
-        price: product.price);
     await initPage(lastState.category);
   }
 
@@ -54,18 +54,24 @@ class CategoryNotifier extends _$CategoryNotifier {
       print('user has not chosen a picture');
       return;
     }
-    List<String> encodedImages = [];
-    for (XFile? file in files) {
-      if (file != null) {
-        File compressedFile = await compressAndResizeImage(file);
-        XFile compressedXfile = XFile(compressedFile.path);
-        Uint8List image = await compressedXfile.readAsBytes();
-        String encodedImage = base64Encode(image);
-        encodedImages.add(encodedImage);
-      }
-    }
-    state =
-        (state as CategoryStateLoaded).copyWith(encodedImages: encodedImages);
+    state = (state as CategoryStateLoaded).copyWith(images: files);
+  }
+
+  addNewProduct(Product product) async {
+    var lastState = state as CategoryStateLoaded;
+    state = CategoryStateLoading();
+    var ids = await _generateImageIds(lastState.images);
+    await ImageDataService().uploadImage(
+      lastState.images!,
+      categoryToString(product.category),
+      ids!,
+    );
+    await ProductDataService().addProduct(
+        category: product.category,
+        imageUrl: ids,
+        description: product.description,
+        price: product.price);
+    await initPage(lastState.category);
   }
 
   Future<void> removeProduct(String productId) async {
@@ -76,35 +82,15 @@ class CategoryNotifier extends _$CategoryNotifier {
     await initPage(lastState.category);
   }
 
-  Future<File> compressAndResizeImage(XFile fille) async {
-    File file = File(fille.path);
-
-    img.Image image = img.decodeImage(file.readAsBytesSync())!;
-
-    // Resize the image to have the longer side be 800 pixels
-    int width;
-    int height;
-
-    if (image.width > image.height) {
-      width = 800;
-      height = (image.height / image.width * 800).round();
-    } else {
-      height = 800;
-      width = (image.width / image.height * 800).round();
+  Future<List<String>?> _generateImageIds(List<XFile?>? images) async {
+    List<String> imageIds = [];
+    if (images == null) return imageIds;
+    for (int i = 0; i < images.length; i++) {
+      await Future.delayed(const Duration(milliseconds: 10));
+      var id = DateTime.now().millisecondsSinceEpoch;
+      print("waaa $id");
+      imageIds.add(id.toString());
     }
-
-    img.Image resizedImage =
-        img.copyResize(image, width: width, height: height);
-
-    // Compress the image with JPEG format
-    List<int> compressedBytes =
-        img.encodeJpg(resizedImage, quality: 75); // Adjust quality as needed
-
-    // Save the compressed image to a file
-    File compressedFile =
-        File(file.path.replaceFirst('.jpg', '_compressed.jpg'));
-    compressedFile.writeAsBytesSync(compressedBytes);
-
-    return compressedFile;
+    return imageIds;
   }
 }

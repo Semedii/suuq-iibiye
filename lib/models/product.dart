@@ -11,7 +11,7 @@ class Product {
   final Category category;
 
   Product({
-    this.id="",
+    this.id = "",
     required this.sellerName,
     required this.sellerEmail,
     required this.imageUrl,
@@ -31,10 +31,11 @@ class Product {
       sellerEmail: data?['seller_email'],
       imageUrl: data?['image'].cast<String>(),
       description: data?['description'],
-      price: double.parse(data?['price'].toString()??""),
+      price: double.parse(data?['price'].toString() ?? ""),
       category: getCategoryFromString(data?['category']),
     );
   }
+
   Map<String, dynamic> toFirestore() {
     return {
       "seller_name": sellerName,
@@ -45,17 +46,28 @@ class Product {
       "category": categoryToString(category),
     };
   }
-  //for sharedpref
+
   factory Product.fromJson(Map<String, dynamic> json) {
     return Product(
       id: json['id'],
       sellerName: json['seller_name'],
-      sellerEmail: json['seller_email']??"",
+      sellerEmail: json['seller_email'] ?? "",
       description: json['description'],
-      imageUrl: json['image'],
+      imageUrl: List<String?>.from(json['image']),
       price: double.parse(json['price']),
       category: getCategoryFromString(json['category']),
     );
   }
 
+  Product copyWith({List<String?>? imageUrl}) {
+    return Product(
+      id: id,
+      sellerName: sellerName,
+      sellerEmail: sellerEmail,
+      imageUrl: imageUrl ??[],
+      description: description,
+      price: price,
+      category: category,
+    );
+  }
 }

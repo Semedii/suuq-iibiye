@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
@@ -18,7 +16,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final bool isImageAvailable = product.imageUrl.isNotEmpty;
+    final bool isImageAvailable =
+        product.imageUrl.first != null && product.imageUrl.first!.isNotEmpty;
     return Card(
       child: SizedBox(
         child: Column(
@@ -28,8 +27,8 @@ class ProductCard extends StatelessWidget {
               child: Stack(
                 children: [
                   isImageAvailable
-                      ? Image.memory(
-                          base64Decode(product.imageUrl.first ?? ""),
+                      ? Image.network(
+                          product.imageUrl.first!,
                           height: 200,
                           width: double.infinity,
                           fit: BoxFit.cover,
