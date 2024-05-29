@@ -30,7 +30,10 @@ class LoginPage extends ConsumerWidget {
   }
 
   Widget _buildLoginForm(
-      BuildContext context, WidgetRef ref, LoginInitialState loginState) {
+    BuildContext context,
+    WidgetRef ref,
+    LoginInitialState loginState,
+  ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return SingleChildScrollView(
       child: Column(

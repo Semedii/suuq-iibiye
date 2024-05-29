@@ -20,10 +20,9 @@ class HomePage extends ConsumerWidget {
 
   Widget _mapStateToWidget(WidgetRef ref, HomeState state) {
     if (state is HomeStateInitial) {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      ref.read(homeNotifierProvider.notifier).initPage();
-    });
-      
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(homeNotifierProvider.notifier).initPage();
+      });
     } else if (state is HomeStateLoaded) {
       return _buildHomepageBody(state.categories);
     }
@@ -32,60 +31,80 @@ class HomePage extends ConsumerWidget {
 
   Widget _buildHomepageBody(final List<Category?> categories) {
     return Scaffold(
-      appBar: AppBar(
-        centerTitle: true,
-        title: const Text("My Products"),
-        actions: [
-          IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
-        ],
-      ),
+      appBar: _buildAppBar(),
       body: GridView.builder(
         padding: AppStyles.edgeInsetsH16,
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8.0,
-          mainAxisSpacing: 8.0,
-        ),
+        gridDelegate: _getGridDelegate(),
         itemCount: categories.length, // Total number of items
         itemBuilder: (BuildContext context, int index) {
           final Category category = categories[index]!;
-          return GestureDetector(
-            onTap: ()=>AutoRouter.of(context).push(CategoryRoute(category: category)),
-            child: GridTile(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage(
-                      "assets/images/tshirt.jpg",
-                    ),
-                    fit: BoxFit.cover,
-                  ),
-                  color: Colors.blue[100 * (index % 9)],
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: const [
-                    BoxShadow(
-                      offset: Offset(0.5, 0.5),
-                    )
-                  ],
-                ),
-                child: Container(
-                  color: Colors.black.withOpacity(0.5),
-                  child:  Center(
-                    child: Text(
-                      categoryToString(category),
-                      textAlign: TextAlign.center,
-                      style:const TextStyle(
-                          color: AppColors.white,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          );
+          return _buildCategoryCard(context, category, index);
         },
       ),
+    );
+  }
+
+  AppBar _buildAppBar() {
+    return AppBar(
+      centerTitle: true,
+      title: const Text("My Products"),
+      actions: [
+        IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
+      ],
+    );
+  }
+
+  SliverGridDelegateWithFixedCrossAxisCount _getGridDelegate() {
+    return const SliverGridDelegateWithFixedCrossAxisCount(
+      crossAxisCount: 2,
+      crossAxisSpacing: 8.0,
+      mainAxisSpacing: 8.0,
+    );
+  }
+
+  GestureDetector _buildCategoryCard(
+      BuildContext context, Category category, int index) {
+    return GestureDetector(
+      onTap: () =>
+          AutoRouter.of(context).push(CategoryRoute(category: category)),
+      child: GridTile(
+        child: Container(
+          decoration: _getBoxDecoration(index),
+          child: Container(
+            color: Colors.black.withOpacity(0.5),
+            child: Center(
+              child: _buildCategoryTitle(category),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  BoxDecoration _getBoxDecoration(int index) {
+    return BoxDecoration(
+      image: const DecorationImage(
+        image: AssetImage(
+          "assets/images/tshirt.jpg",
+        ),
+        fit: BoxFit.cover,
+      ),
+      color: Colors.blue[100 * (index % 9)],
+      borderRadius: BorderRadius.circular(12),
+      boxShadow: const [
+        BoxShadow(
+          offset: Offset(0.5, 0.5),
+        )
+      ],
+    );
+  }
+
+  Text _buildCategoryTitle(Category category) {
+    return Text(
+      categoryToString(category),
+      textAlign: TextAlign.center,
+      style: const TextStyle(
+          color: AppColors.white, fontSize: 24, fontWeight: FontWeight.bold),
     );
   }
 }

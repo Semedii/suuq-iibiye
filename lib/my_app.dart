@@ -22,7 +22,6 @@ class MyApp extends StatelessWidget {
       },
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
-      //theme: AppTheme.appThemeData,
       routerConfig: _appRouter.config(),
     );
   }

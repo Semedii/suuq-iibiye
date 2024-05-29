@@ -31,9 +31,9 @@ class CategoryPage extends ConsumerWidget {
   _mapStateToWidget(BuildContext context, WidgetRef ref, CategoryState state) {
     if (state is CategoryStateInitial) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        ref
-            .read(categoryNotifierProvider.notifier)
-            .initPage(categoryToString(category));
+        ref.read(categoryNotifierProvider.notifier).initPage(
+              categoryToString(category),
+            );
       });
     } else if (state is CategoryStateLoaded) {
       return _buildCategoryPageBody(context, state, ref);
@@ -58,7 +58,9 @@ class CategoryPage extends ConsumerWidget {
               return GridTile(
                 child: ProductCard(
                   product: product,
-                  onRemoveProduct: ()=>ref.read(categoryNotifierProvider.notifier).removeProduct(product.id),
+                  onRemoveProduct: () => ref
+                      .read(categoryNotifierProvider.notifier)
+                      .removeProduct(product.id),
                   editPrice: () => _showAPriceDialog(context, product),
                 ),
               );
@@ -133,11 +135,11 @@ class CategoryPage extends ConsumerWidget {
           },
           child: const Text('Upload Image'),
         ),
-        if (state.encodedImages!=null && state.encodedImages!.isNotEmpty)
-           Row(
+        if (state.encodedImages != null && state.encodedImages!.isNotEmpty)
+          Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-             const Icon(Icons.check),
+              const Icon(Icons.check),
               Text('uploaded ${state.encodedImages?.length} file'),
             ],
           ),
@@ -165,7 +167,7 @@ class CategoryPage extends ConsumerWidget {
           ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
               sellerName: "",
               sellerEmail: "",
-              imageUrl: state.encodedImages??[],
+              imageUrl: state.encodedImages ?? [],
               description: description,
               price: double.parse(price),
               category: category));
@@ -177,8 +179,7 @@ class CategoryPage extends ConsumerWidget {
   }
 
   _editUserImage(WidgetRef ref) async {
-    List<XFile>? pickedImage =
-        await ImagePicker().pickMultiImage();
+    List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
     if (pickedImage.isEmpty) return;
 
     ref

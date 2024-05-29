@@ -72,7 +72,9 @@ class OrderDetailsPage extends StatelessWidget {
             label,
             style: const TextStyle(fontWeight: FontWeight.bold),
           ),
-         const SizedBox(width: 50,),
+          const SizedBox(
+            width: 50,
+          ),
           Flexible(child: Text(value)),
         ],
       ),
@@ -105,37 +107,62 @@ class OrderDetailsPage extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       var orderNotifier = ref.read(orderNotifierProvider.notifier);
       if (order.status == OrderStatus.pending) {
-        return AppButton(
-            color: AppColors.green,
-            title: "Accept",
-            onTap: () => orderNotifier.acceptOrder(order.id));
+        return _buildAcceptButton(orderNotifier, order);
       } else if (order.status == OrderStatus.preparing) {
-        return AppButton(
-            color: AppColors.green,
-            title: "Send",
-            onTap: () => orderNotifier.sendOrder(order.id));
+        return _buildSendButton(orderNotifier, order);
       } else if (order.status == OrderStatus.onTheWay) {
-        return Column(
-          children: [
-            Center(
-                child: Padding(
-              padding: AppStyles.edgeInsetsT40,
-              child: Text(
-                order.status.name.toUpperCase(),
-                style: const TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24,
-                    color: AppColors.green),
-              ),
-            )),
-            AppButton(
-                color: AppColors.green,
-                title: "Deliver",
-                onTap: () => orderNotifier.deliverOrder(order.id)),
-          ],
-        );
+        return _buildOnTheWayAndDeliverButton(order, orderNotifier);
       }
       return Container();
     });
+  }
+
+  AppButton _buildAcceptButton(OrderNotifier orderNotifier, OrderModel order) {
+    return AppButton(
+      color: AppColors.green,
+      title: "Accept",
+      onTap: () => orderNotifier.acceptOrder(order.id),
+    );
+  }
+
+  AppButton _buildSendButton(OrderNotifier orderNotifier, OrderModel order) {
+    return AppButton(
+      color: AppColors.green,
+      title: "Send",
+      onTap: () => orderNotifier.sendOrder(order.id),
+    );
+  }
+
+  Column _buildOnTheWayAndDeliverButton(
+      OrderModel order, OrderNotifier orderNotifier) {
+    return Column(
+      children: [
+        _buildOnTheWayText(order),
+        _buildDeliverButton(orderNotifier, order),
+      ],
+    );
+  }
+
+  Center _buildOnTheWayText(OrderModel order) {
+    return Center(
+        child: Padding(
+      padding: AppStyles.edgeInsetsT40,
+      child: Text(
+        order.status.name.toUpperCase(),
+        style: const TextStyle(
+          fontWeight: FontWeight.bold,
+          fontSize: 24,
+          color: AppColors.green,
+        ),
+      ),
+    ));
+  }
+
+  AppButton _buildDeliverButton(OrderNotifier orderNotifier, OrderModel order) {
+    return AppButton(
+      color: AppColors.green,
+      title: "Deliver",
+      onTap: () => orderNotifier.deliverOrder(order.id),
+    );
   }
 }

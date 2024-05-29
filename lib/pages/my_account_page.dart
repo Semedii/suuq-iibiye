@@ -41,7 +41,10 @@ class MyAccountPage extends ConsumerWidget {
               child: Stack(
                 children: [
                   _buildHeader(
-                      context, state.sellerName, state.sellerJoinedDate),
+                    context,
+                    state.sellerName,
+                    state.sellerJoinedDate,
+                  ),
                   _buildMenuList(context, ref),
                 ],
               ),
@@ -53,7 +56,10 @@ class MyAccountPage extends ConsumerWidget {
   }
 
   Container _buildHeader(
-      BuildContext context, String name, DateTime joinedDate) {
+    BuildContext context,
+    String name,
+    DateTime joinedDate,
+  ) {
     return Container(
       width: double.infinity,
       height: MediaQuery.of(context).size.height * .4,
@@ -132,8 +138,9 @@ class MyAccountPage extends ConsumerWidget {
                 _getMenu(
                   Icons.lock,
                   "Change Password",
-                  onTap: () =>
-                      AutoRouter.of(context).push(ChangePasswordRoute()),
+                  onTap: () => AutoRouter.of(context).push(
+                    ChangePasswordRoute(),
+                  ),
                 ),
                 _getMenu(
                   Icons.history,
