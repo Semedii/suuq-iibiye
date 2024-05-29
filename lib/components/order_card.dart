@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -115,10 +113,7 @@ class OrderCard extends StatelessWidget {
     return SizedBox(
       width: 100,
       height: 130,
-      child: Image.memory(
-        base64Decode(imageUrl),
-        fit: BoxFit.cover,
-      ),
+      child: Image.network(imageUrl, fit: BoxFit.cover),
     );
   }
 

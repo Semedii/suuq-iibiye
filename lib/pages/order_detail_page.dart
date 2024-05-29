@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +45,7 @@ class OrderDetailsPage extends StatelessWidget {
     return CarouselSlider(
         items: cartProducts
             .map((cartProduct) =>
-                Image.memory(base64Decode(cartProduct?.imageUrl ?? "")))
+                Image.network((cartProduct?.imageUrl ?? "")))
             .toList(),
         options: CarouselOptions(viewportFraction: 1));
   }
