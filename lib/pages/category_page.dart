@@ -9,12 +9,14 @@ import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
+import 'package:suuq_iibiye/utils/field_validators.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
   final Category category;
   CategoryPage({required this.category, super.key});
-
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
   @override
@@ -42,7 +44,10 @@ class CategoryPage extends ConsumerWidget {
   }
 
   Column _buildCategoryPageBody(
-      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+    BuildContext context,
+    CategoryStateLoaded state,
+    WidgetRef ref,
+  ) {
     return Column(
       children: [
         Expanded(
@@ -99,30 +104,47 @@ class CategoryPage extends ConsumerWidget {
   }
 
   AlertDialog _buildAddNewProductDialog(
-      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+    BuildContext context,
+    CategoryStateLoaded state,
+    WidgetRef ref,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return AlertDialog(
       title: const Text('Add New Product'),
       content: SingleChildScrollView(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-            TextField(
-              controller: priceController,
-              decoration: const InputDecoration(labelText: 'Price'),
-              keyboardType: TextInputType.number,
-            ),
-            _buildUploadImageButton(ref, state),
-          ],
+        child: Form(
+          key: _formKey,
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              _buildDescriptionFeild(localizations),
+              _buildPriceField(localizations),
+              _buildUploadImageButton(ref, state),
+            ],
+          ),
         ),
       ),
       actions: [
         _buildCancelButton(context),
         _buildAddButton(ref, state, context),
       ],
+    );
+  }
+
+  TextFormField _buildDescriptionFeild(AppLocalizations localizations) {
+    return TextFormField(
+      controller: descriptionController,
+      decoration: const InputDecoration(labelText: 'Description'),
+      validator: (value) => FieldValidators.required(value, localizations),
+    );
+  }
+
+  TextFormField _buildPriceField(AppLocalizations localizations) {
+    return TextFormField(
+      controller: priceController,
+      decoration: const InputDecoration(labelText: 'Price'),
+      keyboardType: TextInputType.number,
+      validator: (value) => FieldValidators.required(value, localizations),
     );
   }
 
@@ -160,18 +182,17 @@ class CategoryPage extends ConsumerWidget {
       WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Validate input and save the product
-        String description = descriptionController.text.trim();
-        String price = priceController.text.trim();
-        if (description.isNotEmpty && price.isNotEmpty) {
-          ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
-              sellerName: "",
-              sellerEmail: "",
-              imageUrl: state.encodedImages ?? [],
-              description: description,
-              price: double.parse(price),
-              category: category));
-          Navigator.pop(context);
+        if (_formKey.currentState!.validate()) {
+          String description = descriptionController.text.trim();
+          String price = priceController.text.trim();
+            ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
+                sellerName: "",
+                sellerEmail: "",
+                imageUrl: state.encodedImages ?? [],
+                description: description,
+                price: double.parse(price),
+                category: category));
+            Navigator.pop(context);
         }
       },
       child: const Text('Add'),
