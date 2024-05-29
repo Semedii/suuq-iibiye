@@ -13,7 +13,7 @@ import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
-  CategoryPage({required this.category, super.key});
+  const CategoryPage({required this.category, super.key});
 
   final Category category;
   

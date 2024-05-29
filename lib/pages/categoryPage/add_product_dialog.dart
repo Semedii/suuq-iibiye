@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
@@ -74,9 +73,7 @@ class AddProductDialog extends ConsumerWidget {
     return Column(
       children: [
         ElevatedButton(
-          onPressed: () {
-            _onUploadImage(ref);
-          },
+          onPressed: ref.read(categoryNotifierProvider.notifier).onUploadImage,
           child: const Text('Upload Image'),
         ),
         if (state.encodedImages != null && state.encodedImages!.isNotEmpty)
@@ -89,15 +86,6 @@ class AddProductDialog extends ConsumerWidget {
           ),
       ],
     );
-  }
-
-  void _onUploadImage(WidgetRef ref) async {
-    List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
-    if (pickedImage.isEmpty) return;
-
-    ref.read(categoryNotifierProvider.notifier).onProfilePhotoChanged(
-          pickedImage,
-        );
   }
 
   TextButton _buildCancelButton(BuildContext context) {

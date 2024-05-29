@@ -43,7 +43,13 @@ class CategoryNotifier extends _$CategoryNotifier {
     await initPage(lastState.category);
   }
 
-  Future<void> onProfilePhotoChanged(List<XFile?> files) async {
+  void onUploadImage() async {
+    List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
+    if (pickedImage.isEmpty) return;
+    _onImagesUploaded(pickedImage);
+  }
+
+  Future<void> _onImagesUploaded(List<XFile?> files) async {
     if (files.isEmpty) {
       print('user has not chosen a picture');
       return;
@@ -51,8 +57,8 @@ class CategoryNotifier extends _$CategoryNotifier {
     List<String> encodedImages = [];
     for (XFile? file in files) {
       if (file != null) {
-       File compressedFile =  await compressAndResizeImage(file);
-       XFile compressedXfile = XFile(compressedFile.path);
+        File compressedFile = await compressAndResizeImage(file);
+        XFile compressedXfile = XFile(compressedFile.path);
         Uint8List image = await compressedXfile.readAsBytes();
         String encodedImage = base64Encode(image);
         encodedImages.add(encodedImage);
@@ -62,39 +68,43 @@ class CategoryNotifier extends _$CategoryNotifier {
         (state as CategoryStateLoaded).copyWith(encodedImages: encodedImages);
   }
 
-  Future<void> removeProduct(String productId)async{
-     var lastState = state as CategoryStateLoaded;
+  Future<void> removeProduct(String productId) async {
+    var lastState = state as CategoryStateLoaded;
     state = CategoryStateLoading();
-    await ProductDataService().deleteProduct(productId: productId, category: lastState.category);
+    await ProductDataService()
+        .deleteProduct(productId: productId, category: lastState.category);
     await initPage(lastState.category);
   }
 
-  Future<File> compressAndResizeImage(XFile fille) async{
+  Future<File> compressAndResizeImage(XFile fille) async {
     File file = File(fille.path);
 
-  img.Image image = img.decodeImage(file.readAsBytesSync())!;
+    img.Image image = img.decodeImage(file.readAsBytesSync())!;
 
-  // Resize the image to have the longer side be 800 pixels
-  int width;
-  int height;
+    // Resize the image to have the longer side be 800 pixels
+    int width;
+    int height;
 
-  if (image.width > image.height) {
-    width = 800;
-    height = (image.height / image.width * 800).round();
-  } else {
-    height = 800;
-    width = (image.width / image.height * 800).round();
+    if (image.width > image.height) {
+      width = 800;
+      height = (image.height / image.width * 800).round();
+    } else {
+      height = 800;
+      width = (image.width / image.height * 800).round();
+    }
+
+    img.Image resizedImage =
+        img.copyResize(image, width: width, height: height);
+
+    // Compress the image with JPEG format
+    List<int> compressedBytes =
+        img.encodeJpg(resizedImage, quality: 75); // Adjust quality as needed
+
+    // Save the compressed image to a file
+    File compressedFile =
+        File(file.path.replaceFirst('.jpg', '_compressed.jpg'));
+    compressedFile.writeAsBytesSync(compressedBytes);
+
+    return compressedFile;
   }
-
-  img.Image resizedImage = img.copyResize(image, width: width, height: height);
-
-  // Compress the image with JPEG format
-  List<int> compressedBytes = img.encodeJpg(resizedImage, quality: 75);  // Adjust quality as needed
-
-  // Save the compressed image to a file
-  File compressedFile = File(file.path.replaceFirst('.jpg', '_compressed.jpg'));
-  compressedFile.writeAsBytesSync(compressedBytes);
-
-  return compressedFile;
-}
 }
