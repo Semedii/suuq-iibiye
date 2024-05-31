@@ -35,11 +35,11 @@ class CategoryNotifier extends _$CategoryNotifier {
     );
   }
 
-  updatePrice(Product product, double newPrice) async {
+  updatePriceAndDescription(Product product, double newPrice, String newDescription) async {
     var lastState = state as CategoryStateLoaded;
     state = CategoryStateLoading();
     await ProductDataService()
-        .updatePrice(product: product, newPrice: newPrice);
+        .updatePriceAndDescription(product: product, newPrice: newPrice,description:  newDescription);
     await initPage(lastState.category);
   }
 

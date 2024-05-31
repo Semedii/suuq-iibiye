@@ -99,7 +99,7 @@ class CategoryPage extends ConsumerWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return EditPriceDialog(product: product);
+        return EditProductDialog(product: product);
       },
     );
   }

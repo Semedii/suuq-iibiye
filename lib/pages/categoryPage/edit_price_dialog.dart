@@ -4,8 +4,8 @@ import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
 
-class EditPriceDialog extends ConsumerWidget {
-  const EditPriceDialog({required this.product, super.key});
+class EditProductDialog extends ConsumerWidget {
+  const EditProductDialog({required this.product, super.key});
 
   final Product product;
 
@@ -19,7 +19,8 @@ class EditPriceDialog extends ConsumerWidget {
 
   AlertDialog _buildPriceDialog(BuildContext context, CategoryStateLoaded state,
       WidgetRef ref, Product product) {
-    TextEditingController newPriceController = TextEditingController();
+    TextEditingController priceController = TextEditingController(text: product.price.toString());
+    TextEditingController descriptionController = TextEditingController(text: product.description);
     return AlertDialog(
       title: const Text('Edit Price'),
       content: SingleChildScrollView(
@@ -27,15 +28,19 @@ class EditPriceDialog extends ConsumerWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
-              controller: newPriceController,
+              controller: priceController,
               decoration: InputDecoration(hintText: product.price.toString()),
+            ),
+            TextField(
+              controller: descriptionController,
+              decoration: InputDecoration(hintText: product.description),
             ),
           ],
         ),
       ),
       actions: [
         _buildCancelButton(context),
-        _buildSubmitButton(product, newPriceController, ref, state, context),
+        _buildSubmitButton(product, priceController, descriptionController ,ref, context),
       ],
     );
   }
@@ -52,17 +57,17 @@ class EditPriceDialog extends ConsumerWidget {
   ElevatedButton _buildSubmitButton(
       Product product,
       TextEditingController priceController,
+      TextEditingController descriptionController,
       WidgetRef ref,
-      CategoryStateLoaded state,
       BuildContext context) {
     return ElevatedButton(
       onPressed: () {
-        // Validate input and save the product
         String price = priceController.text.trim();
-        if (price.isNotEmpty) {
+        String description = descriptionController.text.trim();
+        if (price.isNotEmpty && description.isNotEmpty) {
           ref
               .read(categoryNotifierProvider.notifier)
-              .updatePrice(product, double.parse(price));
+              .updatePriceAndDescription(product, double.parse(price), description);
           Navigator.pop(context);
         }
       },
