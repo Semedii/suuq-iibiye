@@ -42,6 +42,6 @@ class OrderNotifier extends StateNotifier<OrderState> {
   }
 }
 
-final orderNotifierProvider = StateNotifierProvider<OrderNotifier, OrderState>(
+final orderNotifierProvider = StateNotifierProvider.autoDispose<OrderNotifier, OrderState>(
   (ref) => OrderNotifier(),
 );
