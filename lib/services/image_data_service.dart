@@ -25,9 +25,12 @@ class ImageDataService {
   }
 
   Future<void> deleteImage(List<String?> ids) async {
-    if(ids.isEmpty) return;
+    if (ids.isEmpty) return;
     for (String? id in ids) {
-      final imageRef = storageRef.child("images/products/$id.jpg");
+      if (id == null) return;
+      Uri uri = Uri.parse(id);
+      String filename = uri.pathSegments.last;
+      final imageRef = storageRef.child("images/products/$filename");
       await imageRef.delete();
     }
   }
