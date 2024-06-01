@@ -12,16 +12,23 @@ class ImageDataService {
     List<String> ids,
   ) async {
     for (int i = 0; i < imageFiles.length; i++) {
-      final imageRef =
-          storageRef.child("images/products/$category/${ids[i]}.jpg");
+      final imageRef = storageRef.child("images/products/${ids[i]}.jpg");
       File selectedImagePath = File(imageFiles[i]!.path);
       await imageRef.putFile(selectedImagePath);
     }
   }
 
-  Future<String> retrieveImageUrl(String category, id) async {
-    final imageRef = storageRef.child("images/products/$category/$id.jpg");
+  Future<String> retrieveImageUrl(id) async {
+    final imageRef = storageRef.child("images/products/$id.jpg");
     var url = await imageRef.getDownloadURL();
     return url;
+  }
+
+  Future<void> deleteImage(List<String?> ids) async {
+    if(ids.isEmpty) return;
+    for (String? id in ids) {
+      final imageRef = storageRef.child("images/products/$id.jpg");
+      await imageRef.delete();
+    }
   }
 }

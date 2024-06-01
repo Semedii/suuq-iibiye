@@ -63,7 +63,7 @@ class CategoryPage extends ConsumerWidget {
                   product: product,
                   onRemoveProduct: () => ref
                       .read(categoryNotifierProvider.notifier)
-                      .removeProduct(product.id),
+                      .removeProduct(product),
                   editPrice: () => _showAPriceDialog(context, product),
                 ),
               );

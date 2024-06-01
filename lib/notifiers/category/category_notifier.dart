@@ -23,7 +23,7 @@ class CategoryNotifier extends _$CategoryNotifier {
       List<String> newImageUrls = [];
       for (String? imageUrl in product.imageUrl) {
         var newImageUrl =
-            await ImageDataService().retrieveImageUrl(category, imageUrl);
+            await ImageDataService().retrieveImageUrl(imageUrl);
         newImageUrls.add(newImageUrl);
       }
       product = product.copyWith(imageUrl: newImageUrls);
@@ -74,11 +74,12 @@ class CategoryNotifier extends _$CategoryNotifier {
     await initPage(lastState.category);
   }
 
-  Future<void> removeProduct(String productId) async {
+  Future<void> removeProduct(Product product) async {
     var lastState = state as CategoryStateLoaded;
     state = CategoryStateLoading();
     await ProductDataService()
-        .deleteProduct(productId: productId, category: lastState.category);
+        .deleteProduct(productId: product.id, category: categoryToString(product.category));
+    await ImageDataService().deleteImage(product.imageUrl);
     await initPage(lastState.category);
   }
 

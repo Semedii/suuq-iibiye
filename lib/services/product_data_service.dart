@@ -26,8 +26,8 @@ class ProductDataService {
   Future<List<Product>> fetchProductsByCategory(String category) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     try {
-      final collectionRef = db
-          .collectionGroup(category.toLowerCase())
+      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
+
           .where('seller_email', isEqualTo: sellerEmail)
           .withConverter(
             fromFirestore: Product.fromFirestore,
@@ -50,7 +50,6 @@ class ProductDataService {
     required String description,
     required double price,
   }) async {
-    final String categoryString = categoryToString(category);
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     final sellerName = await Global.storageService.getString("sellerName");
 
@@ -65,8 +64,6 @@ class ProductDataService {
 
     final docRef = db
         .collection("products")
-        .doc("categoriesDoc")
-        .collection(categoryString)
         .withConverter(
           fromFirestore: Product.fromFirestore,
           toFirestore: (Product product, options) => product.toFirestore(),
@@ -77,12 +74,9 @@ class ProductDataService {
 
   Future<void> updatePriceAndDescription(
       {required Product product, required double newPrice, required String description}) async {
-    final String categoryString = categoryToString(product.category);
     final priceData = {"price": newPrice, "description": description};
     db
         .collection('products')
-        .doc('categoriesDoc')
-        .collection(categoryString)
         .doc(product.id)
         .update(priceData);
   }
@@ -93,8 +87,6 @@ class ProductDataService {
   }) async {
     db
         .collection('products')
-        .doc('categoriesDoc')
-        .collection(category)
         .doc(productId)
         .delete();
   }
