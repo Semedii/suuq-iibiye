@@ -1,4 +1,5 @@
 {
+  "activeOrders": "Active Orders",
   "backToLogin": "Back to Login",
   "businessName": "Business name",
   "businessNameValidation": "Please enter your business name",
@@ -14,11 +15,13 @@
   "forgotYourPassword": "Forgot your password",
   "iAccept": "I accept ",
   "login": "Login",
+  "noActiveOrders": "Currently there is no active orders. You can check past orders in Order History page",
   "password": "Password",
   "passwordLengthValidation": "Password should be at least 6 characters",
   "phoneNumber": "Phone Number",
   "requiredField": "This field is required",
   "signup": "Signup",
+  "sucessfullyCreated": "Successfully created, please login",
   "termsAndConditions": "the terms and conditions",
   "termsValidation": "You need to accept the terms"
 }

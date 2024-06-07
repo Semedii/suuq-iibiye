@@ -5,6 +5,7 @@ import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/notifiers/orders/order_notifier.dart';
 import 'package:suuq_iibiye/notifiers/orders/order_state.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class OrdersPage extends ConsumerWidget {
   const OrdersPage({super.key});
@@ -12,28 +13,37 @@ class OrdersPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     OrderState orderState = ref.watch(orderNotifierProvider);
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("My Orders"),
+          title: Text(localizations.activeOrders),
         ),
-        body: _mapStateToWidget(orderState, ref));
+        body: _mapStateToWidget(orderState, ref, localizations));
   }
 
-  Widget _mapStateToWidget(OrderState state, WidgetRef ref) {
+  Widget _mapStateToWidget(
+    OrderState state,
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) {
     if (state is OrderInitialState) {
       ref.read(orderNotifierProvider.notifier).initPage();
     } else if (state is OrderLoadedState) {
-      return _buildOrderPageBody(state.orderModelList, ref);
+      return _buildOrderPageBody(state.orderModelList, ref, localizations);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildOrderPageBody(List<OrderModel?> orderList, WidgetRef ref) {
+  Widget _buildOrderPageBody(
+    List<OrderModel?> orderList,
+    WidgetRef ref,
+    AppLocalizations localizations,
+  ) {
     bool isOrderListAvailable = orderList.isNotEmpty;
     return RefreshIndicator(
-      onRefresh: () async{
-       ref.read(orderNotifierProvider.notifier).initPage();
+      onRefresh: () async {
+        ref.read(orderNotifierProvider.notifier).initPage();
       },
       child: Padding(
         padding: AppStyles.edgeInsetsH16,
@@ -48,9 +58,9 @@ class OrdersPage extends ConsumerWidget {
                   return const SizedBox.shrink();
                 },
               )
-            : const Center(
+            : Center(
                 child: Text(
-                  "No Active Order Available. You can check past orders in the Order History Page",
+                  localizations.noActiveOrders,
                   textAlign: TextAlign.center,
                 ),
               ),

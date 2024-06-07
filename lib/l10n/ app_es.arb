@@ -1,4 +1,5 @@
 {
+  "activeOrders": "Dalabaad ka Taagan",
   "backToLogin": "Ku noqo Bogga gelidda",
   "businessName": "Magaca Ganacsiga",
   "businessNameValidation": "Fadlan geli magaca ganacsigaaga",
@@ -14,11 +15,13 @@
   "forgotYourPassword": "Furihi sirta ma xasuusto",
   "iAccept": "Waan aqbalay ",
   "login": "Gal",
+  "noActiveOrders": "Dalab taagan ma jiro. Dalabaadki hore waxaad ka arki kartaa bogga Dalabaad Hore",
   "password": "Furaha sirta ah ",
   "passwordLengthValidation": "Furaha sirtu kama yaraan karo 6 god",
   "phoneNumber": "Taleefan number",
   "requiredField": "Fadlan buuxi ",
   "signup": "Is diwaan geli",
+  "sucessfullyCreated": "Diiwaangelintan waa lagu guulaystay. Fadlan gal.",
   "termsAndConditions": "shuruudaha app-ka",
   "termsValidation": "Fadlan aqbal shuruudaha"
 }

@@ -43,6 +43,7 @@ class SignupPage extends ConsumerWidget {
     WidgetRef ref,
     SignupState signupState,
   ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     if (signupState is SignupStateInitial) {
       return _buildSignupForm(context, ref, signupState);
     }
@@ -50,7 +51,7 @@ class SignupPage extends ConsumerWidget {
       return const Center(child: CircularProgressIndicator());
     }
     if (signupState is SignupStateSuccess) {
-      toastInfo("Successfully created, please login");
+      toastInfo(localizations.sucessfullyCreated);
       AutoRouter.of(context).replace(const LoginRoute());
     }
     if (signupState is SignupStateFailure) {
