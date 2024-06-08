@@ -10,7 +10,7 @@ import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq_iibiye/utils/enums/order_status.dart';
-import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 
 @RoutePage()
@@ -34,9 +34,9 @@ class OrderDetailsPage extends StatelessWidget {
             _getImages(order.cartProducts),
             const SizedBox(height: 20),
             ..._buildProductDetails(order.cartProducts),
-            _buildDetailRow(localizations.customerName+SymbolUtilities.colon, order.customer.name ?? "N/A"),
-            _buildDetailRow(localizations.phoneNumber+SymbolUtilities.colon, order.sendersPhone),
-            _buildDetailRow(localizations.address+SymbolUtilities.colon, order.address),
+            _buildDetailRow(localizations.customerName+StringUtilities.colon, order.customer.name ?? "N/A"),
+            _buildDetailRow(localizations.phoneNumber+StringUtilities.colon, order.sendersPhone),
+            _buildDetailRow(localizations.address+StringUtilities.colon, order.address),
             _buildStatus(order.status, localizations),
             _buildButton(order, localizations),
           ],

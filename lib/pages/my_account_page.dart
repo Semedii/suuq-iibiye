@@ -8,7 +8,7 @@ import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 class MyAccountPage extends ConsumerWidget {
   const MyAccountPage({super.key});
@@ -113,7 +113,7 @@ class MyAccountPage extends ConsumerWidget {
         Center(
           child: Text(
             localizations.joinedOn +
-                SymbolUtilities.colon +
+                StringUtilities.colon +
                 DateFormat('dd/mm/yyyy').format(joinedDate),
             style: const TextStyle(fontSize: 12, color: Colors.black87),
           ),

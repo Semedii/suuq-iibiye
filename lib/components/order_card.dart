@@ -6,7 +6,7 @@ import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 class OrderCard extends StatelessWidget {
   const OrderCard({required this.orderModel, super.key});
@@ -41,8 +41,8 @@ class OrderCard extends StatelessWidget {
                             text: TextSpan(children: [
                           TextSpan(
                             text: localizations.customerName +
-                                SymbolUtilities.colon +
-                                SymbolUtilities.space,
+                                StringUtilities.colon +
+                                StringUtilities.space,
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),
@@ -60,8 +60,8 @@ class OrderCard extends StatelessWidget {
                             text: TextSpan(children: [
                           TextSpan(
                             text: localizations.address +
-                                SymbolUtilities.colon +
-                                SymbolUtilities.space,
+                                StringUtilities.colon +
+                                StringUtilities.space,
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),

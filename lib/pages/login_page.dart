@@ -8,7 +8,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/pop_up_message.dart';
-import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 import '../components/app_button.dart';
 
@@ -107,7 +107,7 @@ class LoginPage extends ConsumerWidget {
       child: Padding(
         padding: AppStyles.edgeInsetsH20,
         child: Text(
-          localizations.forgotYourPassword + SymbolUtilities.questionMark,
+          localizations.forgotYourPassword + StringUtilities.questionMark,
         ),
       ),
     );

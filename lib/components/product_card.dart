@@ -3,7 +3,7 @@ import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -110,7 +110,7 @@ class ProductCard extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                  Text(
-                  localizations.areYouSureRemove+SymbolUtilities.questionMark,
+                  localizations.areYouSureRemove+StringUtilities.questionMark,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 _buildYesButton(context),
