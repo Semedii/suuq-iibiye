@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuq_iibiye/utils/enums/language.dart';
 
 class UserModel {
   String? id;
@@ -6,10 +7,12 @@ class UserModel {
   String? email;
   String? phoneNumber;
   DateTime? joinedDate;
+  Language language;
   String? avatar;
   String? address;
 
   UserModel({
+    this.language = Language.somali,
     this.joinedDate,
     this.id,
     this.name,
@@ -28,6 +31,7 @@ class UserModel {
     return UserModel(
         joinedDate: createdDate.toDate(),
         id: data?['uid'],
+         language: getLanguageFromString(data?['language']),
         name: data?['name'],
         email: data?['email'],
         phoneNumber: data?['phone_number'],
@@ -43,6 +47,7 @@ class UserModel {
       "phone_number": phoneNumber,
       "avatar": avatar,
       "address": address,
+      "language": languageToString(language),
     };
   }
   //for user object in ordermodel

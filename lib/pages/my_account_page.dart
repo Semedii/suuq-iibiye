@@ -93,8 +93,9 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSellerNameAndJoinedDate(BuildContext context, String name, DateTime joinedDate) {
-     AppLocalizations localizations = AppLocalizations.of(context)!;
+  Widget _buildSellerNameAndJoinedDate(
+      BuildContext context, String name, DateTime joinedDate) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -111,7 +112,9 @@ class MyAccountPage extends ConsumerWidget {
         const SizedBox(height: 4),
         Center(
           child: Text(
-            localizations.joinedOn+SymbolUtilities.colon+DateFormat('dd/mm/yyyy').format(joinedDate),
+            localizations.joinedOn +
+                SymbolUtilities.colon +
+                DateFormat('dd/mm/yyyy').format(joinedDate),
             style: const TextStyle(fontSize: 12, color: Colors.black87),
           ),
         ),
@@ -147,6 +150,13 @@ class MyAccountPage extends ConsumerWidget {
                   ),
                 ),
                 _getMenu(
+                  Icons.language,
+                  localizations.changeLanguage,
+                  onTap: () => AutoRouter.of(context).push(
+                    const ChangeLanguageRoute(),
+                  ),
+                ),
+                _getMenu(
                   Icons.history,
                   localizations.orderHistory,
                   onTap: () => AutoRouter.of(context).push(
@@ -156,7 +166,7 @@ class MyAccountPage extends ConsumerWidget {
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
                   Icons.logout_outlined,
-                 localizations.logout,
+                  localizations.logout,
                   onTap:
                       ref.read(loginInNotifierProvider.notifier).handleLogout,
                 ),

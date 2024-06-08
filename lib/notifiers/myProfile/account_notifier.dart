@@ -1,9 +1,12 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/services/auth_data_service.dart';
 import 'package:suuq_iibiye/services/auth_service.dart';
+import 'package:suuq_iibiye/utils/enums/language.dart';
 import 'package:suuq_iibiye/utils/pop_up_message.dart';
 
 part 'account_notifier.g.dart';
@@ -25,6 +28,7 @@ class AccountNotifier extends _$AccountNotifier {
     state = AccountLoadedState(
         sellerName: seller!.name!,
         sellerEmail: seller.email!,
+        language: seller.language,
         sellerPhoneNumber: seller.phoneNumber!,
         sellerJoinedDate: seller.joinedDate!,
         sellerAddress: seller.address,
@@ -48,7 +52,11 @@ class AccountNotifier extends _$AccountNotifier {
     state = (state as AccountLoadedState).copyWith(rePassword: rePassword);
   }
 
-  onSavePassword()async{
+    onChangeLanguage(Language? language) {
+    state = (state as AccountLoadedState).copyWith(language: language);
+  }
+
+  onSavePassword() async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authService.changePassword(currentState.newPassword!);
@@ -65,5 +73,15 @@ class AccountNotifier extends _$AccountNotifier {
         address: currentState.sellerAddress!);
     state = currentState.copyWith(issaveButtonLoading: false);
     toastInfo("Successfully updated");
+  }
+
+  onSaveLanguagePressed(String succesfullMessage) async {
+    String? sellerEmail = FirebaseAuth.instance.currentUser?.email!;
+    var currentState = state as AccountLoadedState;
+    state = currentState.copyWith(issaveButtonLoading: true);
+    await _authDataService.updateLanguage(
+        email: sellerEmail!, language: currentState.language);
+    state = currentState.copyWith(issaveButtonLoading: false);
+    toastInfo(succesfullMessage);
   }
 }
