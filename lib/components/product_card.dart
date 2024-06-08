@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/symbol_utilities.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
@@ -99,6 +101,7 @@ class ProductCard extends StatelessWidget {
   }
 
   void _showAddProductDialog(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -106,9 +109,9 @@ class ProductCard extends StatelessWidget {
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                const Text(
-                  "Are you sure you wanna remove this?",
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                 Text(
+                  localizations.areYouSureRemove+SymbolUtilities.questionMark,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 _buildYesButton(context),
                 _buildCancelButton(context)

@@ -5,6 +5,8 @@ import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/symbol_utilities.dart';
 
 class OrderCard extends StatelessWidget {
   const OrderCard({required this.orderModel, super.key});
@@ -14,6 +16,7 @@ class OrderCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final List<CartProduct?> cartProducts = orderModel.cartProducts;
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () =>
           AutoRouter.of(context).push(OrderDetailsRoute(order: orderModel)),
@@ -37,7 +40,9 @@ class OrderCard extends StatelessWidget {
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                            text: "Customer: ",
+                            text: localizations.customerName +
+                                SymbolUtilities.colon +
+                                SymbolUtilities.space,
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),
@@ -54,7 +59,9 @@ class OrderCard extends StatelessWidget {
                         RichText(
                             text: TextSpan(children: [
                           TextSpan(
-                            text: "Address: ",
+                            text: localizations.address +
+                                SymbolUtilities.colon +
+                                SymbolUtilities.space,
                             style: TextStyle(
                               color: Colors.grey[600],
                             ),
