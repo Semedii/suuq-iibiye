@@ -31,7 +31,7 @@ class AddProductDialog extends ConsumerWidget {
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return AlertDialog(
-      title: const Text('Add New Product'),
+      title: Text(localizations.addNewProduct),
       content: SingleChildScrollView(
         child: Form(
           key: _formKey,
@@ -40,7 +40,7 @@ class AddProductDialog extends ConsumerWidget {
             children: [
               _buildDescriptionFeild(localizations),
               _buildPriceField(localizations),
-              _buildUploadImageButton(ref, state),
+              _buildUploadImageButton(ref, state, localizations),
             ],
           ),
         ),
@@ -55,7 +55,7 @@ class AddProductDialog extends ConsumerWidget {
   TextFormField _buildDescriptionFeild(AppLocalizations localizations) {
     return TextFormField(
       controller: descriptionController,
-      decoration: const InputDecoration(labelText: 'Description'),
+      decoration: InputDecoration(labelText: localizations.description),
       validator: (value) => FieldValidators.required(value, localizations),
     );
   }
@@ -63,25 +63,30 @@ class AddProductDialog extends ConsumerWidget {
   TextFormField _buildPriceField(AppLocalizations localizations) {
     return TextFormField(
       controller: priceController,
-      decoration: const InputDecoration(labelText: 'Price'),
+      decoration: InputDecoration(labelText: localizations.price),
       keyboardType: TextInputType.number,
       validator: (value) => FieldValidators.required(value, localizations),
     );
   }
 
-  Column _buildUploadImageButton(WidgetRef ref, CategoryStateLoaded state) {
+  Column _buildUploadImageButton(
+    WidgetRef ref,
+    CategoryStateLoaded state,
+    AppLocalizations localizations,
+  ) {
     return Column(
       children: [
         ElevatedButton(
           onPressed: ref.read(categoryNotifierProvider.notifier).onUploadImage,
-          child: const Text('Upload Image'),
+          child: Text(localizations.uploadImage),
         ),
         if (state.images != null && state.images!.isNotEmpty)
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               const Icon(Icons.check),
-              Text('uploaded ${state.images?.length} file'),
+              Text(
+                  "${localizations.uploaded} ${state.images?.length} ${localizations.image}"),
             ],
           ),
       ],
@@ -89,16 +94,21 @@ class AddProductDialog extends ConsumerWidget {
   }
 
   TextButton _buildCancelButton(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return TextButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
-      child: const Text('Cancel'),
+      child: Text(localizations.cancel),
     );
   }
 
   ElevatedButton _buildAddButton(
-      WidgetRef ref, CategoryStateLoaded state, BuildContext context) {
+    WidgetRef ref,
+    CategoryStateLoaded state,
+    BuildContext context,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return ElevatedButton(
       onPressed: () {
         if (_formKey.currentState!.validate()) {
@@ -107,14 +117,14 @@ class AddProductDialog extends ConsumerWidget {
           ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
               sellerName: "",
               sellerEmail: "",
-              imageUrl:  [],
+              imageUrl: [],
               description: description,
               price: double.parse(price),
               category: category));
           Navigator.pop(context);
         }
       },
-      child: const Text('Add'),
+      child: Text(localizations.add),
     );
   }
 }

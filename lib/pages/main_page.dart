@@ -6,6 +6,7 @@ import 'package:suuq_iibiye/pages/home_page.dart';
 import 'package:suuq_iibiye/pages/my_account_page.dart';
 import 'package:suuq_iibiye/pages/orders_page.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class MainPage extends ConsumerWidget {
@@ -15,6 +16,7 @@ class MainPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     final indexBottomNavbar = ref.watch(bottomNavBarNotifierProvider);
     final bodies = [
       const HomePage(),
@@ -26,11 +28,11 @@ class MainPage extends ConsumerWidget {
         currentIndex: indexBottomNavbar,
         onTap: ref.read(bottomNavBarNotifierProvider.notifier).onTap,
         selectedItemColor: AppColors.black,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
+        items:  [
+          BottomNavigationBarItem(icon: const Icon(Icons.home), label: localizations.home),
           BottomNavigationBarItem(
-              icon: Icon(Icons.money_off_csred_rounded), label: "My Orders"),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: "My Account")
+              icon: const Icon(Icons.money_off_csred_rounded), label: localizations.activeOrders),
+          BottomNavigationBarItem(icon: const Icon(Icons.person), label: localizations.myAccount)
         ],
       ),
       body: bodies[indexBottomNavbar],

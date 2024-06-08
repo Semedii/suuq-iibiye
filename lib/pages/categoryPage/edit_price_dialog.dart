@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class EditProductDialog extends ConsumerWidget {
   const EditProductDialog({required this.product, super.key});
@@ -17,12 +18,19 @@ class EditProductDialog extends ConsumerWidget {
         : const SizedBox.shrink();
   }
 
-  AlertDialog _buildPriceDialog(BuildContext context, CategoryStateLoaded state,
-      WidgetRef ref, Product product) {
-    TextEditingController priceController = TextEditingController(text: product.price.toString());
-    TextEditingController descriptionController = TextEditingController(text: product.description);
+  AlertDialog _buildPriceDialog(
+    BuildContext context,
+    CategoryStateLoaded state,
+    WidgetRef ref,
+    Product product,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    TextEditingController priceController =
+        TextEditingController(text: product.price.toString());
+    TextEditingController descriptionController =
+        TextEditingController(text: product.description);
     return AlertDialog(
-      title: const Text('Edit Price'),
+      title: Text(localizations.editPrice),
       content: SingleChildScrollView(
         child: Column(
           mainAxisSize: MainAxisSize.min,
@@ -40,17 +48,19 @@ class EditProductDialog extends ConsumerWidget {
       ),
       actions: [
         _buildCancelButton(context),
-        _buildSubmitButton(product, priceController, descriptionController ,ref, context),
+        _buildSubmitButton(
+            product, priceController, descriptionController, ref, context),
       ],
     );
   }
 
   TextButton _buildCancelButton(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return TextButton(
       onPressed: () {
         Navigator.of(context).pop();
       },
-      child: const Text('Cancel'),
+      child: Text(localizations.cancel),
     );
   }
 
@@ -60,18 +70,18 @@ class EditProductDialog extends ConsumerWidget {
       TextEditingController descriptionController,
       WidgetRef ref,
       BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return ElevatedButton(
       onPressed: () {
         String price = priceController.text.trim();
         String description = descriptionController.text.trim();
         if (price.isNotEmpty && description.isNotEmpty) {
-          ref
-              .read(categoryNotifierProvider.notifier)
-              .updatePriceAndDescription(product, double.parse(price), description);
+          ref.read(categoryNotifierProvider.notifier).updatePriceAndDescription(
+              product, double.parse(price), description);
           Navigator.pop(context);
         }
       },
-      child: const Text('Submit'),
+      child: Text(localizations.save),
     );
   }
 }

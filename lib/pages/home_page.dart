@@ -7,6 +7,7 @@ import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class HomePage extends ConsumerWidget {
@@ -15,23 +16,23 @@ class HomePage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final homeState = ref.watch(homeNotifierProvider);
-    return _mapStateToWidget(ref, homeState);
+    return _mapStateToWidget(context, ref, homeState);
   }
 
-  Widget _mapStateToWidget(WidgetRef ref, HomeState state) {
+  Widget _mapStateToWidget(BuildContext context, WidgetRef ref, HomeState state) {
     if (state is HomeStateInitial) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(homeNotifierProvider.notifier).initPage();
       });
     } else if (state is HomeStateLoaded) {
-      return _buildHomepageBody(state.categories);
+      return _buildHomepageBody(context, state.categories);
     }
     return const Scaffold(body: Center(child: CircularProgressIndicator()));
   }
 
-  Widget _buildHomepageBody(final List<Category?> categories) {
+  Widget _buildHomepageBody(BuildContext context, List<Category?> categories) {
     return Scaffold(
-      appBar: _buildAppBar(),
+      appBar: _buildAppBar(context),
       body: GridView.builder(
         padding: AppStyles.edgeInsetsH16,
         gridDelegate: _getGridDelegate(),
@@ -44,10 +45,11 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  AppBar _buildAppBar() {
+  AppBar _buildAppBar(BuildContext context) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     return AppBar(
       centerTitle: true,
-      title: const Text("My Products"),
+      title:  Text(localizations.myProducts),
       actions: [
         IconButton(onPressed: () {}, icon: const Icon(Icons.notifications)),
       ],

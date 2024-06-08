@@ -6,6 +6,7 @@ import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/notifiers/orderHistory/order_notifier.dart';
 import 'package:suuq_iibiye/notifiers/orderHistory/order_state.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class OrderHistoryPage extends ConsumerWidget {
@@ -13,29 +14,36 @@ class OrderHistoryPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     OrderHistoryState state = ref.watch(orderHistoryNotifierProvider);
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text("My Orders"),
+          title: Text(localizations.orderHistory),
         ),
-        body: _mapStateToWidget(state, ref));
+        body: _mapStateToWidget(context, state, ref));
   }
 
-  Widget _mapStateToWidget(OrderHistoryState state, WidgetRef ref) {
+  Widget _mapStateToWidget(
+      BuildContext context, OrderHistoryState state, WidgetRef ref) {
     if (state is OrderHistoryInitialState) {
       ref.read(orderHistoryNotifierProvider.notifier).initPage();
     } else if (state is OrderHistoryLoadedState) {
-      return _buildOrderHistoryPage(state.orderModelList, ref);
+      return _buildOrderHistoryPage(context, state.orderModelList, ref);
     }
     return const Center(child: CircularProgressIndicator());
   }
 
-  Widget _buildOrderHistoryPage(List<OrderModel?> orderList, WidgetRef ref) {
+  Widget _buildOrderHistoryPage(
+    BuildContext context,
+    List<OrderModel?> orderList,
+    WidgetRef ref,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     bool isOrderListAvailable = orderList.isNotEmpty;
     return RefreshIndicator(
-      onRefresh: () async{
-       ref.read(orderHistoryNotifierProvider.notifier).initPage();
+      onRefresh: () async {
+        ref.read(orderHistoryNotifierProvider.notifier).initPage();
       },
       child: Padding(
         padding: AppStyles.edgeInsetsH16,
@@ -50,9 +58,9 @@ class OrderHistoryPage extends ConsumerWidget {
                   return const SizedBox.shrink();
                 },
               )
-            : const Center(
+            : Center(
                 child: Text(
-                  "No Past Order Available.",
+                  localizations.noPastOrders,
                   textAlign: TextAlign.center,
                 ),
               ),

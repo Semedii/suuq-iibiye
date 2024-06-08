@@ -10,13 +10,14 @@ import 'package:suuq_iibiye/pages/categoryPage/add_product_dialog.dart';
 import 'package:suuq_iibiye/pages/categoryPage/edit_price_dialog.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 @RoutePage()
 class CategoryPage extends ConsumerWidget {
   const CategoryPage({required this.category, super.key});
 
   final Category category;
-  
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryState = ref.watch(categoryNotifierProvider);
@@ -76,11 +77,15 @@ class CategoryPage extends ConsumerWidget {
   }
 
   Padding _builAddNewProductButton(
-      BuildContext context, CategoryStateLoaded state, WidgetRef ref) {
+    BuildContext context,
+    CategoryStateLoaded state,
+    WidgetRef ref,
+  ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Padding(
       padding: AppStyles.edgeInsetsB48,
       child: AppButton(
-          title: "Add New Product",
+          title: localizations.addNewProduct,
           onTap: () {
             _showAddProductDialog(context);
           }),

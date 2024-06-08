@@ -21,7 +21,7 @@ class ChangePasswordPage extends ConsumerWidget {
         ref.watch(accountNotifierProvider) as AccountLoadedState;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Change Password"),
+        title:  Text(localizations.changePassword),
       ),
       body: Form(
         key: _formKey,
@@ -29,8 +29,8 @@ class ChangePasswordPage extends ConsumerWidget {
           children: [
             AppTextField(
               initialValue: state.newPassword,
-              label: "New Password",
-              hintText: "Enter your new password",
+              label: localizations.newPassword,
+              hintText: localizations.enterYourNewPassword,
               onChanged: ref
                   .read(accountNotifierProvider.notifier)
                   .onNewPasswordChanged,
@@ -39,8 +39,8 @@ class ChangePasswordPage extends ConsumerWidget {
             ),
             AppTextField(
               initialValue: state.rePassword,
-              label: "Confirm Password",
-              hintText: "Enter your new password again",
+              label: localizations.confirmPassword,
+              hintText:localizations.enterYourNewPasswordAgain,
               onChanged: ref
                   .read(accountNotifierProvider.notifier)
                   .onRePasswordChanged,
@@ -49,7 +49,7 @@ class ChangePasswordPage extends ConsumerWidget {
             ),
             AppButton(
                 isLoading: state.issaveButtonLoading,
-                title: "Save",
+                title: localizations.save,
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
                     ref.read(accountNotifierProvider.notifier).onSavePassword();

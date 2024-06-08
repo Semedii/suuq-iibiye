@@ -7,6 +7,8 @@ import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/symbol_utilities.dart';
 
 class MyAccountPage extends ConsumerWidget {
   const MyAccountPage({super.key});
@@ -68,7 +70,7 @@ class MyAccountPage extends ConsumerWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _buildAvatar(),
-          _buildSellerNameAndJoinedDate(name, joinedDate)
+          _buildSellerNameAndJoinedDate(context, name, joinedDate)
         ],
       ),
     );
@@ -91,7 +93,8 @@ class MyAccountPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildSellerNameAndJoinedDate(String name, DateTime joinedDate) {
+  Widget _buildSellerNameAndJoinedDate(BuildContext context, String name, DateTime joinedDate) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -108,7 +111,7 @@ class MyAccountPage extends ConsumerWidget {
         const SizedBox(height: 4),
         Center(
           child: Text(
-            "Joined on: ${DateFormat('dd/mm/yyyy').format(joinedDate)}",
+            localizations.joinedOn+SymbolUtilities.colon+DateFormat('dd/mm/yyyy').format(joinedDate),
             style: const TextStyle(fontSize: 12, color: Colors.black87),
           ),
         ),
@@ -120,6 +123,7 @@ class MyAccountPage extends ConsumerWidget {
     BuildContext context,
     WidgetRef ref,
   ) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Positioned(
         top: MediaQuery.of(context).size.height * .42,
         child: SizedBox(
@@ -130,21 +134,21 @@ class MyAccountPage extends ConsumerWidget {
               children: [
                 _getMenu(
                   Icons.person,
-                  "Business Information",
+                  localizations.businessInformation,
                   onTap: () => AutoRouter.of(context).push(
                     BusinessInformationRoute(),
                   ),
                 ),
                 _getMenu(
                   Icons.lock,
-                  "Change Password",
+                  localizations.changePassword,
                   onTap: () => AutoRouter.of(context).push(
                     ChangePasswordRoute(),
                   ),
                 ),
                 _getMenu(
                   Icons.history,
-                  "Order History",
+                  localizations.orderHistory,
                   onTap: () => AutoRouter.of(context).push(
                     const OrderHistoryRoute(),
                   ),
@@ -152,7 +156,7 @@ class MyAccountPage extends ConsumerWidget {
                 _getMenu(Icons.person, "About Suuq"),
                 _getMenu(
                   Icons.logout_outlined,
-                  "Logout",
+                 localizations.logout,
                   onTap:
                       ref.read(loginInNotifierProvider.notifier).handleLogout,
                 ),

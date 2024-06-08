@@ -19,7 +19,7 @@ class BusinessInformationPage extends ConsumerWidget {
         ref.watch(accountNotifierProvider) as AccountLoadedState;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Business Information"),
+        title:  Text(localizations.businessInformation),
       ),
       body: SingleChildScrollView(
         child: Form(
@@ -28,12 +28,12 @@ class BusinessInformationPage extends ConsumerWidget {
             children: [
               AppTextField(
                 initialValue: state.sellerName,
-                label: "Business Name",
+                label: localizations.businessName,
                 isDisabled: true,
               ),
               AppTextField(
                 initialValue: state.sellerAddress,
-                label: "Business Address",
+                label: localizations.businessAddress,
                 onChanged: ref
                     .read(accountNotifierProvider.notifier)
                     .onBusinessAddressChanged,
@@ -42,7 +42,7 @@ class BusinessInformationPage extends ConsumerWidget {
               ),
               AppTextField(
                 initialValue: state.sellerPhoneNumber,
-                label: "Phone number",
+                label: localizations.phoneNumber,
                 onChanged: ref
                     .read(accountNotifierProvider.notifier)
                     .onPhoneNumberChanged,
@@ -51,16 +51,16 @@ class BusinessInformationPage extends ConsumerWidget {
               ),
               AppTextField(
                 initialValue: state.sellerEmail,
-                label: "Email",
+                label: localizations.email,
                 isDisabled: true,
               ),
               AppTextField(
                 initialValue: state.sellerJoinedDate.toString(),
-                label: "Joined Date",
+                label: localizations.joinedOn,
                 isDisabled: true,
               ),
               AppButton(
-                  title: "Save",
+                  title: localizations.save,
                   isLoading: state.issaveButtonLoading,
                   onTap: () => _onSavePressed(ref))
             ],

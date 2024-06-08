@@ -8,7 +8,10 @@ import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/notifiers/orders/order_notifier.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:suuq_iibiye/utils/enums/order_status.dart';
+import 'package:suuq_iibiye/utils/symbol_utilities.dart';
+
 
 @RoutePage()
 class OrderDetailsPage extends StatelessWidget {
@@ -18,9 +21,10 @@ class OrderDetailsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Order Details"),
+        title:  Text(localizations.orderDetail),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -30,11 +34,11 @@ class OrderDetailsPage extends StatelessWidget {
             _getImages(order.cartProducts),
             const SizedBox(height: 20),
             ..._buildProductDetails(order.cartProducts),
-            _buildDetailRow("Customer name:", order.customer.name ?? "N/A"),
-            _buildDetailRow("Phone number:", order.sendersPhone),
-            _buildDetailRow("Address:", order.address),
-            _buildStatus(order.status),
-            _buildButton(order),
+            _buildDetailRow(localizations.customerName+SymbolUtilities.colon, order.customer.name ?? "N/A"),
+            _buildDetailRow(localizations.phoneNumber+SymbolUtilities.colon, order.sendersPhone),
+            _buildDetailRow(localizations.address+SymbolUtilities.colon, order.address),
+            _buildStatus(order.status, localizations),
+            _buildButton(order, localizations),
           ],
         ),
       ),
@@ -80,15 +84,15 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  _buildStatus(OrderStatus status) {
+  _buildStatus(OrderStatus status, AppLocalizations localizations) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const Text(
-            "Status",
-            style: TextStyle(fontWeight: FontWeight.bold),
+           Text(
+            localizations.status,
+            style: const TextStyle(fontWeight: FontWeight.bold),
           ),
           Row(
             children: [
@@ -102,42 +106,42 @@ class OrderDetailsPage extends StatelessWidget {
     );
   }
 
-  Widget _buildButton(OrderModel order) {
+  Widget _buildButton(OrderModel order, AppLocalizations localizations) {
     return Consumer(builder: (context, ref, _) {
       var orderNotifier = ref.read(orderNotifierProvider.notifier);
       if (order.status == OrderStatus.pending) {
-        return _buildAcceptButton(orderNotifier, order);
+        return _buildAcceptButton(orderNotifier, order, localizations);
       } else if (order.status == OrderStatus.preparing) {
-        return _buildSendButton(orderNotifier, order);
+        return _buildSendButton(orderNotifier, order, localizations);
       } else if (order.status == OrderStatus.onTheWay) {
-        return _buildOnTheWayAndDeliverButton(order, orderNotifier);
+        return _buildOnTheWayAndDeliverButton(order, orderNotifier, localizations);
       }
       return Container();
     });
   }
 
-  AppButton _buildAcceptButton(OrderNotifier orderNotifier, OrderModel order) {
+  AppButton _buildAcceptButton(OrderNotifier orderNotifier, OrderModel order, AppLocalizations localizations,) {
     return AppButton(
       color: AppColors.green,
-      title: "Accept",
+      title: localizations.accept,
       onTap: () => orderNotifier.acceptOrder(order.id),
     );
   }
 
-  AppButton _buildSendButton(OrderNotifier orderNotifier, OrderModel order) {
+  AppButton _buildSendButton(OrderNotifier orderNotifier, OrderModel order, AppLocalizations localizations) {
     return AppButton(
       color: AppColors.green,
-      title: "Send",
+      title: localizations.send,
       onTap: () => orderNotifier.sendOrder(order.id),
     );
   }
 
   Column _buildOnTheWayAndDeliverButton(
-      OrderModel order, OrderNotifier orderNotifier) {
+      OrderModel order, OrderNotifier orderNotifier, AppLocalizations localizations,) {
     return Column(
       children: [
         _buildOnTheWayText(order),
-        _buildDeliverButton(orderNotifier, order),
+        _buildDeliverButton(orderNotifier, order, localizations),
       ],
     );
   }
@@ -157,10 +161,10 @@ class OrderDetailsPage extends StatelessWidget {
     ));
   }
 
-  AppButton _buildDeliverButton(OrderNotifier orderNotifier, OrderModel order) {
+  AppButton _buildDeliverButton(OrderNotifier orderNotifier, OrderModel order, AppLocalizations localizations,) {
     return AppButton(
       color: AppColors.green,
-      title: "Deliver",
+      title: localizations.deliver,
       onTap: () => orderNotifier.deliverOrder(order.id),
     );
   }
