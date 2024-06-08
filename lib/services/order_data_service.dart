@@ -10,8 +10,10 @@ class OrderDataService {
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),
           );
-      final querySnapshot =
-          await collectionRef.where("sellerName", isEqualTo: sellerName).where("status", isNotEqualTo: "delivered").get();
+      final querySnapshot = await collectionRef
+          .where("sellerName", isEqualTo: sellerName)
+          .where("status", isNotEqualTo: "delivered")
+          .get();
       List<OrderModel> orders =
           querySnapshot.docs.map((doc) => doc.data()).toList();
       return orders;
@@ -21,20 +23,37 @@ class OrderDataService {
     }
   }
 
-    Future<List<OrderModel?>> fetchPastOrders(String sellerName) async {
+  Future<List<OrderModel?>> fetchPastOrders(String sellerName) async {
     try {
       final collectionRef = db.collection("orders").withConverter(
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),
           );
-      final querySnapshot =
-          await collectionRef.where("sellerName", isEqualTo: sellerName).where("status", isEqualTo: "delivered").get();
+      final querySnapshot = await collectionRef
+          .where("sellerName", isEqualTo: sellerName)
+          .where("status", isEqualTo: "delivered")
+          .get();
       List<OrderModel> orders =
           querySnapshot.docs.map((doc) => doc.data()).toList();
       return orders;
     } catch (e) {
       print("Error fetching orders: $e");
       return [];
+    }
+  }
+
+  Future<OrderModel?> fetchOrderByID(String? id) async {
+    try {
+      final collectionRef = db.collection("orders").doc(id).withConverter(
+            fromFirestore: OrderModel.fromFirestore,
+            toFirestore: (order, _) => order.toFirestore(),
+          );
+      final querySnapshot = await collectionRef.get();
+      OrderModel? order = querySnapshot.data();
+      return order;
+    } catch (e) {
+      print("Error fetching orders: $e");
+      return null;
     }
   }
 

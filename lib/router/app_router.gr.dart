@@ -10,7 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i12;
 import 'package:flutter/material.dart' as _i13;
-import 'package:suuq_iibiye/models/order.dart' as _i15;
 import 'package:suuq_iibiye/pages/business_information_page.dart' as _i2;
 import 'package:suuq_iibiye/pages/categoryPage/category_page.dart' as _i3;
 import 'package:suuq_iibiye/pages/change_language_page.dart' as _i4;
@@ -86,11 +85,12 @@ abstract class $AppRouter extends _i12.RootStackRouter {
       );
     },
     OrderDetailsRoute.name: (routeData) {
-      final args = routeData.argsAs<OrderDetailsRouteArgs>();
+      final args = routeData.argsAs<OrderDetailsRouteArgs>(
+          orElse: () => const OrderDetailsRouteArgs());
       return _i12.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i9.OrderDetailsPage(
-          order: args.order,
+          id: args.id,
           key: args.key,
         ),
       );
@@ -283,13 +283,13 @@ class MainRoute extends _i12.PageRouteInfo<void> {
 /// [_i9.OrderDetailsPage]
 class OrderDetailsRoute extends _i12.PageRouteInfo<OrderDetailsRouteArgs> {
   OrderDetailsRoute({
-    required _i15.OrderModel order,
+    String? id,
     _i13.Key? key,
     List<_i12.PageRouteInfo>? children,
   }) : super(
           OrderDetailsRoute.name,
           args: OrderDetailsRouteArgs(
-            order: order,
+            id: id,
             key: key,
           ),
           initialChildren: children,
@@ -303,17 +303,17 @@ class OrderDetailsRoute extends _i12.PageRouteInfo<OrderDetailsRouteArgs> {
 
 class OrderDetailsRouteArgs {
   const OrderDetailsRouteArgs({
-    required this.order,
+    this.id,
     this.key,
   });
 
-  final _i15.OrderModel order;
+  final String? id;
 
   final _i13.Key? key;
 
   @override
   String toString() {
-    return 'OrderDetailsRouteArgs{order: $order, key: $key}';
+    return 'OrderDetailsRouteArgs{id: $id, key: $key}';
   }
 }
 

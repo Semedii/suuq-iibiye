@@ -17,29 +17,6 @@ class OrderNotifier extends StateNotifier<OrderState> {
         await _orderDataService.fetchCurrentOrders(currentUser!.name!);
     state = OrderLoadedState(orderModelList: orders);
   }
-
-  acceptOrder(String? orderId) async {
-    if (orderId != null) {
-      await _orderDataService.updateOrderStatus(
-          orderId: orderId, status: 'preparing');
-      initPage();
-    }
-  }
-
-  sendOrder(String? orderId) async {
-    if (orderId != null) {
-      await _orderDataService.updateOrderStatus(
-          orderId: orderId, status: 'on the way');
-      initPage();
-    }
-  }
-    deliverOrder(String? orderId) async {
-    if (orderId != null) {
-      await _orderDataService.updateOrderStatus(
-          orderId: orderId, status: 'delivered');
-      initPage();
-    }
-  }
 }
 
 final orderNotifierProvider = StateNotifierProvider.autoDispose<OrderNotifier, OrderState>(

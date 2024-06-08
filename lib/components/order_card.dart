@@ -19,7 +19,7 @@ class OrderCard extends StatelessWidget {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return GestureDetector(
       onTap: () =>
-          AutoRouter.of(context).push(OrderDetailsRoute(order: orderModel)),
+          AutoRouter.of(context).push(OrderDetailsRoute(id: orderModel.id)),
       child: Card(
         child: Padding(
           padding: const EdgeInsets.all(16),
