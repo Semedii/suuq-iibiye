@@ -16,6 +16,19 @@ class AddProductDialog extends ConsumerWidget {
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
 
+  final TextEditingController titleController1 = TextEditingController();
+  final TextEditingController detailController1 = TextEditingController();
+  final TextEditingController titleController2 = TextEditingController();
+  final TextEditingController detailController2 = TextEditingController();
+  final TextEditingController titleController3 = TextEditingController();
+  final TextEditingController detailController3 = TextEditingController();
+  final TextEditingController titleController4 = TextEditingController();
+  final TextEditingController detailController4 = TextEditingController();
+  final TextEditingController titleController5 = TextEditingController();
+  final TextEditingController detailController5 = TextEditingController();
+
+  final List<Map<String, String>> features = []; 
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryState = ref.watch(categoryNotifierProvider);
@@ -41,6 +54,7 @@ class AddProductDialog extends ConsumerWidget {
               _buildDescriptionFeild(localizations),
               _buildPriceField(localizations),
               _buildUploadImageButton(ref, state, localizations),
+              _buildFeatureSection(),
             ],
           ),
         ),
@@ -93,6 +107,48 @@ class AddProductDialog extends ConsumerWidget {
     );
   }
 
+  Widget _buildFeatureSection() {
+    return Column(
+      children: [
+        _buildFeatureRow(titleController1, detailController1),
+        _buildFeatureRow(titleController2, detailController2),
+        _buildFeatureRow(titleController3, detailController3),
+        _buildFeatureRow(titleController4, detailController4),
+        _buildFeatureRow(titleController5, detailController5),
+      ],
+    );
+  }
+
+  Row _buildFeatureRow(titleController, detailController) {
+    return Row(
+      children: [
+        Expanded(
+          child: TextFormField(
+            controller: titleController,
+            decoration: _getInputDecoration("Sizes"),
+          ),
+        ),
+        Expanded(
+          child: TextFormField(
+            controller: detailController,
+            decoration: _getInputDecoration("39-44"),
+          ),
+        )
+      ],
+    );
+  }
+
+  InputDecoration _getInputDecoration(String hintText) {
+    return InputDecoration(
+      hintText: hintText,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(12.0),
+      ),
+      filled: true,
+      fillColor: Colors.grey[200],
+    );
+  }
+
   TextButton _buildCancelButton(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return TextButton(
@@ -111,6 +167,7 @@ class AddProductDialog extends ConsumerWidget {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return ElevatedButton(
       onPressed: () {
+        addFeaturesToList();
         if (_formKey.currentState!.validate()) {
           String description = descriptionController.text.trim();
           String price = priceController.text.trim();
@@ -126,5 +183,28 @@ class AddProductDialog extends ConsumerWidget {
       },
       child: Text(localizations.add),
     );
+  }
+
+  void addFeaturesToList(){
+    if(titleController1.text.isNotEmpty && detailController1.text.isNotEmpty){
+     Map<String, String>  newFeature = {titleController1.text: detailController1.text};
+      features.add(newFeature);
+    }
+     if(titleController2.text.isNotEmpty && detailController2.text.isNotEmpty){
+     Map<String, String>  newFeature = {titleController2.text: detailController2.text};
+      features.add(newFeature);
+    }
+     if(titleController3.text.isNotEmpty && detailController3.text.isNotEmpty){
+     Map<String, String>  newFeature = {titleController3.text: detailController3.text};
+      features.add(newFeature);
+    }
+     if(titleController4.text.isNotEmpty && detailController4.text.isNotEmpty){
+     Map<String, String>  newFeature = {titleController4.text: detailController4.text};
+      features.add(newFeature);
+    }
+     if(titleController5.text.isNotEmpty && detailController5.text.isNotEmpty){
+     Map<String, String>  newFeature = {titleController5.text: detailController5.text};
+      features.add(newFeature);
+    }
   }
 }
