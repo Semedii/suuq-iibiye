@@ -177,7 +177,9 @@ class AddProductDialog extends ConsumerWidget {
               imageUrl: [],
               description: description,
               price: double.parse(price),
-              category: category));
+              category: category,
+              features: features,
+              ));
           Navigator.pop(context);
         }
       },

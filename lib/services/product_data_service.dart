@@ -49,6 +49,7 @@ class ProductDataService {
     required List<String?> imageUrl,
     required String description,
     required double price,
+    List<Map<String, String>>? features,
   }) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     final sellerName = await Global.storageService.getString("sellerName");
@@ -60,6 +61,7 @@ class ProductDataService {
       description: description,
       price: price,
       category: category,
+      features: features
     );
 
     final docRef = db
