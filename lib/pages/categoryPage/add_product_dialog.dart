@@ -4,6 +4,7 @@ import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 import 'package:suuq_iibiye/utils/field_validators.dart';
 
@@ -27,7 +28,7 @@ class AddProductDialog extends ConsumerWidget {
   final TextEditingController titleController5 = TextEditingController();
   final TextEditingController detailController5 = TextEditingController();
 
-  final List<Map<String, String>> features = []; 
+  final List<Map<String, String>> features = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -37,49 +38,55 @@ class AddProductDialog extends ConsumerWidget {
         : const SizedBox.shrink();
   }
 
-  AlertDialog _buildAddNewProductDialog(
+  Dialog _buildAddNewProductDialog(
     BuildContext context,
     CategoryStateLoaded state,
     WidgetRef ref,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return AlertDialog(
-      title: Text(localizations.addNewProduct),
-      content: SingleChildScrollView(
+    return Dialog(
+      insetPadding: AppStyles.edgeInsetsH16,
+      child: SingleChildScrollView(
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              _buildDescriptionFeild(localizations),
-              _buildPriceField(localizations),
-              _buildUploadImageButton(ref, state, localizations),
-              _buildFeatureSection(),
-            ],
+          child: Padding(
+            padding: AppStyles.edgeInsetsH16V24,
+            child: Column(
+              children: [
+                _buildDescriptionFeild(localizations),
+                _buildPriceField(localizations),
+                _buildUploadImageButton(ref, state, localizations),
+                _buildFeatureSection(),
+                _buildCancelButton(context),
+                _buildAddButton(ref, state, context),
+              ],
+            ),
           ),
         ),
       ),
-      actions: [
-        _buildCancelButton(context),
-        _buildAddButton(ref, state, context),
-      ],
     );
   }
 
-  TextFormField _buildDescriptionFeild(AppLocalizations localizations) {
-    return TextFormField(
-      controller: descriptionController,
-      decoration: InputDecoration(labelText: localizations.description),
-      validator: (value) => FieldValidators.required(value, localizations),
+  Widget _buildDescriptionFeild(AppLocalizations localizations) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: descriptionController,
+        decoration: _getInputDecoration(localizations.description),
+        validator: (value) => FieldValidators.required(value, localizations),
+      ),
     );
   }
 
-  TextFormField _buildPriceField(AppLocalizations localizations) {
-    return TextFormField(
-      controller: priceController,
-      decoration: InputDecoration(labelText: localizations.price),
-      keyboardType: TextInputType.number,
-      validator: (value) => FieldValidators.required(value, localizations),
+  Widget _buildPriceField(AppLocalizations localizations) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        controller: priceController,
+       decoration: _getInputDecoration(localizations.price),
+        keyboardType: TextInputType.number,
+        validator: (value) => FieldValidators.required(value, localizations),
+      ),
     );
   }
 
@@ -110,6 +117,7 @@ class AddProductDialog extends ConsumerWidget {
   Widget _buildFeatureSection() {
     return Column(
       children: [
+        Text("Ku dar features ay alaabtu leedahay sida sanadka uu soo baxay, guarantee inta sano, size ama colors available-ka ah, hadii kale iska dhaaf "),
         _buildFeatureRow(titleController1, detailController1),
         _buildFeatureRow(titleController2, detailController2),
         _buildFeatureRow(titleController3, detailController3),
@@ -119,22 +127,26 @@ class AddProductDialog extends ConsumerWidget {
     );
   }
 
-  Row _buildFeatureRow(titleController, detailController) {
-    return Row(
-      children: [
-        Expanded(
-          child: TextFormField(
-            controller: titleController,
-            decoration: _getInputDecoration("Sizes"),
+  Widget _buildFeatureRow(titleController, detailController) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8),
+      child: Row(
+        children: [
+          Expanded(
+            child: TextFormField(
+              controller: titleController,
+              decoration: _getInputDecoration("Sizes"),
+            ),
           ),
-        ),
-        Expanded(
-          child: TextFormField(
-            controller: detailController,
-            decoration: _getInputDecoration("39-44"),
+          const SizedBox(width: 4),
+          Expanded(
+            child: TextFormField(
+              controller: detailController,
+              decoration: _getInputDecoration("39-44"),
+            ),
           ),
-        )
-      ],
+        ],
+      ),
     );
   }
 
@@ -172,13 +184,13 @@ class AddProductDialog extends ConsumerWidget {
           String description = descriptionController.text.trim();
           String price = priceController.text.trim();
           ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
-              sellerName: "",
-              sellerEmail: "",
-              imageUrl: [],
-              description: description,
-              price: double.parse(price),
-              category: category,
-              features: features,
+                sellerName: "",
+                sellerEmail: "",
+                imageUrl: [],
+                description: description,
+                price: double.parse(price),
+                category: category,
+                features: features,
               ));
           Navigator.pop(context);
         }
@@ -187,25 +199,35 @@ class AddProductDialog extends ConsumerWidget {
     );
   }
 
-  void addFeaturesToList(){
-    if(titleController1.text.isNotEmpty && detailController1.text.isNotEmpty){
-     Map<String, String>  newFeature = {titleController1.text: detailController1.text};
+  void addFeaturesToList() {
+    if (titleController1.text.isNotEmpty && detailController1.text.isNotEmpty) {
+      Map<String, String> newFeature = {
+        titleController1.text: detailController1.text
+      };
       features.add(newFeature);
     }
-     if(titleController2.text.isNotEmpty && detailController2.text.isNotEmpty){
-     Map<String, String>  newFeature = {titleController2.text: detailController2.text};
+    if (titleController2.text.isNotEmpty && detailController2.text.isNotEmpty) {
+      Map<String, String> newFeature = {
+        titleController2.text: detailController2.text
+      };
       features.add(newFeature);
     }
-     if(titleController3.text.isNotEmpty && detailController3.text.isNotEmpty){
-     Map<String, String>  newFeature = {titleController3.text: detailController3.text};
+    if (titleController3.text.isNotEmpty && detailController3.text.isNotEmpty) {
+      Map<String, String> newFeature = {
+        titleController3.text: detailController3.text
+      };
       features.add(newFeature);
     }
-     if(titleController4.text.isNotEmpty && detailController4.text.isNotEmpty){
-     Map<String, String>  newFeature = {titleController4.text: detailController4.text};
+    if (titleController4.text.isNotEmpty && detailController4.text.isNotEmpty) {
+      Map<String, String> newFeature = {
+        titleController4.text: detailController4.text
+      };
       features.add(newFeature);
     }
-     if(titleController5.text.isNotEmpty && detailController5.text.isNotEmpty){
-     Map<String, String>  newFeature = {titleController5.text: detailController5.text};
+    if (titleController5.text.isNotEmpty && detailController5.text.isNotEmpty) {
+      Map<String, String> newFeature = {
+        titleController5.text: detailController5.text
+      };
       features.add(newFeature);
     }
   }
