@@ -9,6 +9,7 @@ class Product {
   final String description;
   final double price;
   final Category category;
+  final String? extraDescription;
   final List<Map<String, String>>? features;
 
   Product({
@@ -17,6 +18,7 @@ class Product {
     required this.sellerEmail,
     required this.imageUrl,
     required this.description,
+    this.extraDescription,
     required this.price,
     required this.category,
     this.features,
@@ -44,6 +46,7 @@ factory Product.fromFirestore(
     price: double.parse(data?['price'].toString() ?? ""),
     category: getCategoryFromString(data?['category']),
     features: featuresList,
+    extraDescription: data?['extra_description']
   );
 }
 
@@ -56,6 +59,7 @@ factory Product.fromFirestore(
       "description": description,
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
+      "extra_description": extraDescription,
       'features': features != null
         ? List<dynamic>.from(features!.map((feature) => Map<String, dynamic>.from(feature)))
         : null,
@@ -71,7 +75,8 @@ factory Product.fromFirestore(
       imageUrl: List<String?>.from(json['image']),
       price: double.parse(json['price']),
       category: getCategoryFromString(json['category']),
-      features: json['features']
+      features: json['features'],
+      extraDescription: json['extra_description']
     );
   }
 

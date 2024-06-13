@@ -71,7 +71,8 @@ class CategoryNotifier extends _$CategoryNotifier {
         imageUrl: ids,
         description: product.description,
         price: product.price,
-        features: product.features,);
+        features: product.features,
+        extraDescription: product.extraDescription);
     await initPage(lastState.category);
   }
 

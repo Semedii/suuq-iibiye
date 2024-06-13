@@ -16,6 +16,8 @@ class AddProductDialog extends ConsumerWidget {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController descriptionController = TextEditingController();
   final TextEditingController priceController = TextEditingController();
+  final TextEditingController extraDescriptionController =
+      TextEditingController();
 
   final TextEditingController titleController1 = TextEditingController();
   final TextEditingController detailController1 = TextEditingController();
@@ -56,14 +58,24 @@ class AddProductDialog extends ConsumerWidget {
                 _buildDescriptionFeild(localizations),
                 _buildPriceField(localizations),
                 _buildUploadImageButton(ref, state, localizations),
+                _buildDetailsField(),
                 _buildFeatureSection(),
+                _buildAddButton(ref, state, context), 
                 _buildCancelButton(context),
-                _buildAddButton(ref, state, context),
+                
               ],
             ),
           ),
         ),
       ),
+    );
+  }
+
+  TextField _buildDetailsField() {
+    return TextField(
+      controller: extraDescriptionController,
+      maxLines: 5,
+      decoration: _getInputDecoration("Faahfaahin dheeraada"),
     );
   }
 
@@ -83,7 +95,7 @@ class AddProductDialog extends ConsumerWidget {
       padding: const EdgeInsets.all(8.0),
       child: TextFormField(
         controller: priceController,
-       decoration: _getInputDecoration(localizations.price),
+        decoration: _getInputDecoration(localizations.price),
         keyboardType: TextInputType.number,
         validator: (value) => FieldValidators.required(value, localizations),
       ),
@@ -117,7 +129,8 @@ class AddProductDialog extends ConsumerWidget {
   Widget _buildFeatureSection() {
     return Column(
       children: [
-        Text("Ku dar features ay alaabtu leedahay sida sanadka uu soo baxay, guarantee inta sano, size ama colors available-ka ah, hadii kale iska dhaaf "),
+        Text(
+            "Ku dar features ay alaabtu leedahay sida sanadka uu soo baxay, guarantee inta sano, size ama colors available-ka ah, hadii kale iska dhaaf "),
         _buildFeatureRow(titleController1, detailController1),
         _buildFeatureRow(titleController2, detailController2),
         _buildFeatureRow(titleController3, detailController3),
@@ -191,6 +204,7 @@ class AddProductDialog extends ConsumerWidget {
                 price: double.parse(price),
                 category: category,
                 features: features,
+                extraDescription: extraDescriptionController.text.trim(),
               ));
           Navigator.pop(context);
         }

@@ -50,6 +50,7 @@ class ProductDataService {
     required String description,
     required double price,
     List<Map<String, String>>? features,
+    String? extraDescription,
   }) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     final sellerName = await Global.storageService.getString("sellerName");
@@ -61,7 +62,8 @@ class ProductDataService {
       description: description,
       price: price,
       category: category,
-      features: features
+      features: features,
+      extraDescription: extraDescription
     );
 
     final docRef = db
