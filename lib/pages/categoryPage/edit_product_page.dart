@@ -54,9 +54,14 @@ class EditProductPage extends ConsumerWidget {
         padding: AppStyles.edgeInsetsH16,
         child: Column(
           children: [
-            _buildTextFieldWithLabel(localizations.description, state.name),
             _buildTextFieldWithLabel(
-                localizations.price, state.price.toString()),
+              localizations.description,
+              state.name,
+            ),
+            _buildTextFieldWithLabel(
+              localizations.price,
+              state.price.toString(),
+            ),
             _buildTextFieldWithLabel(
               localizations.description,
               state.description,
