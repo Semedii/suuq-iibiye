@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:suuq_iibiye/models/feature.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
 class Product {
@@ -10,7 +11,7 @@ class Product {
   final double price;
   final Category category;
   final String? extraDescription;
-  final List<Map<String, String>>? features;
+  final List<Feature>? features;
 
   Product({
     this.id = "",
@@ -29,11 +30,12 @@ factory Product.fromFirestore(
   SnapshotOptions? options,
 ) {
   final data = snapshot.data();
-  List<Map<String, String>>? featuresList = [];
+  List<Feature>? featuresList = [];
   if (data?['features'] != null) {
     List<dynamic> featuresData = data?['features'];
     featuresList = featuresData.map((dynamic feature) {
-      return {feature['key'].toString(): feature['value'].toString()};
+      return Feature(title: feature['key'].toString(), value: feature['value'].toString());
+     
     }).toList();
   }
 
@@ -60,9 +62,7 @@ factory Product.fromFirestore(
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
       "extra_description": extraDescription,
-      'features': features != null
-        ? List<dynamic>.from(features!.map((feature) => Map<String, dynamic>.from(feature)))
-        : null,
+      'features': features?.map((feature) => feature.toJson()).toList(),
     };
   }
 

@@ -1,3 +1,5 @@
+import 'package:suuq_iibiye/models/feature.dart';
+
 abstract class EditProductState {}
 
 class EditProductInitialState extends EditProductState {}
@@ -8,7 +10,7 @@ class EditProductLoadedState extends EditProductState {
   final String name;
   final double price;
   final String? description;
-  final List<Map<String, String>>? features;
+  final List<Feature>? features;
 
   EditProductLoadedState({
    required this.name,
@@ -21,7 +23,7 @@ class EditProductLoadedState extends EditProductState {
     String? name,
     double? price,
     String? description,
-    List<Map<String, String>>? features,
+    List<Feature>? features,
   }) {
     return EditProductLoadedState(
       name: name ?? this.name,

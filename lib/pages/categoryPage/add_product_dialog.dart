@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq_iibiye/models/feature.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
@@ -30,7 +31,7 @@ class AddProductDialog extends ConsumerWidget {
   final TextEditingController titleController5 = TextEditingController();
   final TextEditingController detailController5 = TextEditingController();
 
-  final List<Map<String, String>> features = [];
+  final List<Feature> features = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -215,33 +216,23 @@ class AddProductDialog extends ConsumerWidget {
 
   void addFeaturesToList() {
     if (titleController1.text.isNotEmpty && detailController1.text.isNotEmpty) {
-      Map<String, String> newFeature = {
-        titleController1.text: detailController1.text
-      };
+      Feature newFeature = Feature(title: titleController1.text, value: detailController1.text);
       features.add(newFeature);
     }
     if (titleController2.text.isNotEmpty && detailController2.text.isNotEmpty) {
-      Map<String, String> newFeature = {
-        titleController2.text: detailController2.text
-      };
+      Feature newFeature = Feature(title: titleController2.text, value: detailController2.text);
       features.add(newFeature);
     }
     if (titleController3.text.isNotEmpty && detailController3.text.isNotEmpty) {
-      Map<String, String> newFeature = {
-        titleController3.text: detailController3.text
-      };
+     Feature newFeature = Feature(title: titleController3.text, value: detailController3.text);
       features.add(newFeature);
     }
     if (titleController4.text.isNotEmpty && detailController4.text.isNotEmpty) {
-      Map<String, String> newFeature = {
-        titleController4.text: detailController4.text
-      };
+     Feature newFeature = Feature(title: titleController4.text, value: detailController4.text);
       features.add(newFeature);
     }
     if (titleController5.text.isNotEmpty && detailController5.text.isNotEmpty) {
-      Map<String, String> newFeature = {
-        titleController5.text: detailController5.text
-      };
+     Feature newFeature = Feature(title: titleController5.text, value: detailController5.text);
       features.add(newFeature);
     }
   }

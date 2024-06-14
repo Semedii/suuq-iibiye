@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq_iibiye/global.dart';
+import 'package:suuq_iibiye/models/feature.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
@@ -49,7 +50,7 @@ class ProductDataService {
     required List<String?> imageUrl,
     required String description,
     required double price,
-    List<Map<String, String>>? features,
+    List<Feature>? features,
     String? extraDescription,
   }) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
