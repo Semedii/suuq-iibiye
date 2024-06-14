@@ -90,6 +90,7 @@ factory Product.fromFirestore(
       price: price,
       category: category,
       features: features,
+      extraDescription: extraDescription,
     );
   }
 }

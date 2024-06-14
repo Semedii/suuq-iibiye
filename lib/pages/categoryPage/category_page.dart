@@ -3,11 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/components/product_card.dart';
-import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
 import 'package:suuq_iibiye/pages/categoryPage/add_product_dialog.dart';
-import 'package:suuq_iibiye/pages/categoryPage/edit_price_dialog.dart';
+import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -65,7 +64,7 @@ class CategoryPage extends ConsumerWidget {
                   onRemoveProduct: () => ref
                       .read(categoryNotifierProvider.notifier)
                       .removeProduct(product),
-                  editPrice: () => _showAPriceDialog(context, product),
+                  editPrice: () => AutoRouter.of(context).push(EditProductRoute(product: product))
                 ),
               );
             },
@@ -98,14 +97,5 @@ class CategoryPage extends ConsumerWidget {
         builder: (BuildContext context) {
           return AddProductDialog(category: category);
         });
-  }
-
-  void _showAPriceDialog(BuildContext context, Product product) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return EditProductDialog(product: product);
-      },
-    );
   }
 }
