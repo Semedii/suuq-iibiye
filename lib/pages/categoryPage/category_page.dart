@@ -5,7 +5,6 @@ import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/components/product_card.dart';
 import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
-import 'package:suuq_iibiye/pages/categoryPage/add_product_dialog.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
@@ -60,12 +59,12 @@ class CategoryPage extends ConsumerWidget {
               final product = state.products[index];
               return GridTile(
                 child: ProductCard(
-                  product: product,
-                  onRemoveProduct: () => ref
-                      .read(categoryNotifierProvider.notifier)
-                      .removeProduct(product),
-                  editPrice: () => AutoRouter.of(context).push(EditProductRoute(productId: product.id))
-                ),
+                    product: product,
+                    onRemoveProduct: () => ref
+                        .read(categoryNotifierProvider.notifier)
+                        .removeProduct(product),
+                    editPrice: () => AutoRouter.of(context)
+                        .push(EditProductRoute(productId: product.id))),
               );
             },
           ),
@@ -84,18 +83,10 @@ class CategoryPage extends ConsumerWidget {
     return Padding(
       padding: AppStyles.edgeInsetsB48,
       child: AppButton(
-          title: localizations.addNewProduct,
-          onTap: () {
-            _showAddProductDialog(context);
-          }),
+        title: localizations.addNewProduct,
+        onTap: () =>
+            AutoRouter.of(context).push(AddProductRoute(category: category)),
+      ),
     );
-  }
-
-  void _showAddProductDialog(BuildContext context) {
-    showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AddProductDialog(category: category);
-        });
   }
 }

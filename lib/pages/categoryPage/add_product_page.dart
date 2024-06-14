@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/models/feature.dart';
@@ -9,8 +10,9 @@ import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 import 'package:suuq_iibiye/utils/field_validators.dart';
 
-class AddProductDialog extends ConsumerWidget {
-  AddProductDialog({required this.category, super.key});
+@RoutePage()
+class AddProductPage extends ConsumerWidget {
+  AddProductPage({required this.category, super.key});
 
   final Category category;
 
@@ -37,19 +39,18 @@ class AddProductDialog extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryState = ref.watch(categoryNotifierProvider);
     return categoryState is CategoryStateLoaded
-        ? _buildAddNewProductDialog(context, categoryState, ref)
+        ? _buildPageBody(context, categoryState, ref)
         : const SizedBox.shrink();
   }
 
-  Dialog _buildAddNewProductDialog(
+  Widget _buildPageBody(
     BuildContext context,
     CategoryStateLoaded state,
     WidgetRef ref,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return Dialog(
-      insetPadding: AppStyles.edgeInsetsH16,
-      child: SingleChildScrollView(
+    return Scaffold(
+      body: SingleChildScrollView(
         child: Form(
           key: _formKey,
           child: Padding(
