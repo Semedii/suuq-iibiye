@@ -1,14 +1,12 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/models/cart_product.dart';
 import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/notifiers/orderDetails/order_details_notifier.dart';
 import 'package:suuq_iibiye/notifiers/orderDetails/order_details_state.dart';
-import 'package:suuq_iibiye/notifiers/orders/order_notifier.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -155,7 +153,6 @@ class OrderDetailsPage extends ConsumerWidget {
     AppLocalizations localizations,
   ) {
     return AppButton(
-      color: AppColors.green,
       title: localizations.accept,
       onTap: () => orderDetailsNotifier.acceptOrder(order.id),
     );
@@ -167,7 +164,6 @@ class OrderDetailsPage extends ConsumerWidget {
     AppLocalizations localizations,
   ) {
     return AppButton(
-      color: AppColors.green,
       title: localizations.send,
       onTap: () => orderDetailsNotifier.sendOrder(order.id),
     );
@@ -207,7 +203,6 @@ class OrderDetailsPage extends ConsumerWidget {
     AppLocalizations localizations,
   ) {
     return AppButton(
-      color: AppColors.green,
       title: localizations.deliver,
       onTap: () => orderDetailsNotifier.deliverOrder(order.id),
     );

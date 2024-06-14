@@ -51,7 +51,7 @@ class EditProductPage extends ConsumerWidget {
     var editProvider = ref.read(editProductNotifierProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
-        padding: AppStyles.edgeInsetsH16,
+        padding: AppStyles.edgeInsetsH16+ AppStyles.edgeInsetsB24,
         child: Column(
           children: [
             _buildTextFieldWithLabel(
@@ -130,13 +130,14 @@ class EditProductPage extends ConsumerWidget {
     );
   }
 
-  TextButton _buildCancelButton(BuildContext context) {
+  AppButton _buildCancelButton(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return TextButton(
-      onPressed: () {
+    return AppButton(
+      isTransparent: true,
+      onTap: () {
         Navigator.of(context).pop();
       },
-      child: Text(localizations.cancel),
+      title: localizations.cancel,
     );
   }
 
@@ -145,18 +146,5 @@ class EditProductPage extends ConsumerWidget {
         title: "Update",
         onTap: () =>
             ref.read(editProductNotifierProvider.notifier).onUpdate(productId));
-
-    // ElevatedButton(
-    //   onPressed: () {
-    //     String price = priceController.text.trim();
-    //     String description = descriptionController.text.trim();
-    //     if (price.isNotEmpty && description.isNotEmpty) {
-    //       ref.read(categoryNotifierProvider.notifier).updatePriceAndDescription(
-    //           product, double.parse(price), description);
-    //       Navigator.pop(context);
-    //     }
-    //   },
-    //   child: Text(localizations.save),
-    // );
   }
 }
