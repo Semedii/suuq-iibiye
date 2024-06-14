@@ -64,7 +64,7 @@ class CategoryPage extends ConsumerWidget {
                   onRemoveProduct: () => ref
                       .read(categoryNotifierProvider.notifier)
                       .removeProduct(product),
-                  editPrice: () => AutoRouter.of(context).push(EditProductRoute(product: product))
+                  editPrice: () => AutoRouter.of(context).push(EditProductRoute(productId: product.id))
                 ),
               );
             },

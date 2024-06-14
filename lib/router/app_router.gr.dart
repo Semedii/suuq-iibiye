@@ -10,7 +10,6 @@
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i13;
 import 'package:flutter/material.dart' as _i14;
-import 'package:suuq_iibiye/models/product.dart' as _i16;
 import 'package:suuq_iibiye/pages/business_information_page.dart' as _i2;
 import 'package:suuq_iibiye/pages/categoryPage/category_page.dart' as _i3;
 import 'package:suuq_iibiye/pages/categoryPage/edit_product_page.dart' as _i6;
@@ -73,7 +72,7 @@ abstract class $AppRouter extends _i13.RootStackRouter {
       return _i13.AutoRoutePage<dynamic>(
         routeData: routeData,
         child: _i6.EditProductPage(
-          product: args.product,
+          productId: args.productId,
           key: args.key,
         ),
       );
@@ -253,13 +252,13 @@ class ChangePasswordRouteArgs {
 /// [_i6.EditProductPage]
 class EditProductRoute extends _i13.PageRouteInfo<EditProductRouteArgs> {
   EditProductRoute({
-    required _i16.Product product,
+    required String productId,
     _i14.Key? key,
     List<_i13.PageRouteInfo>? children,
   }) : super(
           EditProductRoute.name,
           args: EditProductRouteArgs(
-            product: product,
+            productId: productId,
             key: key,
           ),
           initialChildren: children,
@@ -273,17 +272,17 @@ class EditProductRoute extends _i13.PageRouteInfo<EditProductRouteArgs> {
 
 class EditProductRouteArgs {
   const EditProductRouteArgs({
-    required this.product,
+    required this.productId,
     this.key,
   });
 
-  final _i16.Product product;
+  final String productId;
 
   final _i14.Key? key;
 
   @override
   String toString() {
-    return 'EditProductRouteArgs{product: $product, key: $key}';
+    return 'EditProductRouteArgs{productId: $productId, key: $key}';
   }
 }
 

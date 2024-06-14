@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/feature.dart';
 import 'package:suuq_iibiye/models/product.dart';
+import 'package:suuq_iibiye/services/image_data_service.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 
 class ProductDataService {
@@ -27,8 +28,9 @@ class ProductDataService {
   Future<List<Product>> fetchProductsByCategory(String category) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
     try {
-      final collectionRef = db.collection('products').where("category", isEqualTo: category.toLowerCase())
-
+      final collectionRef = db
+          .collection('products')
+          .where("category", isEqualTo: category.toLowerCase())
           .where('seller_email', isEqualTo: sellerEmail)
           .withConverter(
             fromFirestore: Product.fromFirestore,
@@ -45,6 +47,27 @@ class ProductDataService {
     }
   }
 
+    Future<Product> fetchProductsById(String id) async {
+    final collectionRef = db
+        .collection('products')
+        .withConverter(
+          fromFirestore: Product.fromFirestore,
+          toFirestore: (product, _) => product.toFirestore(),
+        );
+
+    final querySnapshot = await collectionRef.get();
+    final prodData =
+        querySnapshot.docs.firstWhere((element) => element.id == id);
+    List<String> newImageUrls = [];
+    
+    for (String? imageUrl in prodData.data().imageUrl) {
+      var newImageUrl = await ImageDataService().retrieveImageUrl(imageUrl);
+      newImageUrls.add(newImageUrl);
+    }
+    Product product = prodData.data().copyWith(imageUrl: newImageUrls);
+    return product;
+  }
+
   Future<void> addProduct({
     required Category category,
     required List<String?> imageUrl,
@@ -57,15 +80,14 @@ class ProductDataService {
     final sellerName = await Global.storageService.getString("sellerName");
 
     final Product product = Product(
-      sellerName: sellerName!,
-      sellerEmail: sellerEmail!,
-      imageUrl: imageUrl,
-      description: description,
-      price: price,
-      category: category,
-      features: features,
-      extraDescription: extraDescription
-    );
+        sellerName: sellerName!,
+        sellerEmail: sellerEmail!,
+        imageUrl: imageUrl,
+        description: description,
+        price: price,
+        category: category,
+        features: features,
+        extraDescription: extraDescription);
 
     final docRef = db
         .collection("products")
@@ -77,22 +99,26 @@ class ProductDataService {
     await docRef.set(product);
   }
 
-  Future<void> updatePriceAndDescription(
-      {required Product product, required double newPrice, required String description}) async {
-    final priceData = {"price": newPrice, "description": description};
-    db
-        .collection('products')
-        .doc(product.id)
-        .update(priceData);
+  Future<void> updateProduct({
+    required String productId,
+    required double newPrice,
+    required String newName,
+    required String? newDescription,
+    required List<Feature>? newFeature,
+  }) async {
+    final newData = {
+      "price": newPrice,
+      "description": newName,
+      "extra_description": newDescription,
+      "features": newFeature?.map((feature) => feature.toJson()).toList(),
+    };
+    db.collection('products').doc(productId).update(newData);
   }
 
   Future<void> deleteProduct({
     required String productId,
     required String category,
   }) async {
-    db
-        .collection('products')
-        .doc(productId)
-        .delete();
+    db.collection('products').doc(productId).delete();
   }
 }

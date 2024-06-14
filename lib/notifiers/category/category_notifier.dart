@@ -35,14 +35,6 @@ class CategoryNotifier extends _$CategoryNotifier {
     );
   }
 
-  updatePriceAndDescription(Product product, double newPrice, String newDescription) async {
-    var lastState = state as CategoryStateLoaded;
-    state = CategoryStateLoading();
-    await ProductDataService()
-        .updatePriceAndDescription(product: product, newPrice: newPrice,description:  newDescription);
-    await initPage(lastState.category);
-  }
-
   void onUploadImage() async {
     List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
     if (pickedImage.isEmpty) return;

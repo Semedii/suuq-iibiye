@@ -34,7 +34,7 @@ factory Product.fromFirestore(
   if (data?['features'] != null) {
     List<dynamic> featuresData = data?['features'];
     featuresList = featuresData.map((dynamic feature) {
-      return Feature(title: feature['key'].toString(), value: feature['value'].toString());
+      return Feature(title: feature['title'].toString(), value: feature['value'].toString());
      
     }).toList();
   }
