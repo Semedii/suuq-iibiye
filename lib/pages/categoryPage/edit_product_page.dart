@@ -70,7 +70,7 @@ class EditProductPage extends ConsumerWidget {
               maxLines: 5,
               onChanged: editProvider.onDescriptionChanged,
             ),
-            ...state.features!.map((e) => _buildFeature(e.title, e.value)),
+            ...state.features!.where((feature) => feature != null).map((e) => _buildFeature(e?.title, e?.value)),
            
             _buildUpdateButton(ref),
              _buildCancelButton(context),

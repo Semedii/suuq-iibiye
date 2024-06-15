@@ -1,4 +1,3 @@
-import 'package:image_picker/image_picker.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq_iibiye/models/product.dart';
 import 'package:suuq_iibiye/notifiers/category/category_state.dart';
@@ -35,38 +34,6 @@ class CategoryNotifier extends _$CategoryNotifier {
     );
   }
 
-  void onUploadImage() async {
-    List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
-    if (pickedImage.isEmpty) return;
-    _onImagesUploaded(pickedImage);
-  }
-
-  Future<void> _onImagesUploaded(List<XFile?> files) async {
-    if (files.isEmpty) {
-      print('user has not chosen a picture');
-      return;
-    }
-    state = (state as CategoryStateLoaded).copyWith(images: files);
-  }
-
-  addNewProduct(Product product) async {
-    var lastState = state as CategoryStateLoaded;
-    state = CategoryStateLoading();
-    var ids = await _generateImageIds(lastState.images);
-    await ImageDataService().uploadImage(
-      lastState.images!,
-      categoryToString(product.category),
-      ids!,
-    );
-    await ProductDataService().addProduct(
-        category: product.category,
-        imageUrl: ids,
-        description: product.description,
-        price: product.price,
-        features: product.features,
-        extraDescription: product.extraDescription);
-    await initPage(lastState.category);
-  }
 
   Future<void> removeProduct(Product product) async {
     var lastState = state as CategoryStateLoaded;
@@ -77,15 +44,4 @@ class CategoryNotifier extends _$CategoryNotifier {
     await initPage(lastState.category);
   }
 
-  Future<List<String>?> _generateImageIds(List<XFile?>? images) async {
-    List<String> imageIds = [];
-    if (images == null) return imageIds;
-    for (int i = 0; i < images.length; i++) {
-      await Future.delayed(const Duration(milliseconds: 10));
-      var id = DateTime.now().millisecondsSinceEpoch;
-      print("waaa $id");
-      imageIds.add(id.toString());
-    }
-    return imageIds;
-  }
 }

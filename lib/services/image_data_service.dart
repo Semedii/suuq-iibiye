@@ -8,7 +8,6 @@ class ImageDataService {
 
   uploadImage(
     List<XFile?> imageFiles,
-    String category,
     List<String> ids,
   ) async {
     for (int i = 0; i < imageFiles.length; i++) {

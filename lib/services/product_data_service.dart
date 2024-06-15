@@ -73,7 +73,7 @@ class ProductDataService {
     required List<String?> imageUrl,
     required String description,
     required double price,
-    List<Feature>? features,
+    List<Feature?>? features,
     String? extraDescription,
   }) async {
     final sellerEmail = await Global.storageService.getString("sellerEmail");
@@ -104,13 +104,13 @@ class ProductDataService {
     required double newPrice,
     required String newName,
     required String? newDescription,
-    required List<Feature>? newFeature,
+    required List<Feature?>? newFeature,
   }) async {
     final newData = {
       "price": newPrice,
       "description": newName,
       "extra_description": newDescription,
-      "features": newFeature?.map((feature) => feature.toJson()).toList(),
+      "features": newFeature?.map((feature) => feature?.toJson()).toList(),
     };
     db.collection('products').doc(productId).update(newData);
   }

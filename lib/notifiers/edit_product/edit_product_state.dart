@@ -10,7 +10,7 @@ class EditProductLoadedState extends EditProductState {
   final String name;
   final double price;
   final String? description;
-  final List<Feature>? features;
+  final List<Feature?>? features;
 
   EditProductLoadedState({
    required this.name,

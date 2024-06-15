@@ -1,14 +1,16 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq_iibiye/components/small_button.dart';
 import 'package:suuq_iibiye/models/feature.dart';
-import 'package:suuq_iibiye/models/product.dart';
-import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
-import 'package:suuq_iibiye/notifiers/category/category_state.dart';
+import 'package:suuq_iibiye/notifiers/add_product/add_product_notifier.dart';
+import 'package:suuq_iibiye/notifiers/add_product/add_product_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
 import 'package:suuq_iibiye/utils/field_validators.dart';
+import 'package:suuq_iibiye/utils/pop_up_message.dart';
 
 @RoutePage()
 class AddProductPage extends ConsumerWidget {
@@ -17,38 +19,37 @@ class AddProductPage extends ConsumerWidget {
   final Category category;
 
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController descriptionController = TextEditingController();
-  final TextEditingController priceController = TextEditingController();
-  final TextEditingController extraDescriptionController =
-      TextEditingController();
-
-  final TextEditingController titleController1 = TextEditingController();
-  final TextEditingController detailController1 = TextEditingController();
-  final TextEditingController titleController2 = TextEditingController();
-  final TextEditingController detailController2 = TextEditingController();
-  final TextEditingController titleController3 = TextEditingController();
-  final TextEditingController detailController3 = TextEditingController();
-  final TextEditingController titleController4 = TextEditingController();
-  final TextEditingController detailController4 = TextEditingController();
-  final TextEditingController titleController5 = TextEditingController();
-  final TextEditingController detailController5 = TextEditingController();
-
-  final List<Feature> features = [];
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final categoryState = ref.watch(categoryNotifierProvider);
-    return categoryState is CategoryStateLoaded
-        ? _buildPageBody(context, categoryState, ref)
-        : const SizedBox.shrink();
+    final state = ref.watch(addProductNotifierProvider);
+    AppLocalizations localizations = AppLocalizations.of(context)!;
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(localizations.addNewProduct),
+      ),
+      body: _mapStateToWidget(context, state, ref),
+    );
+  }
+
+  Widget _mapStateToWidget(
+      BuildContext context, AddProductState state, WidgetRef ref) {
+    if (state is AddProductIdleState) {
+      return _buildPageBody(context, state, ref);
+    } else if (state is AddProductSuccessState) {
+      toastInfo("Added succesfully");
+      AutoRouter.of(context).maybePop();
+    }
+    return const Center(child: CircularProgressIndicator());
   }
 
   Widget _buildPageBody(
     BuildContext context,
-    CategoryStateLoaded state,
+    AddProductIdleState state,
     WidgetRef ref,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
+    final provider = ref.read(addProductNotifierProvider.notifier);
     return Scaffold(
       body: SingleChildScrollView(
         child: Form(
@@ -57,14 +58,14 @@ class AddProductPage extends ConsumerWidget {
             padding: AppStyles.edgeInsetsH16V24,
             child: Column(
               children: [
-                _buildDescriptionFeild(localizations),
-                _buildPriceField(localizations),
+                _buildNameField(localizations, state, provider),
+                _buildPriceField(localizations, state, provider),
+                _buildDescriptionField(localizations, state, provider),
                 _buildUploadImageButton(ref, state, localizations),
-                _buildDetailsField(),
-                _buildFeatureSection(),
-                _buildAddButton(ref, state, context), 
+                _buildAddedFeatures(state),
+                _buildFeatureFieldRow(ref),
+                _buildAddButton(ref, state, context),
                 _buildCancelButton(context),
-                
               ],
             ),
           ),
@@ -73,47 +74,56 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  TextField _buildDetailsField() {
-    return TextField(
-      controller: extraDescriptionController,
-      maxLines: 5,
-      decoration: _getInputDecoration("Faahfaahin dheeraada"),
+  Padding _buildNameField(
+    AppLocalizations localizations,
+    AddProductIdleState state,
+    AddProductNotifier addProductProvider,
+  ) {
+    return _getTextField(
+      hintText: localizations.description,
+      initialValue: state.name,
+      validator: (value) => FieldValidators.required(value, localizations),
+      onChanged: addProductProvider.onNameChanged,
     );
   }
 
-  Widget _buildDescriptionFeild(AppLocalizations localizations) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: descriptionController,
-        decoration: _getInputDecoration(localizations.description),
-        validator: (value) => FieldValidators.required(value, localizations),
-      ),
+  Padding _buildPriceField(
+    AppLocalizations localizations,
+    AddProductIdleState state,
+    AddProductNotifier addProductProvider,
+  ) {
+    return _getTextField(
+      hintText: localizations.price,
+      initialValue: state.price,
+      validator: (value) => FieldValidators.required(value, localizations),
+      onChanged: addProductProvider.onPriceChanged,
+      isNumber: true,
     );
   }
 
-  Widget _buildPriceField(AppLocalizations localizations) {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: TextFormField(
-        controller: priceController,
-        decoration: _getInputDecoration(localizations.price),
-        keyboardType: TextInputType.number,
-        validator: (value) => FieldValidators.required(value, localizations),
-      ),
+  Padding _buildDescriptionField(
+    AppLocalizations localizations,
+    AddProductIdleState state,
+    AddProductNotifier addProductProvider,
+  ) {
+    return _getTextField(
+      hintText: localizations.description,
+      initialValue: state.description,
+      onChanged: addProductProvider.onDescriptionChanged,
     );
   }
 
   Column _buildUploadImageButton(
     WidgetRef ref,
-    CategoryStateLoaded state,
+    AddProductIdleState state,
     AppLocalizations localizations,
   ) {
     return Column(
       children: [
-        ElevatedButton(
-          onPressed: ref.read(categoryNotifierProvider.notifier).onUploadImage,
-          child: Text(localizations.uploadImage),
+        SmallButton(
+          title: localizations.uploadImage,
+          onPressed:
+              ref.read(addProductNotifierProvider.notifier).onUploadImage,
         ),
         if (state.images != null && state.images!.isNotEmpty)
           Row(
@@ -128,39 +138,86 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildFeatureSection() {
-    return Column(
-      children: [
-        Text(
-            "Ku dar features ay alaabtu leedahay sida sanadka uu soo baxay, guarantee inta sano, size ama colors available-ka ah, hadii kale iska dhaaf "),
-        _buildFeatureRow(titleController1, detailController1),
-        _buildFeatureRow(titleController2, detailController2),
-        _buildFeatureRow(titleController3, detailController3),
-        _buildFeatureRow(titleController4, detailController4),
-        _buildFeatureRow(titleController5, detailController5),
-      ],
+  Wrap _buildAddedFeatures(AddProductIdleState state) {
+    return Wrap(
+      alignment: WrapAlignment.start,
+      children: state.features
+          .where((feature) => feature != null)
+          .map((feature) => _buildFeaureItem(feature!.title, feature.value))
+          .toList(),
     );
   }
 
-  Widget _buildFeatureRow(titleController, detailController) {
+  Container _buildFeaureItem(String title, String detail) {
+    return Container(
+      padding: AppStyles.edgeInsets4,
+      margin: AppStyles.edgeInsets4,
+      color: AppColors.green.withOpacity(0.2),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+                color: AppColors.green, fontWeight: FontWeight.bold),
+          ),
+          Text(detail),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFeatureFieldRow(WidgetRef ref) {
+    TextEditingController title = TextEditingController();
+    TextEditingController value = TextEditingController();
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
         children: [
           Expanded(
             child: TextFormField(
-              controller: titleController,
+              controller: title,
               decoration: _getInputDecoration("Sizes"),
             ),
           ),
           const SizedBox(width: 4),
           Expanded(
             child: TextFormField(
-              controller: detailController,
+              controller: value,
               decoration: _getInputDecoration("39-44"),
             ),
           ),
+          TextButton(
+              onPressed: () {
+                Feature newFeature =
+                    Feature(title: title.text, value: value.text);
+                ref
+                    .read(addProductNotifierProvider.notifier)
+                    .onFeaturesAdded(newFeature);
+                title.clear();
+                value.clear();
+              },
+              child: Text("Add"))
         ],
+      ),
+    );
+  }
+
+  Padding _getTextField({
+    String? initialValue,
+    required String hintText,
+    Function(String)? onChanged,
+    bool isNumber = false,
+    String? Function(String?)? validator,
+  }) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: TextFormField(
+        initialValue: initialValue,
+        decoration: _getInputDecoration(hintText),
+        keyboardType: isNumber ? TextInputType.number : null,
+        onChanged: onChanged,
+        validator: validator,
       ),
     );
   }
@@ -176,65 +233,28 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  TextButton _buildCancelButton(BuildContext context) {
+  SmallButton _buildCancelButton(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return TextButton(
-      onPressed: () {
-        Navigator.of(context).pop();
-      },
-      child: Text(localizations.cancel),
+    return SmallButton(
+      isTransparent: true,
+      title: localizations.cancel,
+      onPressed: () => Navigator.of(context).pop(),
     );
   }
 
-  ElevatedButton _buildAddButton(
+  SmallButton _buildAddButton(
     WidgetRef ref,
-    CategoryStateLoaded state,
+    AddProductIdleState state,
     BuildContext context,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return ElevatedButton(
+    return SmallButton(
       onPressed: () {
-        addFeaturesToList();
         if (_formKey.currentState!.validate()) {
-          String description = descriptionController.text.trim();
-          String price = priceController.text.trim();
-          ref.read(categoryNotifierProvider.notifier).addNewProduct(Product(
-                sellerName: "",
-                sellerEmail: "",
-                imageUrl: [],
-                description: description,
-                price: double.parse(price),
-                category: category,
-                features: features,
-                extraDescription: extraDescriptionController.text.trim(),
-              ));
-          Navigator.pop(context);
+          ref.read(addProductNotifierProvider.notifier).addNewProduct(category);
         }
       },
-      child: Text(localizations.add),
+      title: localizations.add,
     );
-  }
-
-  void addFeaturesToList() {
-    if (titleController1.text.isNotEmpty && detailController1.text.isNotEmpty) {
-      Feature newFeature = Feature(title: titleController1.text, value: detailController1.text);
-      features.add(newFeature);
-    }
-    if (titleController2.text.isNotEmpty && detailController2.text.isNotEmpty) {
-      Feature newFeature = Feature(title: titleController2.text, value: detailController2.text);
-      features.add(newFeature);
-    }
-    if (titleController3.text.isNotEmpty && detailController3.text.isNotEmpty) {
-     Feature newFeature = Feature(title: titleController3.text, value: detailController3.text);
-      features.add(newFeature);
-    }
-    if (titleController4.text.isNotEmpty && detailController4.text.isNotEmpty) {
-     Feature newFeature = Feature(title: titleController4.text, value: detailController4.text);
-      features.add(newFeature);
-    }
-    if (titleController5.text.isNotEmpty && detailController5.text.isNotEmpty) {
-     Feature newFeature = Feature(title: titleController5.text, value: detailController5.text);
-      features.add(newFeature);
-    }
   }
 }

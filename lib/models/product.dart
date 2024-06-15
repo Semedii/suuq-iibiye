@@ -11,7 +11,7 @@ class Product {
   final double price;
   final Category category;
   final String? extraDescription;
-  final List<Feature>? features;
+  final List<Feature?>? features;
 
   Product({
     this.id = "",
@@ -62,7 +62,7 @@ factory Product.fromFirestore(
       "price": price.toStringAsFixed(2),
       "category": categoryToString(category),
       "extra_description": extraDescription,
-      'features': features?.map((feature) => feature.toJson()).toList(),
+      'features': features?.map((feature) => feature?.toJson()).toList(),
     };
   }
 
