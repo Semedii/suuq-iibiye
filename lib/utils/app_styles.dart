@@ -10,13 +10,18 @@ class AppStyles {
   static EdgeInsets edgeInsetsL8 = const EdgeInsets.only(left: 8.0);
   static EdgeInsets edgeInsetsT40 = const EdgeInsets.only(top: 40);
   static EdgeInsets edgeInsets4 = const EdgeInsets.all(4);
-   static EdgeInsets edgeInsetsT4 = const EdgeInsets.only(top: 4);
+  static EdgeInsets edgeInsets8 = const EdgeInsets.all(8);
+  static EdgeInsets edgeInsetsT4 = const EdgeInsets.only(top: 4);
+  static EdgeInsets edgeInsetsT16 = const EdgeInsets.only(top: 16);
+  static EdgeInsets edgeInsetsR16 = const EdgeInsets.only(right: 16);
   static EdgeInsets edgeInsetsH20 = const EdgeInsets.symmetric(horizontal: 20);
-  static EdgeInsets edgeInsetsV24 =const EdgeInsets.symmetric(vertical: 24);
-  static EdgeInsets edgeInsetsB24 =const EdgeInsets.only(bottom: 24);
-  static EdgeInsets edgeInsetsB48 =const EdgeInsets.only(bottom: 48.0);
-  static EdgeInsets edgeInsetsH32V12 = const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0);
+  static EdgeInsets edgeInsetsV24 = const EdgeInsets.symmetric(vertical: 24);
+  static EdgeInsets edgeInsetsB24 = const EdgeInsets.only(bottom: 24);
+  static EdgeInsets edgeInsetsB48 = const EdgeInsets.only(bottom: 48.0);
+  static EdgeInsets edgeInsetsH32V12 =
+      const EdgeInsets.symmetric(horizontal: 32.0, vertical: 12.0);
   static EdgeInsets edgeInsetsH4 = const EdgeInsets.symmetric(horizontal: 4);
   static EdgeInsets edgeInsetsH16 = const EdgeInsets.symmetric(horizontal: 16);
-  static EdgeInsets edgeInsetsH16V24 = const EdgeInsets.symmetric(horizontal: 16, vertical: 24);
+  static EdgeInsets edgeInsetsH16V24 =
+      const EdgeInsets.symmetric(horizontal: 16, vertical: 24);
 }
