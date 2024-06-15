@@ -70,7 +70,7 @@ class AddProductPage extends ConsumerWidget {
                 _buildPriceField(localizations, state, provider),
                 _buildDescriptionField(localizations, state, provider),
                 _buildUploadImageButton(ref, state, localizations),
-                _buildAddedFeatures(state),
+                _buildAddedFeatures(state, provider),
                 _buildFeatureFieldRow(ref, localizations),
                 _buildAddButton(ref, state, context),
                 _buildCancelButton(context),
@@ -147,17 +147,18 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  Wrap _buildAddedFeatures(AddProductIdleState state) {
+  Wrap _buildAddedFeatures(
+      AddProductIdleState state, AddProductNotifier provider) {
     return Wrap(
       alignment: WrapAlignment.start,
       children: state.features
           .where((feature) => feature != null)
-          .map((feature) => _buildFeaureItem(feature!.title, feature.value))
+          .map((feature) => _buildFeaureItem(feature!, provider))
           .toList(),
     );
   }
 
-  Container _buildFeaureItem(String title, String detail) {
+  Container _buildFeaureItem(Feature feature, AddProductNotifier provider) {
     return Container(
       padding: AppStyles.edgeInsets4,
       margin: AppStyles.edgeInsets4,
@@ -166,11 +167,22 @@ class AddProductPage extends ConsumerWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            title,
+            feature.title,
             style: const TextStyle(
                 color: AppColors.green, fontWeight: FontWeight.bold),
           ),
-          Text(detail),
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(feature.value),
+              TextButton(
+                  onPressed: () => provider.onFeaturesRemoved(feature),
+                  child: const Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ))
+            ],
+          ),
         ],
       ),
     );

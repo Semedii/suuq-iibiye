@@ -37,6 +37,15 @@ class AddProductNotifier extends _$AddProductNotifier {
     state = lastState.copyWith(features: [...lastState.features, feature]);
   }
 
+  onFeaturesRemoved(Feature feature) {
+    var lastState = state as AddProductIdleState;
+    var updatedFeatures = List<Feature>.from(lastState.features);
+
+    updatedFeatures.remove(feature);
+
+    state = lastState.copyWith(features: updatedFeatures);
+  }
+
   void onUploadImage() async {
     List<XFile>? pickedImage = await ImagePicker().pickMultiImage();
     if (pickedImage.isEmpty) return;
