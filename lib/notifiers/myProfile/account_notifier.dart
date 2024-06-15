@@ -1,5 +1,4 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:suuq_iibiye/global.dart';
 import 'package:suuq_iibiye/models/user_model.dart';

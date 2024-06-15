@@ -55,7 +55,7 @@ class EditProductPage extends ConsumerWidget {
         child: Column(
           children: [
             _buildTextFieldWithLabel(
-              localizations.description,
+              localizations.productName,
               state.name,
               onChanged: editProvider.onProductNameChanged,
             ),
@@ -65,7 +65,7 @@ class EditProductPage extends ConsumerWidget {
               onChanged: editProvider.onPriceChanged,
             ),
             _buildTextFieldWithLabel(
-              localizations.description,
+              localizations.productDescription,
               state.description,
               maxLines: 5,
               onChanged: editProvider.onDescriptionChanged,

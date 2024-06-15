@@ -1,11 +1,14 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/components/small_button.dart';
 import 'package:suuq_iibiye/models/feature.dart';
 import 'package:suuq_iibiye/notifiers/add_product/add_product_notifier.dart';
 import 'package:suuq_iibiye/notifiers/add_product/add_product_state.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/notifiers/category/category_notifier.dart';
+import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/app_styles.dart';
 import 'package:suuq_iibiye/utils/enums/category_enum.dart';
@@ -38,7 +41,12 @@ class AddProductPage extends ConsumerWidget {
       return _buildPageBody(context, state, ref);
     } else if (state is AddProductSuccessState) {
       toastInfo("Added succesfully");
-      AutoRouter.of(context).maybePop();
+      AutoRouter.of(context).replace(CategoryRoute(category: category));
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        ref.read(categoryNotifierProvider.notifier).initPage(
+              categoryToString(category),
+            );
+      });
     }
     return const Center(child: CircularProgressIndicator());
   }
@@ -63,7 +71,7 @@ class AddProductPage extends ConsumerWidget {
                 _buildDescriptionField(localizations, state, provider),
                 _buildUploadImageButton(ref, state, localizations),
                 _buildAddedFeatures(state),
-                _buildFeatureFieldRow(ref),
+                _buildFeatureFieldRow(ref, localizations),
                 _buildAddButton(ref, state, context),
                 _buildCancelButton(context),
               ],
@@ -80,7 +88,7 @@ class AddProductPage extends ConsumerWidget {
     AddProductNotifier addProductProvider,
   ) {
     return _getTextField(
-      hintText: localizations.description,
+      hintText: localizations.productName,
       initialValue: state.name,
       validator: (value) => FieldValidators.required(value, localizations),
       onChanged: addProductProvider.onNameChanged,
@@ -107,9 +115,10 @@ class AddProductPage extends ConsumerWidget {
     AddProductNotifier addProductProvider,
   ) {
     return _getTextField(
-      hintText: localizations.description,
+      hintText: localizations.productDescription,
       initialValue: state.description,
       onChanged: addProductProvider.onDescriptionChanged,
+      maxLines: 3,
     );
   }
 
@@ -167,7 +176,7 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  Widget _buildFeatureFieldRow(WidgetRef ref) {
+  Widget _buildFeatureFieldRow(WidgetRef ref, AppLocalizations localizations) {
     TextEditingController title = TextEditingController();
     TextEditingController value = TextEditingController();
     return Padding(
@@ -177,17 +186,18 @@ class AddProductPage extends ConsumerWidget {
           Expanded(
             child: TextFormField(
               controller: title,
-              decoration: _getInputDecoration("Sizes"),
+              decoration: _getInputDecoration("Camera"),
             ),
           ),
           const SizedBox(width: 4),
           Expanded(
             child: TextFormField(
               controller: value,
-              decoration: _getInputDecoration("39-44"),
+              decoration: _getInputDecoration("48MP"),
             ),
           ),
-          TextButton(
+          SmallButton(
+              title: localizations.add,
               onPressed: () {
                 Feature newFeature =
                     Feature(title: title.text, value: value.text);
@@ -196,8 +206,7 @@ class AddProductPage extends ConsumerWidget {
                     .onFeaturesAdded(newFeature);
                 title.clear();
                 value.clear();
-              },
-              child: Text("Add"))
+              })
         ],
       ),
     );
@@ -209,6 +218,7 @@ class AddProductPage extends ConsumerWidget {
     Function(String)? onChanged,
     bool isNumber = false,
     String? Function(String?)? validator,
+    int? maxLines,
   }) {
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -218,6 +228,7 @@ class AddProductPage extends ConsumerWidget {
         keyboardType: isNumber ? TextInputType.number : null,
         onChanged: onChanged,
         validator: validator,
+        maxLines: maxLines,
       ),
     );
   }
@@ -233,23 +244,23 @@ class AddProductPage extends ConsumerWidget {
     );
   }
 
-  SmallButton _buildCancelButton(BuildContext context) {
+  AppButton _buildCancelButton(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return SmallButton(
+    return AppButton(
       isTransparent: true,
       title: localizations.cancel,
-      onPressed: () => Navigator.of(context).pop(),
+      onTap: () => Navigator.of(context).pop(),
     );
   }
 
-  SmallButton _buildAddButton(
+  AppButton _buildAddButton(
     WidgetRef ref,
     AddProductIdleState state,
     BuildContext context,
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
-    return SmallButton(
-      onPressed: () {
+    return AppButton(
+      onTap: () {
         if (_formKey.currentState!.validate()) {
           ref.read(addProductNotifierProvider.notifier).addNewProduct(category);
         }
