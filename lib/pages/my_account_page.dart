@@ -64,7 +64,7 @@ class MyAccountPage extends ConsumerWidget {
   ) {
     return Container(
       width: double.infinity,
-      height: MediaQuery.of(context).size.height * .4,
+      height: MediaQuery.of(context).size.height * .3,
       decoration: _buildHeaderDecoration(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -85,10 +85,10 @@ class MyAccountPage extends ConsumerWidget {
 
   BoxDecoration _buildHeaderDecoration() {
     return BoxDecoration(
-      color: AppColors.lighterGrey,
+      color: AppColors.green.withOpacity(0.7),
       borderRadius: const BorderRadius.only(
-        bottomLeft: Radius.circular(80),
-        bottomRight: Radius.circular(80),
+        bottomLeft: Radius.circular(12),
+        bottomRight: Radius.circular(12),
       ),
     );
   }
@@ -109,7 +109,7 @@ class MyAccountPage extends ConsumerWidget {
             ),
           ),
         ),
-        const SizedBox(height: 4),
+         const SizedBox(height: 4),
         Center(
           child: Text(
             localizations.joinedOn +
@@ -128,49 +128,52 @@ class MyAccountPage extends ConsumerWidget {
   ) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Positioned(
-        top: MediaQuery.of(context).size.height * .42,
+        top: MediaQuery.of(context).size.height * .3,
+        bottom: 20,
         child: SizedBox(
-          height: MediaQuery.of(context).size.height * .6,
+          height: MediaQuery.of(context).size.height * .7,
           width: MediaQuery.of(context).size.width,
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                _getMenu(
-                  Icons.person,
-                  localizations.businessInformation,
-                  onTap: () => AutoRouter.of(context).push(
-                    BusinessInformationRoute(),
+          child: Scrollbar(
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  _getMenu(
+                    Icons.person,
+                    localizations.businessInformation,
+                    onTap: () => AutoRouter.of(context).push(
+                      BusinessInformationRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(
-                  Icons.lock,
-                  localizations.changePassword,
-                  onTap: () => AutoRouter.of(context).push(
-                    ChangePasswordRoute(),
+                  _getMenu(
+                    Icons.lock,
+                    localizations.changePassword,
+                    onTap: () => AutoRouter.of(context).push(
+                      ChangePasswordRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(
-                  Icons.language,
-                  localizations.changeLanguage,
-                  onTap: () => AutoRouter.of(context).push(
-                    const ChangeLanguageRoute(),
+                  _getMenu(
+                    Icons.language,
+                    localizations.changeLanguage,
+                    onTap: () => AutoRouter.of(context).push(
+                      const ChangeLanguageRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(
-                  Icons.history,
-                  localizations.orderHistory,
-                  onTap: () => AutoRouter.of(context).push(
-                    const OrderHistoryRoute(),
+                  _getMenu(
+                    Icons.history,
+                    localizations.orderHistory,
+                    onTap: () => AutoRouter.of(context).push(
+                      const OrderHistoryRoute(),
+                    ),
                   ),
-                ),
-                _getMenu(Icons.person, "About Suuq"),
-                _getMenu(
-                  Icons.logout_outlined,
-                  localizations.logout,
-                  onTap:
-                      ref.read(loginInNotifierProvider.notifier).handleLogout,
-                ),
-              ],
+                  _getMenu(Icons.person, "About Suuq"),
+                  _getMenu(
+                    Icons.logout_outlined,
+                    localizations.logout,
+                    onTap:
+                        ref.read(loginInNotifierProvider.notifier).handleLogout,
+                  ),
+                ],
+              ),
             ),
           ),
         ));
@@ -181,7 +184,7 @@ class MyAccountPage extends ConsumerWidget {
       color: AppColors.white,
       child: ListTile(
         onTap: onTap,
-        leading: Icon(leadingIcon),
+        leading: Icon(leadingIcon, color: AppColors.green,),
         title: Text(title),
       ),
     );
