@@ -274,6 +274,10 @@ class AddProductPage extends ConsumerWidget {
     return AppButton(
       onTap: () {
         if (_formKey.currentState!.validate()) {
+          if (state.images == null) {
+            toastInfo("please add atleast one image");
+            return;
+          }
           ref.read(addProductNotifierProvider.notifier).addNewProduct(category);
         }
       },
