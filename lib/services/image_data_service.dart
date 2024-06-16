@@ -28,8 +28,8 @@ class ImageDataService {
     for (String? id in ids) {
       if (id == null) return;
       Uri uri = Uri.parse(id);
-      String filename = uri.pathSegments.last;
-      final imageRef = storageRef.child("images/products/$filename");
+      String filePath = uri.pathSegments.last;
+      final imageRef = storageRef.child(filePath);
       await imageRef.delete();
     }
   }
