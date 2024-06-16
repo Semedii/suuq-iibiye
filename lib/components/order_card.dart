@@ -6,6 +6,7 @@ import 'package:suuq_iibiye/models/order.dart';
 import 'package:suuq_iibiye/router/app_router.gr.dart';
 import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:suuq_iibiye/utils/enums/order_status.dart';
 import 'package:suuq_iibiye/utils/string_utilities.dart';
 
 class OrderCard extends StatelessWidget {
@@ -80,7 +81,7 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              _buildDateAndPrice(orderModel.totalPrice, orderModel.orderedDate),
+              _buildDateAndPrice(context, orderModel.totalPrice, orderModel.orderedDate),
             ],
           ),
         ),
@@ -99,7 +100,8 @@ class OrderCard extends StatelessWidget {
     );
   }
 
-  Row _buildDateAndPrice(double price, DateTime date) {
+  Row _buildDateAndPrice(BuildContext context, double price, DateTime date) {
+     AppLocalizations localizations = AppLocalizations.of(context)!;
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
@@ -109,7 +111,10 @@ class OrderCard extends StatelessWidget {
           children: [
             orderModel.status.icon,
             const SizedBox(width: 4),
-            Text(orderModel.status.name),
+            Text(
+          OrderStatus.translateName(orderModel.status, localizations),
+          style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
+        )
           ],
         )
       ],

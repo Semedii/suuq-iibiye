@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 enum OrderStatus {
   pending(Icon(Icons.pending_actions), "pending"),
@@ -10,6 +11,18 @@ enum OrderStatus {
   final String name;
   const OrderStatus(this.icon, this.name);
 
+    static String translateName(OrderStatus orderStatus, AppLocalizations localizations){
+    switch(orderStatus){
+      case pending:
+        return localizations.pending;
+      case preparing:
+        return localizations.preparing;
+      case onTheWay:
+        return localizations.onTheWay;
+      case delivered:
+        return localizations.delivered;
+    }
+    }
   static OrderStatus fromString(String status) {
     return OrderStatus.values.firstWhere(
       (e) => e.name == status,
