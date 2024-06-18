@@ -7,7 +7,7 @@ import 'package:suuq_iibiye/services/auth_data_service.dart';
 import 'package:suuq_iibiye/services/auth_service.dart';
 import 'package:suuq_iibiye/utils/enums/language.dart';
 import 'package:suuq_iibiye/utils/pop_up_message.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 part 'account_notifier.g.dart';
 
 @Riverpod()
@@ -55,15 +55,15 @@ class AccountNotifier extends _$AccountNotifier {
     state = (state as AccountLoadedState).copyWith(language: language);
   }
 
-  onSavePassword() async {
+  onSavePassword(AppLocalizations localizations) async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
-    await _authService.changePassword(currentState.newPassword!);
+    await _authService.changePassword(currentState.newPassword!, localizations);
     state = currentState.copyWith(issaveButtonLoading: false);
-    toastInfo("Successfully updated");
+    toastInfo(localizations.successfullyUpdated);
   }
 
-  onSaveButtonPressed() async {
+  onSaveButtonPressed(AppLocalizations localizations) async {
     var currentState = state as AccountLoadedState;
     state = currentState.copyWith(issaveButtonLoading: true);
     await _authDataService.updateBusinessInfo(
@@ -71,7 +71,7 @@ class AccountNotifier extends _$AccountNotifier {
         phoneNumber: currentState.sellerPhoneNumber,
         address: currentState.sellerAddress!);
     state = currentState.copyWith(issaveButtonLoading: false);
-    toastInfo("Successfully updated");
+    toastInfo(localizations.successfullyUpdated);
   }
 
   onSaveLanguagePressed(String succesfullMessage) async {

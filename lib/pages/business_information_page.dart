@@ -62,7 +62,7 @@ class BusinessInformationPage extends ConsumerWidget {
               AppButton(
                   title: localizations.save,
                   isLoading: state.issaveButtonLoading,
-                  onTap: () => _onSavePressed(ref))
+                  onTap: () => _onSavePressed(ref, localizations))
             ],
           ),
         ),
@@ -70,9 +70,9 @@ class BusinessInformationPage extends ConsumerWidget {
     );
   }
 
-  void _onSavePressed(WidgetRef ref) {
+  void _onSavePressed(WidgetRef ref, AppLocalizations localizations) {
     if (_formKey.currentState!.validate()) {
-      ref.read(accountNotifierProvider.notifier).onSaveButtonPressed();
+      ref.read(accountNotifierProvider.notifier).onSaveButtonPressed(localizations);
     }
   }
 }

@@ -52,7 +52,7 @@ class ChangePasswordPage extends ConsumerWidget {
                 title: localizations.save,
                 onTap: () {
                   if (_formKey.currentState!.validate()) {
-                    ref.read(accountNotifierProvider.notifier).onSavePassword();
+                    ref.read(accountNotifierProvider.notifier).onSavePassword(localizations);
                   }
                 })
           ],

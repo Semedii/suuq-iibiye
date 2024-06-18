@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:suuq_iibiye/models/user_model.dart';
 import 'package:suuq_iibiye/notifiers/login/login_state.dart';
 import 'package:suuq_iibiye/services/auth_service.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LoginNotifier extends StateNotifier<LoginState> {
   final AuthService authService = AuthService();
@@ -22,11 +23,11 @@ class LoginNotifier extends StateNotifier<LoginState> {
     state = lastState.copyWith(isPasswordHidden: !lastState.isPasswordHidden);
   }
 
-  void handleLogin() async {
+  void handleLogin(AppLocalizations localizations) async {
      var lastState = (state as LoginInitialState);
      state = LoginLoadingState();
     try {
-      final UserModel? user = await authService.login(lastState.email, lastState.password);
+      final UserModel? user = await authService.login(lastState.email, lastState.password, localizations,);
       if(user!=null){
         state = LoginSuccessState(user);
       }else {

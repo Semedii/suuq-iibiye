@@ -75,7 +75,7 @@ class SignupPage extends ConsumerWidget {
             AppButton(
                 title: localizations.signup,
                 isLoading: state.isButtonLoading,
-                onTap: () => _handleSignUp(ref)),
+                onTap: () => _handleSignUp(ref, localizations)),
             AppButton(
               title: localizations.backToLogin,
               onTap: () => AutoRouter.of(context).replace(
@@ -196,9 +196,9 @@ class SignupPage extends ConsumerWidget {
     );
   }
 
-  void _handleSignUp(WidgetRef ref) {
+  void _handleSignUp(WidgetRef ref, AppLocalizations localizations) {
     if (_formKey.currentState!.validate()) {
-      ref.read(signupNotifierProvider.notifier).onSignupPressed();
+      ref.read(signupNotifierProvider.notifier).onSignupPressed(localizations);
     }
   }
 }

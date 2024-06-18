@@ -37,10 +37,11 @@ class AddProductPage extends ConsumerWidget {
 
   Widget _mapStateToWidget(
       BuildContext context, AddProductState state, WidgetRef ref) {
+        AppLocalizations localizations = AppLocalizations.of(context)!;
     if (state is AddProductIdleState) {
       return _buildPageBody(context, state, ref);
     } else if (state is AddProductSuccessState) {
-      toastInfo("Added succesfully");
+      toastInfo(localizations.successfullyAdded);
       AutoRouter.of(context).replace(CategoryRoute(category: category));
       WidgetsBinding.instance.addPostFrameCallback((_) {
         ref.read(categoryNotifierProvider.notifier).initPage(
@@ -275,7 +276,7 @@ class AddProductPage extends ConsumerWidget {
       onTap: () {
         if (_formKey.currentState!.validate()) {
           if (state.images == null) {
-            toastInfo("please add atleast one image");
+            toastInfo(localizations.atleastOneImage);
             return;
           }
           ref.read(addProductNotifierProvider.notifier).addNewProduct(category);

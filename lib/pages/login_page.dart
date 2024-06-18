@@ -168,7 +168,7 @@ class LoginPage extends ConsumerWidget {
     return AppButton(
       title: localizations.login,
       noTopMargin: true,
-      onTap: ref.read(loginInNotifierProvider.notifier).handleLogin,
+      onTap: () => ref.read(loginInNotifierProvider.notifier).handleLogin(localizations),
     );
   }
 

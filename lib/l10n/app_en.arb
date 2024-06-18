@@ -5,6 +5,7 @@
   "addNewProduct": "Add a new product",
   "address": "Address",
   "areYouSureRemove": "Are you sure you want to remove this",
+  "atleastOneImage": "please add atleast one image",
   "backToLogin": "Back to Login",
   "businessAddress": "Business Address",
   "businessInformation": "Business information",
@@ -20,6 +21,7 @@
   "doesNotMatch": "Does not match, Please check again.",
   "editPrice": "Edit Price",
   "email": "Email",
+  "emailAlreadyInUse": "Email-kan hore ayaa loo isticmaalay",
   "enterYourBusinessName": "Enter your business name",
   "enterYourDetailsAndSignUp": "Enter your details and sign up freely",
   "enterYourEmailAddress": "Enter your email address",
@@ -28,10 +30,12 @@
   "enterYourPassword": "Enter your password",
   "enterYourPasswordAgain": "Enter your password again",
   "enterYourPhoneNumber": "Enter your phone number",
+  "featureExplanation": "Please enter specific details such as camera quality, sizes, colors, and other notable features in the fields below.",
   "forgotYourPassword": "Forgot your password",
   "home": "Home",
   "iAccept": "I accept ",
   "image": "Images",
+  "invalidEmail": "This email is invalid",
   "joinedOn": "Joined on",
   "login": "Login",
   "logout": "Logout",
@@ -64,5 +68,7 @@
   "termsAndConditions": "the terms and conditions",
   "termsValidation": "You need to accept the terms",
   "uploadImage": "Upload Image",
-  "uploaded": "Uploaded"
+  "uploaded": "Uploaded",
+  "userIsNotSeller": "This user is not seller",
+  "wrongEmailOrPassword": "Wrong email or password"
 }
