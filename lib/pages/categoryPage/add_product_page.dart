@@ -194,32 +194,40 @@ class AddProductPage extends ConsumerWidget {
     TextEditingController value = TextEditingController();
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: TextFormField(
-              controller: title,
-              decoration: _getInputDecoration("Camera"),
-            ),
+          Padding(
+            padding: AppStyles.edgeInsets4,
+            child: Text(localizations.featureExplanation),
           ),
-          const SizedBox(width: 4),
-          Expanded(
-            child: TextFormField(
-              controller: value,
-              decoration: _getInputDecoration("48MP"),
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: TextFormField(
+                  controller: title,
+                  decoration: _getInputDecoration("Camera"),
+                ),
+              ),
+              const SizedBox(width: 4),
+              Expanded(
+                child: TextFormField(
+                  controller: value,
+                  decoration: _getInputDecoration("48MP"),
+                ),
+              ),
+              SmallButton(
+                  title: localizations.add,
+                  onPressed: () {
+                    Feature newFeature =
+                        Feature(title: title.text, value: value.text);
+                    ref
+                        .read(addProductNotifierProvider.notifier)
+                        .onFeaturesAdded(newFeature);
+                    title.clear();
+                    value.clear();
+                  })
+            ],
           ),
-          SmallButton(
-              title: localizations.add,
-              onPressed: () {
-                Feature newFeature =
-                    Feature(title: title.text, value: value.text);
-                ref
-                    .read(addProductNotifierProvider.notifier)
-                    .onFeaturesAdded(newFeature);
-                title.clear();
-                value.clear();
-              })
         ],
       ),
     );
