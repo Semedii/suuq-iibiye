@@ -109,13 +109,13 @@ class MyAccountPage extends ConsumerWidget {
             ),
           ),
         ),
-         const SizedBox(height: 4),
+        const SizedBox(height: 4),
         Center(
           child: Text(
             localizations.joinedOn +
                 StringUtilities.colon +
                 DateFormat('dd/mm/yyyy').format(joinedDate),
-            style: const TextStyle(fontSize: 12, color: Colors.black87),
+            style:  TextStyle(fontSize: 12, color: Colors.white, backgroundColor: AppColors.green.shade900),
           ),
         ),
       ],
@@ -169,6 +169,7 @@ class MyAccountPage extends ConsumerWidget {
                   _getMenu(
                     Icons.logout_outlined,
                     localizations.logout,
+                    isLogout: true,
                     onTap:
                         ref.read(loginInNotifierProvider.notifier).handleLogout,
                   ),
@@ -179,12 +180,16 @@ class MyAccountPage extends ConsumerWidget {
         ));
   }
 
-  Card _getMenu(IconData leadingIcon, String title, {void Function()? onTap}) {
+  Card _getMenu(IconData leadingIcon, String title,
+      {void Function()? onTap, bool isLogout = false}) {
     return Card(
       color: AppColors.white,
       child: ListTile(
         onTap: onTap,
-        leading: Icon(leadingIcon, color: AppColors.green,),
+        leading: Icon(
+          leadingIcon,
+          color: isLogout ? Colors.red : AppColors.green,
+        ),
         title: Text(title),
       ),
     );
