@@ -1,3 +1,5 @@
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 enum Category {
   clothes,
   shoes,
@@ -50,3 +52,24 @@ String categoryToString(Category category) {
       return 'others';
   }
 }
+
+ String getCategoryTranslations(Category category, AppLocalizations localizations){
+   switch (category) {
+    case Category.clothes:
+      return localizations.clothes;
+    case Category.shoes:
+      return localizations.shoes;
+    case Category.homeAccessories:
+      return localizations.homeAccessories;
+    case Category.electronics:
+      return localizations.electronics;
+    case Category.gymAccessories:
+      return localizations.gymAccessories;
+    case Category.cosmetics:
+      return localizations.cosmetics;
+    case Category.others:
+      return 'others';
+    case Category.kitchenAccessories:
+      return localizations.kitchenAccessories;
+  }
+ }

@@ -65,7 +65,7 @@ class HomePage extends ConsumerWidget {
   }
 
   GestureDetector _buildCategoryCard(
-      BuildContext context, Category category, int index) {
+      BuildContext context, Category category, int index,) {
     return GestureDetector(
       onTap: () =>
           AutoRouter.of(context).push(CategoryRoute(category: category)),
@@ -75,7 +75,7 @@ class HomePage extends ConsumerWidget {
           child: Container(
             color: Colors.black.withOpacity(0.5),
             child: Center(
-              child: _buildCategoryTitle(category),
+              child: _buildCategoryTitle(category, context),
             ),
           ),
         ),
@@ -101,9 +101,10 @@ class HomePage extends ConsumerWidget {
     );
   }
 
-  Text _buildCategoryTitle(Category category) {
+  Text _buildCategoryTitle(Category category, context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Text(
-      categoryToString(category),
+      getCategoryTranslations(category, localizations),
       textAlign: TextAlign.center,
       style: const TextStyle(
           color: AppColors.white, fontSize: 24, fontWeight: FontWeight.bold),

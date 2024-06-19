@@ -53,7 +53,7 @@ class OrderDetailsPage extends ConsumerWidget {
         children: [
           _getImages(order.cartProducts),
           const SizedBox(height: 20),
-          ..._buildProductDetails(order.cartProducts),
+          ..._buildProductDetails(order.cartProducts, localizations),
           _buildDetailRow(localizations.customerName + StringUtilities.colon,
               order.customer.name ?? "N/A"),
           _buildDetailRow(localizations.phoneNumber + StringUtilities.colon,
@@ -75,12 +75,12 @@ class OrderDetailsPage extends ConsumerWidget {
         options: CarouselOptions(viewportFraction: 1));
   }
 
-  List<Widget> _buildProductDetails(List<CartProduct?> cartProducts) {
+  List<Widget> _buildProductDetails(List<CartProduct?> cartProducts, AppLocalizations localizations) {
     return cartProducts.asMap().entries.map((entry) {
       int index = entry.key;
       var product = entry.value;
       return _buildDetailRow(
-        "Product ${index + 1}:",
+        "${localizations.product} ${index + 1}:",
         product?.description ?? "No description",
       );
     }).toList();
@@ -119,7 +119,7 @@ class OrderDetailsPage extends ConsumerWidget {
             children: [
               status.icon,
               const SizedBox(width: 4),
-              Text(status.name),
+              Text(OrderStatus.translateName(status, localizations)),
             ],
           ),
         ],
