@@ -26,6 +26,7 @@ class OrderCard extends StatelessWidget {
           padding: const EdgeInsets.all(16),
           child: Column(
             children: [
+              _buildOrderDate(),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -81,12 +82,19 @@ class OrderCard extends StatelessWidget {
                 ],
               ),
               const SizedBox(height: 16),
-              _buildDateAndPrice(context, orderModel.totalPrice, orderModel.orderedDate),
+              _buildPriceAndStatus(context, orderModel.totalPrice),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Align _buildOrderDate() {
+    return Align(
+        alignment: Alignment.topRight,
+        child: Text(
+            DateFormat('dd/MM/yyyy hh:mm a').format(orderModel.orderedDate)));
   }
 
   Text _buildProductDescription(CartProduct cartProduct) {
@@ -100,21 +108,19 @@ class OrderCard extends StatelessWidget {
     );
   }
 
-  Row _buildDateAndPrice(BuildContext context, double price, DateTime date) {
-     AppLocalizations localizations = AppLocalizations.of(context)!;
+  Row _buildPriceAndStatus(BuildContext context, double price) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         _buildPrice(price),
-        Text(DateFormat('dd/MM/yyyy hh:mm a').format(date)),
         Row(
           children: [
             orderModel.status.icon,
-            const SizedBox(width: 4),
             Text(
-          OrderStatus.translateName(orderModel.status, localizations),
-          style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
-        )
+              OrderStatus.translateName(orderModel.status, localizations),
+              style: const TextStyle(color: Color.fromARGB(255, 101, 92, 7)),
+            )
           ],
         )
       ],
