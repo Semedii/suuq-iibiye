@@ -6,6 +6,7 @@ import 'package:suuq_iibiye/components/app_button.dart';
 import 'package:suuq_iibiye/my_app.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_notifier.dart';
 import 'package:suuq_iibiye/notifiers/myProfile/account_state.dart';
+import 'package:suuq_iibiye/utils/app_colors.dart';
 import 'package:suuq_iibiye/utils/enums/language.dart';
 
 @RoutePage()
@@ -76,6 +77,7 @@ class ChangeLanguagePage extends ConsumerWidget {
     return Row(
       children: [
         Radio<Language>(
+          fillColor:  MaterialStateProperty.all(AppColors.green),
           value: radioValue,
           groupValue: currentValue,
           onChanged: onChanged,
