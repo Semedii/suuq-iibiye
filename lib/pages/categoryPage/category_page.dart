@@ -19,9 +19,11 @@ class CategoryPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final categoryState = ref.watch(categoryNotifierProvider);
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return Scaffold(
       appBar: AppBar(
-        title: Text(categoryToString(category)),
+        centerTitle: true,
+        title: Text(getCategoryTranslations(category, localizations)),
       ),
       body: _mapStateToWidget(context, ref, categoryState),
     );
