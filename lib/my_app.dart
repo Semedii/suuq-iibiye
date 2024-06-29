@@ -15,12 +15,11 @@ class MyApp extends StatelessWidget {
     return Consumer(builder: (context, ref, _) {
       final languageNotifier = ref.watch(languageNotifierProvider);
       return MaterialApp.router(
-        debugShowCheckedModeBanner: false,
         builder: (context, child) {
-          if (env == 'production') return child!;
+          if (env == 'prod') return child!;
           return Banner(
             message: env.toUpperCase(),
-            location: BannerLocation.topEnd,
+            location: BannerLocation.topStart,
             child: child,
           );
         },

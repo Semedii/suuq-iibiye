@@ -3,17 +3,17 @@
 <plist version="1.0">
 <dict>
 	<key>API_KEY</key>
-	<string>AIzaSyBp2fWP3_rWkVkzVRCiZm4ShtQ8I1h_lNA</string>
+	<string>AIzaSyDehpSgAAzHEjzlJ7MXK5m8KuOA-K533tY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>306904529292</string>
+	<string>612442301144</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>com.example.suuqIibiye</string>
+	<string>com.suuq.prod</string>
 	<key>PROJECT_ID</key>
-	<string>suuq-staging-770c6</string>
+	<string>suuq-4b572</string>
 	<key>STORAGE_BUCKET</key>
-	<string>suuq-staging-770c6.appspot.com</string>
+	<string>suuq-4b572.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -25,6 +25,6 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:306904529292:ios:9ec49f12acbca0cdff7ea9</string>
+	<string>1:612442301144:ios:bf1184fd3e24fc43332dad</string>
 </dict>
 </plist>
