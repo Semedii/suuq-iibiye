@@ -77,6 +77,7 @@ class SignupPage extends ConsumerWidget {
                 isLoading: state.isButtonLoading,
                 onTap: () => _handleSignUp(ref, localizations)),
             AppButton(
+              isTransparent: true,
               title: localizations.backToLogin,
               onTap: () => AutoRouter.of(context).replace(
                 const LoginRoute(),
