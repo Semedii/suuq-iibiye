@@ -86,7 +86,7 @@ class ProductCard extends StatelessWidget {
 
   Widget _buildRemoveButton(BuildContext context) {
     return GestureDetector(
-      onTap: () => _showAddProductDialog(context),
+      onTap: () => _showRemoveProductDialog(context),
       child: Container(
           padding: AppStyles.edgeInsets4,
           decoration: BoxDecoration(
@@ -100,7 +100,7 @@ class ProductCard extends StatelessWidget {
     );
   }
 
-  void _showAddProductDialog(BuildContext context) {
+  void _showRemoveProductDialog(BuildContext context) {
     AppLocalizations localizations = AppLocalizations.of(context)!;
     showDialog(
         context: context,
@@ -113,7 +113,7 @@ class ProductCard extends StatelessWidget {
                   localizations.areYouSureRemove+StringUtilities.questionMark,
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
-                _buildYesButton(context),
+                _buildYesRemoveButton(context),
                 _buildCancelButton(context)
               ],
             ),
@@ -121,13 +121,14 @@ class ProductCard extends StatelessWidget {
         });
   }
 
-  TextButton _buildYesButton(BuildContext context) {
+  TextButton _buildYesRemoveButton(BuildContext context) {
+    AppLocalizations localizations = AppLocalizations.of(context)!;
     return TextButton(
       onPressed: () {
         onRemoveProduct();
         Navigator.of(context).pop();
       },
-      child: const Text('Remove'),
+      child: Text(localizations.remove),
     );
   }
 

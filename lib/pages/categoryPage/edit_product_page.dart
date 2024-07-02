@@ -51,7 +51,7 @@ class EditProductPage extends ConsumerWidget {
     var editProvider = ref.read(editProductNotifierProvider.notifier);
     return SingleChildScrollView(
       child: Padding(
-        padding: AppStyles.edgeInsetsH16+ AppStyles.edgeInsetsB24,
+        padding: AppStyles.edgeInsetsH16 + AppStyles.edgeInsetsB24,
         child: Column(
           children: [
             _buildTextFieldWithLabel(
@@ -70,10 +70,11 @@ class EditProductPage extends ConsumerWidget {
               maxLines: 5,
               onChanged: editProvider.onDescriptionChanged,
             ),
-            ...state.features!.where((feature) => feature != null).map((e) => _buildFeature(e?.title, e?.value)),
-           
-            _buildUpdateButton(ref),
-             _buildCancelButton(context),
+            ...state.features!
+                .where((feature) => feature != null)
+                .map((e) => _buildFeature(e?.title, e?.value)),
+            _buildUpdateButton(ref, localizations),
+            _buildCancelButton(context),
           ],
         ),
       ),
@@ -141,9 +142,9 @@ class EditProductPage extends ConsumerWidget {
     );
   }
 
-  AppButton _buildUpdateButton(WidgetRef ref) {
+  AppButton _buildUpdateButton(WidgetRef ref, AppLocalizations localizations) {
     return AppButton(
-        title: "Update",
+        title: localizations.update,
         onTap: () =>
             ref.read(editProductNotifierProvider.notifier).onUpdate(productId));
   }
