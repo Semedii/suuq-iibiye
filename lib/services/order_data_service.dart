@@ -6,7 +6,7 @@ class OrderDataService {
 
   Future<List<OrderModel?>> fetchCurrentOrders(String sellerName) async {
     try {
-      final collectionRef = db.collection("orders").withConverter(
+      final collectionRef = db.collection("orders").orderBy('orderedDate', descending: true).withConverter(
             fromFirestore: OrderModel.fromFirestore,
             toFirestore: (order, _) => order.toFirestore(),
           );
